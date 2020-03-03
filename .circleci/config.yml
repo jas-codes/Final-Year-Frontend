@@ -20,8 +20,8 @@ jobs:
           paths:
             - "node_modules"
       - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI
-      - store_artifacts:
-        path: coverage
-        destination: coverage
+      - store_test_results:
+          path: test-results
+
 
       - run: npm run e2e -- --protractor-config=./e2e/protractor-ci.conf.js
