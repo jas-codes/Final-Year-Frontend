@@ -11,6 +11,9 @@ jobs:
       - restore_cache:
           key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
       - run: npm install
+      - run: 
+          name: "check Node.js and npm"
+          command: node -v
       #save the node modules for use in both
       - save_cache:
           key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
