@@ -2,13 +2,10 @@ version: 2.1
 
 jobs:
   build:
-
     branches:
       only:
         - master
-      ignore:
-        - dev
-
+      
     working_directory: ~/Final-Year-Frontend
     docker:
       #create docker image
