@@ -2,10 +2,6 @@ version: 2.1
 
 jobs:
   build:
-    branches:
-      only:
-        - master
-      
     working_directory: ~/Final-Year-Frontend
     docker:
       #create docker image
@@ -36,3 +32,12 @@ jobs:
       - run:
           name: 'Deploy to Firebase Hosting'
           command: './node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN'
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master 
