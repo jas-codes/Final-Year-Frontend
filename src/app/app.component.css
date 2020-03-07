@@ -1,0 +1,131 @@
+/*only render the horizontal bottom nav bar for small devices*/
+@media only screen and (max-width: 600px) {
+    .navbar {
+        bottom: 0;
+        width: 100vw;
+        height: 5rem;
+      }
+    
+      .navbar-logo {
+        display: none;
+      }
+    
+      .navbar-nav {
+        flex-direction: row;
+      }
+    
+      .navbar-link {
+        justify-content: center;
+      }
+    
+      main {
+        margin: 0 !important;
+      }
+}
+
+/*only render the expanding nav bar for larger devices*/
+@media only screen and (min-width: 600px) {
+    .navbar {
+        top: 0;
+        width: 5rem;
+        height: 100vh;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+    }
+
+    .navbar:hover {
+        width: 16rem;
+    }
+
+    .navbar:hover .navbar-link-text {
+        display: inline;
+    }
+}
+
+.navbar {
+
+    position: fixed;
+    background-color: var(--bg-primary);
+    transition: width 140ms ease;
+}
+
+.navbar-nav {
+    padding: 0;
+    margin: 0;
+    
+    align-items: center;
+    display: flex;
+    list-style: none;
+}
+
+.navbar-element {
+    width: 100%;
+}
+
+/*navbar links and the corresponding link text*/
+.navbar-link {
+    display: flex;
+    align-items: center;
+    height: 5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    /*grey scale it*/
+    filter: grayscale(100%) opacity(0.7);
+    transition: var(--transition-speed);
+}
+
+.navbar-link-text {
+    display: none;
+    margin-left: 1rem;
+}
+
+.navbar-link svg {
+    min-width: 2rem;
+    margin: 0 1.5rem;
+}
+
+.navbar-link:hover{
+    /*transition from grey scale and set colours*/
+    filter: grayscale(0%) opacity(1);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+/*navbar logo/title at the top*/
+.navbar-logo {
+    text-align: center;
+    margin-bottom: 1rem;
+    text-transform:uppercase;
+    font-weight: bold;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    width: 100%;
+    letter-spacing: 0.3ch;
+}
+
+.navbar-logo svg {
+    transform: rotate(0deg);
+    transition: transform var(--transition-speed);
+}
+
+.navbar:hover .navbar-logo svg {
+    transform: rotate(-180deg);
+}
+
+
+/*font awesome multi-toned icons*/
+.fa-primary {
+    color: #2A3660;
+}
+
+.fa-secondary {
+    color: white;
+}
+
+.fa-primary,
+.fa-secondary {
+    transition: var(--transition-speed);
+}
+
