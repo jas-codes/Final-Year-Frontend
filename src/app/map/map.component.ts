@@ -9,7 +9,8 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angula
 export class MapComponent implements OnInit, AfterViewInit  {
   @ViewChild('gmap', {static: false}) gmapElement: any;
   map: google.maps.Map;
-  mapHeight = screen.height;
+  screenAdjust: 40;
+  mapHeight = screen.height - this.screenAdjust;
 
   constructor() { }
 
