@@ -7,31 +7,23 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angula
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit, AfterViewInit  {
-  @ViewChild('gmap', {static: false}) gmapElement: any;
-  map: google.maps.Map;
-  screenAdjust: 40;
-  mapHeight = screen.height - this.screenAdjust;
+  screenAdjust = 40;
+  mapHeight = screen.height;
+  centre: google.maps.LatLngLiteral;
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.mapHeight);
+    navigator.geolocation.getCurrentPosition(position => {
+      this.centre = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      }
+    });
   }
 
   ngAfterViewInit(): void {
-    this.initMap();
-  }
-
-  initMap() {
-    var uluru = {lat: -25.344, lng: 131.036};
-    var mapProp = {
-      center: uluru,
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-
-    this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-    console.log(this.map)
+  
   }
 
 }

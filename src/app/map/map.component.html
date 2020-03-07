@@ -1,5 +1,3 @@
 <body>
-    <google-map height="{{mapHeight}}" width="100%"></google-map>
-    <div #gmap class="map"></div>
-    <div id="map"></div>
+    <google-map height="{{mapHeight - screenAdjust}}" width="100%" [center]="centre"></google-map>
 </body>
