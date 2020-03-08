@@ -47,5 +47,4 @@ export class AppComponent {
     this.setAllComponents();
     this.showChats = !this.showChats;
   }
-
 }
