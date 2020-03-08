@@ -8,11 +8,19 @@ import { environment } from '../environments/environment';
 import { MapComponent } from './map/map.component';
 import { AgmCoreModule } from '@agm/core';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { MyJobsComponent } from './my-jobs/my-jobs.component';
+import { JobHistoryComponent } from './job-history/job-history.component';
+import { MyPageComponent } from './my-page/my-page.component';
+import { ChatsComponent } from './chats/chats.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponent
+    MapComponent,
+    MyJobsComponent,
+    JobHistoryComponent,
+    MyPageComponent,
+    ChatsComponent
   ],
   imports: [
     BrowserModule,

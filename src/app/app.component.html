@@ -32,7 +32,7 @@
           </svg>
         </a>
       </li>
-      <li class="navbar-element">
+      <li class="navbar-element" (click)="mapSelected()">
         <div href="#" class="navbar-link">
           <svg 
             aria-hidden="true" 
@@ -61,8 +61,8 @@
           <span class="navbar-link-text">Home Map</span>
         </div>
       </li>
-      <li class="navbar-element">
-        <a href="#" class="navbar-link">   
+      <li class="navbar-element" (click)="myJobsSelected()">
+        <div href="#" class="navbar-link">   
           <svg aria-hidden="true" 
             focusable="false" 
             data-prefix="fad" 
@@ -86,10 +86,10 @@
             </g>
           </svg>
           <span class="navbar-link-text">My Jobs</span>
-        </a>
+        </div>
       </li>
-      <li class="navbar-element">
-        <a href="#" class="navbar-link">
+      <li class="navbar-element" (click)="jobHistorySelected()">
+        <div href="#" class="navbar-link">
           <svg 
             aria-hidden="true"
             focusable="false"
@@ -114,10 +114,10 @@
             </g>
           </svg>       
           <span class="navbar-link-text">Job History</span>
-        </a>
+        </div>
       </li>
-      <li class="navbar-element">
-        <a href="#" class="navbar-link">
+      <li class="navbar-element" (click)="myPageSelected()">
+        <div href="#" class="navbar-link">
           <svg 
             aria-hidden="true"
             focusable="false" 
@@ -142,10 +142,10 @@
             </g>
           </svg>           
           <span class="navbar-link-text">My Page</span>
-        </a>
+        </div>
       </li>
-      <li class="navbar-element">
-        <a href="#" class="navbar-link">
+      <li class="navbar-element" (click)="chatsSelected()">
+        <div href="#" class="navbar-link">
           <svg 
             aria-hidden="true" 
             focusable="false" 
@@ -165,12 +165,16 @@
             </g>
           </svg>      
           <span class="navbar-link-text">Chats</span>
-        </a>
+        </div>
       </li>
     </ul>
   </nav>
 
   <main>
-    <app-map></app-map>
+    <app-map *ngIf="showmaps"></app-map>
+    <app-my-jobs *ngIf="showMyJobs"></app-my-jobs>
+    <app-job-history *ngIf="showJobHistory"></app-job-history>
+    <app-my-page *ngIf="showMyPage"></app-my-page>
+    <app-chats *ngIf="showChats"></app-chats>
   </main>
 </body>
