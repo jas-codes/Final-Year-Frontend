@@ -14,16 +14,24 @@ export class MapComponent implements OnInit, AfterViewInit  {
   constructor() { }
 
   ngOnInit(): void {
-    navigator.geolocation.getCurrentPosition(position => {
-      this.centre = {
+    var self = this;
+    navigator.geolocation.getCurrentPosition( function(position) {
+      self.centre = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       }
-    });
+    }, 
+    this.errorCallbackAccuracy,
+      { enableHighAccuracy: true, maximumAge:Infinity, timeout: 0}
+    );
   }
 
   ngAfterViewInit(): void {
   
+  }
+
+  errorCallbackAccuracy() {
+    console.log('you have committed an oopsie');
   }
 
 }
