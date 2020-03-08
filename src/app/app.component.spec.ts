@@ -20,13 +20,13 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  xit(`should have as title 'Final-Year-Frontend'`, () => {
+  it(`should have as title 'Final-Year-Frontend'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('Final-Year-Frontend');
   });
 
-  it('should render title', () => {
+  xit('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
