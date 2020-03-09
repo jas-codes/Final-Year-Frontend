@@ -1,3 +1,9 @@
-<body>
-    <google-map height="{{mapHeight - screenAdjust}}" width="100%" [center]="centre"></google-map>
+<body class="wrapper">
+    <google-map height="{{mapHeight}}" width="100%" [center]="centre"></google-map>
+    <div class="send-front  new-job-component" *ngIf="postJob">
+        <app-new-job (dismiss)="showPostJob()"></app-new-job>
+    </div>
+    <div class="send-front add-new-job">
+        <button mat-fab color="primary" (click)="showPostJob()"><mat-icon>add</mat-icon></button>
+    </div>
 </body>

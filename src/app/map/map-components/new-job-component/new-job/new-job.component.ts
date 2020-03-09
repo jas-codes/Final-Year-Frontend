@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TradeType } from 'src/enums/trade-types';
 
 
@@ -8,7 +8,7 @@ import { TradeType } from 'src/enums/trade-types';
   styleUrls: ['./new-job.component.css']
 })
 export class NewJobComponent implements OnInit {
-
+  @Output() dismiss = new EventEmitter<boolean>();
   trades = Object.values(TradeType);
   postcodeValue: string;
   jobDescriptionValue: string;
@@ -17,6 +17,10 @@ export class NewJobComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  dismissComponent() {
+    this.dismiss.emit(true);
   }
 
 }

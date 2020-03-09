@@ -1,17 +1,11 @@
 .card {
     width: 35rem;
     height: 31.5rem;
-    background-color: whitesmoke;
+    background-color: white;
     border-radius: 5%;
     z-index: 500;
     box-shadow: 0.4rem 0.4rem 0.2rem grey;
     margin-left: 20%;
-    position: relative;
-}
-
-.right-side {
-    margin-left: 45%;
-    margin-top: 15%;
     position: relative;
 }
 
@@ -21,15 +15,17 @@
     padding: 2%;
 }
 
-button {
-    width: 6rem;
-    height: 2.5rem;
-    margin: 2%;
-    position: relative;
+.exit {
+    position: absolute;
+    right: 2rem;
+    top: 1.2rem;
 }
 
-button #cancel {
-    right: 1rem;
+.exit:hover {
+    background-color: red;
+    border-radius: 50%;
+    opacity: 0.8;
+    cursor: pointer;
 }
 
 .icon {
@@ -38,11 +34,7 @@ button #cancel {
     padding-top: 6.5rem;
     padding-left: 7rem;
     opacity: 0.7;
-}
-
-svg {
-    height: 2rem;
-    width: 2rem;
+    cursor: pointer;
 }
 
 .border {
@@ -59,17 +51,6 @@ svg {
     bottom: 50%;
 }
 
-mat-divider {
-    margin-right: 4%;
-    margin-left: 4%;
-}
-
-h2 {
-    position: relative;
-    top: 1rem;
-    margin: 4%
-}
-
 .image-heading {
     padding-left: 6rem;
 }
@@ -80,10 +61,28 @@ h2 {
     display: inline-flex;
 }
 
-.form-field {
-    clear: both;
-    display: inline-flex;
-    width: 40%;
+button {
+    width: 6rem;
+    height: 2.5rem;
+    margin: 2%;
+    position: relative;
+}
+
+button #cancel {
+    right: 1rem;
+}
+
+mat-divider {
+    margin-right: 4%;
+    margin-left: 4%;
+}
+
+svg {
+    height: 2rem;
+    width: 2rem;
+}
+
+h2 {
     margin-left: 4%;
 }
 

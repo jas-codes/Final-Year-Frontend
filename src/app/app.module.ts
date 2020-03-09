@@ -21,6 +21,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -30,7 +31,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatSelectModule,
   MatFormFieldModule,
   MatInputModule,
-  FormsModule
+  FormsModule,
+  MatIconModule
 ]
 @NgModule({
   declarations: [
