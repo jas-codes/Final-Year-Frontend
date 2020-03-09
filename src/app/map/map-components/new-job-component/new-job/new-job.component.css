@@ -1,0 +1,90 @@
+.card {
+    width: 32%;
+    height: 31rem;
+    background-color: whitesmoke;
+    border-radius: 5%;
+    z-index: 500;
+    box-shadow: 0.4rem 0.4rem 0.2rem grey;
+    margin-left: 20%;
+    position: relative;
+}
+
+.right-side {
+    margin-left: 45%;
+    margin-top: 15%;
+    position: relative;
+}
+
+.buttons {
+    position: relative;
+    bottom: 45%;
+    padding: 2%;
+}
+
+button {
+    width: 6rem;
+    height: 2.5rem;
+    margin: 2%;
+    position: relative;
+}
+
+button #cancel {
+    right: 1rem;
+}
+
+.icon {
+    height: 95%;
+    margin: auto;
+    padding-top: 6.5rem;
+    padding-left: 7rem;
+    opacity: 0.7;
+}
+
+svg {
+    height: 2rem;
+    width: 2rem;
+}
+
+.add-image {
+    border: 2px solid var(--bg-primary);
+    width: 16rem;
+    height: 15rem;
+    background-color: lightgray;
+    border-radius: 5%;
+    left: 18rem;
+    position: relative;
+    bottom: 50%;
+}
+
+mat-divider {
+    margin-right: 4%;
+    margin-left: 4%;
+}
+
+h2 {
+    position: relative;
+    top: 1rem;
+    margin: 4%
+}
+
+.image-heading {
+    padding-left: 6rem;
+}
+
+.sub-headings {
+    margin-left: 4%;
+    clear: both;
+    display: inline-flex;
+}
+
+.form-field {
+    clear: both;
+    display: inline-flex;
+    width: 40%;
+    margin-left: 4%;
+}
+
+mat-form-field {
+    width: 40%;
+    margin-left: 4%;
+}
