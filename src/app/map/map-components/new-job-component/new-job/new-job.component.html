@@ -18,13 +18,13 @@
             <br/>
             <mat-form-field >
                 <mat-label>Describe the job</mat-label>
-                <textarea matInput placeholder="Ex. Replaster a 10x10 wall..."></textarea>
+                <textarea matInput placeholder="Ex. Replaster a 10x10 wall..." [(ngModel)]="jobDescriptionValue"></textarea>
             </mat-form-field>
             <br/>
             <mat-form-field>
                 <mat-label>Estimated Budget</mat-label>
                 <span matPrefix>£ &nbsp;</span>
-                <input type="number" matInput placeholder="00.00">
+                <input type="number" matInput placeholder="00.00" [(ngModel)]="budgetValue">
             </mat-form-field>
             <br />
             <mat-form-field>

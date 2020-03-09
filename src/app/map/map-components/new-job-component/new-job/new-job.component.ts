@@ -10,7 +10,9 @@ import { TradeType } from 'src/enums/trade-types';
 export class NewJobComponent implements OnInit {
 
   trades = Object.values(TradeType);
-  postcodeValue:string;
+  postcodeValue: string;
+  jobDescriptionValue: string;
+  budgetValue: string;
 
   constructor() { }
 
