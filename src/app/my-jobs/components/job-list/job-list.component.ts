@@ -61,8 +61,6 @@ export class JobListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.listType);
-
     this.currentJobs.push(this.job);
     this.currentJobs.push(this.job);
     this.currentJobs.push(this.job1);
@@ -72,7 +70,6 @@ export class JobListComponent implements OnInit {
   }
 
   select(job) {
-    console.log(job);
     this.selectedJob.emit(job);
   }
 
