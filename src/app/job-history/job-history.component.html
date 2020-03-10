@@ -1,1 +1,4 @@
-<p>job-history works!</p>
+<mat-toolbar color="primary">
+    <span>Job History</span>
+</mat-toolbar>
+<app-job-list [listType]="historicalJobList" (selectedJob)="setJob($event)"></app-job-list>

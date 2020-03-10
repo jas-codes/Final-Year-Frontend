@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { JobHistoryComponent } from './job-history.component';
 
-describe('JobHistoryComponent', () => {
+xdescribe('JobHistoryComponent', () => {
   let component: JobHistoryComponent;
   let fixture: ComponentFixture<JobHistoryComponent>;
 

@@ -1,0 +1,92 @@
+.card {
+    width: 35rem;
+    height: 31.5rem;
+    background-color: white;
+    border-radius: 5%;
+    z-index: 500;
+    box-shadow: 0.4rem 0.4rem 0.2rem grey;
+    margin-left: 20%;
+    position: relative;
+}
+
+.buttons {
+    position: relative;
+    bottom: 45%;
+    padding: 2%;
+}
+
+.exit {
+    position: absolute;
+    right: 2rem;
+    top: 1.2rem;
+}
+
+.exit:hover {
+    background-color: red;
+    border-radius: 50%;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.icon {
+    height: 95%;
+    margin: auto;
+    padding-top: 6.5rem;
+    padding-left: 7rem;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.border {
+    border: 2px solid var(--bg-primary);
+}
+
+.add-image {
+    width: 16rem;
+    height: 15rem;
+    background-color: lightgray;
+    border-radius: 5%;
+    left: 18rem;
+    position: relative;
+    bottom: 50%;
+}
+
+.image-heading {
+    padding-left: 6rem;
+}
+
+.sub-headings {
+    margin-left: 4%;
+    clear: both;
+    display: inline-flex;
+}
+
+button {
+    width: 6rem;
+    height: 2.5rem;
+    margin: 2%;
+    position: relative;
+}
+
+button #cancel {
+    right: 1rem;
+}
+
+mat-divider {
+    margin-right: 4%;
+    margin-left: 4%;
+}
+
+svg {
+    height: 2rem;
+    width: 2rem;
+}
+
+h2 {
+    margin-left: 4%;
+}
+
+mat-form-field {
+    width: 40%;
+    margin-left: 4%;
+}

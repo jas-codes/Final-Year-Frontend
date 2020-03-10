@@ -3,7 +3,24 @@
     height: 100%;
 }
 
-body {
+.send-front {
+    position: absolute;
+    z-index: 500;
+    margin-left: 10%;
+}
+
+.add-new-job {
+    right: 5%;
+    bottom: 4%;
+}
+
+.new-job-component {
+    right: 16%;
+    bottom: 7%;
+}
+
+.wrapper {
     width: 100%;
     height: 100%;
+    position: relative;
 }

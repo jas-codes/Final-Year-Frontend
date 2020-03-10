@@ -7,9 +7,9 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angula
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit, AfterViewInit  {
-  screenAdjust = 40;
-  mapHeight = screen.height;
+  mapHeight = window.innerHeight;
   centre: google.maps.LatLngLiteral;
+  postJob: boolean = false;
 
   constructor() { }
 
@@ -32,6 +32,10 @@ export class MapComponent implements OnInit, AfterViewInit  {
 
   errorCallbackAccuracy() {
     console.log('you have committed an oopsie');
+  }
+
+  showPostJob() {
+    this.postJob = !this.postJob;
   }
 
 }

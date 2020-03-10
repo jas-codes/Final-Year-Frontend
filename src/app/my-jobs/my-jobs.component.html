@@ -1,1 +1,11 @@
-<p>my-jobs works!</p>
+<mat-toolbar color="primary">
+    <span>My Jobs</span>
+</mat-toolbar>
+<mat-tab-group color="primary" dynamicHeight>
+    <mat-tab label="Current Jobs">
+        <app-job-list [listType]="currentJobList" (selectedJob)="setJob($event)"></app-job-list>
+    </mat-tab>
+    <mat-tab label="Pending Jobs">
+        <app-job-list [listType]="pendingJobList" (selectedJob)="setJob($event)"></app-job-list>
+    </mat-tab>
+</mat-tab-group>
