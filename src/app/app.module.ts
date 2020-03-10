@@ -24,6 +24,7 @@ import { FormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { JobListComponent } from './my-jobs/components/job-list/job-list.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule,
@@ -46,6 +47,7 @@ const ANGULAR_MATERIAL_MODULES = [
     MyPageComponent,
     ChatsComponent,
     NewJobComponent,
+    JobListComponent,
   ],
   imports: [
     BrowserModule,

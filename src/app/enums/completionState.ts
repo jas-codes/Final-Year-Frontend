@@ -1,5 +1,5 @@
 export enum CompletionState{
-    avialable = 'Avialable',
+    avialable = 'Available',
     pending = 'Pending',
     active = 'Active',
     closed = 'Closed'

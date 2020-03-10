@@ -1,0 +1,45 @@
+.list-item:hover {
+    background-color: var(--bg-primary);
+    opacity: 0.7;
+}
+
+.list-item {
+    position: relative;
+    margin: 1rem;
+}
+
+.list-item .text {
+    position: absolute;
+    left: 4rem;
+    top: 0.3rem;
+}
+
+.extra-spacing {
+    top: 0.8rem;
+    margin-bottom: 1.6rem;
+}
+
+.list {
+    width: 97%;
+    margin-left: 1.5%;
+    margin-top: 1%;
+}
+
+.list-item .image {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: grey;
+}
+
+mat-form-field {
+    width: 97%;
+    margin-left: 1.5%;
+    margin-top: 1%;  
+}
+
+mat-icon {
+    position: absolute;
+    right: 3rem;
+    top: 1rem;
+}
