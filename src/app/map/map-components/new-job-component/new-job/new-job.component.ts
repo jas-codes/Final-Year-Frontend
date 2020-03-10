@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { TradeType } from 'src/enums/trade-types';
-
+import { TradeType } from 'src/app/enums/trade-types';
 
 @Component({
   selector: 'app-new-job',
