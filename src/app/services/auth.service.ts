@@ -8,6 +8,7 @@ import { switchMap } from 'rxjs/operators';
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore,  AngularFirestoreDocument } from '@angular/fire/firestore';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Injectable({
@@ -52,6 +53,18 @@ export class AuthService {
 
   async googleSignin() {
     const provider = new auth.GoogleAuthProvider();
+    const credential = await this.afireAuth.auth.signInWithPopup(provider);
+    return this.updateUserInfo(credential.user);
+  }
+
+  async facebookSignin() {
+    const provider = new auth.FacebookAuthProvider();
+    const credential = await this.afireAuth.auth.signInWithPopup(provider);
+    return this.updateUserInfo(credential.user);
+  }
+
+  async githubSignin() {
+    const provider = new auth.GithubAuthProvider();
     const credential = await this.afireAuth.auth.signInWithPopup(provider);
     return this.updateUserInfo(credential.user);
   }
