@@ -25,6 +25,22 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { JobListComponent } from './my-jobs/components/job-list/job-list.component';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import {  AngularFireAuthModule } from '@angular/fire/auth';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDU0JQdGmW2MY0G1DHPNO4a7fHm6IuMh-Y",
+  authDomain: "tradesman-application.firebaseapp.com",
+  databaseURL: "https://tradesman-application.firebaseio.com",
+  projectId: "tradesman-application",
+  storageBucket: "tradesman-application.appspot.com",
+  messagingSenderId: "468613656053",
+  appId: "1:468613656053:web:1cc160661ac2b8d74744bc",
+  measurementId: "G-EYSG4Y0LF7"
+};
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule,
@@ -48,6 +64,8 @@ const ANGULAR_MATERIAL_MODULES = [
     ChatsComponent,
     NewJobComponent,
     JobListComponent,
+    UserProfileComponent,
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,7 +76,10 @@ const ANGULAR_MATERIAL_MODULES = [
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
-    ANGULAR_MATERIAL_MODULES
+    ANGULAR_MATERIAL_MODULES,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent],
