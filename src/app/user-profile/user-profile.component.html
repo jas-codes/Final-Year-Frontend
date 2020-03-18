@@ -10,26 +10,41 @@
         <img [src]="user.photoURL">
         <p>UID: {{user.uid}}</p>
         <p>Review Score: {{user.reviewScore}}</p>
-        <button (click)="auth.signOut()">Logout</button>
+        <button (click)="auth.signOut()" mat-raised-button>Logout</button>
     </div>
 </div>
-
-<h1>hello</h1>
 
 <ng-template #guest>
     <h3>Hi, Guest</h3>
     <p>Login to get started...</p>
 
-    <button (click)="auth.googleSignin()">
+    <mat-form-field>
+        <input matInput placeholder="email" [(ngModel)]="email">
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+        <input matInput type="password" placeholder="password" [(ngModel)]="password">
+    </mat-form-field>
+    <br/>
+    <button (click)="auth.createAccount(email, password)" mat-raised-button>Create Account</button>
+    <button (click)="auth.emailAndPasswordSignin(email, password)" mat-raised-button>Login</button>
+    <br/>
+    <br/>
+    <br/>
+    <button (click)="auth.googleSignin()" mat-raised-button>
         <i class="fa fa-google"></i> Connect Google
     </button>
 
-    <button (click)="auth.facebookSignin()">
+    <button (click)="auth.facebookSignin()" mat-raised-button>
         <i class="fa fa-facebook-square"></i> Connect Facebook
     </button>
 
-    <button (click)="auth.githubSignin()">
+    <button (click)="auth.githubSignin()" mat-raised-button>
         <i class="fa fa-github" aria-hidden="true"></i> Connect Github
+    </button>
+
+    <button (click)="auth.microsoftSignin()" mat-raised-button>
+        <i class="fa fa-windows"></i> Connect Microsoft
     </button>
 </ng-template>
 

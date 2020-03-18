@@ -52,6 +52,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
+      self.router.navigate(['/home']);
     }).catch(error => this.errorCatch(error));
   }
 
@@ -76,19 +77,54 @@ export class AuthService {
     }).catch(error => this.errorCatch(error));
   }
 
+  async microsoftSignin() {
+    var self = this;
+
+    const provider = new auth.OAuthProvider('microsoft.com');
+    await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
+      //successful login
+      self.updateUserInfo(result.user);
+    }).catch(error => this.errorCatch(error));    
+  }
+
+  async emailAndPasswordSignin(email, password) {
+    var self = this;
+    this.afireAuth.auth.signInWithEmailAndPassword(email, password).then(function(result) {
+      //successful Login
+      self.updateUserInfo(result.user);
+    }).catch(error => this.errorCatch(error));        
+  }
+
+  async createAccount(email, password) {
+    var self = this;
+    this.afireAuth.auth.createUserWithEmailAndPassword(email, password).then(function(result) {
+      //successful account creation
+      self.updateUserInfo(result.user); 
+    }).catch(error => this.errorCatch(error));
+  }
+
   async signOut() {
-    await this.afireAuth.auth.signOut();
-    this.router.navigate(['/'])
+    await this.afireAuth.auth.signOut().then(function() {
+      this.router.navigate(['/']);
+    }).catch(error => this.errorCatch(error));
   }
 
   errorCatch(error) {
       //metadata
       var errorCode = error.code;
       var errorMessage = error.message;
-      var email = error.email;
+      var email = "";
+      var credential = "";
 
+      if (errorCode === 'auth/wrong-password') {
+        alert('Wrong password.');
+      }
+
+      if(error.email)
+        email = error.email;
       //type of auth
-      var credential = error.credential;
+      if(error.credential)
+        credential = error.credential;
 
       console.error('auth error - logged with analytics');
   }

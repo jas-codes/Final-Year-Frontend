@@ -7,6 +7,8 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
+  email: string = "";
+  password: string = "";
 
   constructor(
     public auth: AuthService
