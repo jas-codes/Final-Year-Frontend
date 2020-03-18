@@ -8,8 +8,6 @@ import { switchMap } from 'rxjs/operators';
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore,  AngularFirestoreDocument } from '@angular/fire/firestore';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +22,10 @@ export class AuthService {
   ) {
     this.user$ = this.afireAuth.authState.pipe(
       switchMap(user => {
-        console.log('in switchMap')
         //logged in user
         if(user) {
           return this.afirestore.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
-          console.log('should be null')
           //logged out user
           return of(null);
         }

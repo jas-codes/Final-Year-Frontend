@@ -9,6 +9,7 @@
         <h3>Hi, {{user.displayName}}</h3>
         <img [src]="user.photoURL">
         <p>UID: {{user.uid}}</p>
+        <p>Review Score: {{user.reviewScore}}</p>
         <button (click)="auth.signOut()">Logout</button>
     </div>
 </div>
@@ -30,10 +31,6 @@
     <button (click)="auth.githubSignin()">
         <i class="fa fa-github" aria-hidden="true"></i> Connect Github
     </button>
-</ng-template>
-
-<ng-template #authedUser>
-
 </ng-template>
 
 

@@ -3,5 +3,5 @@ export interface User {
     email: string;
     photoURL?: string;
     displayName?: string;
-    // reviewScore?: number;
+    reviewScore?: number;
 }
