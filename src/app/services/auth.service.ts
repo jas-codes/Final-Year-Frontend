@@ -22,7 +22,6 @@ export class AuthService {
     private afirestore: AngularFirestore,
     private router: Router
   ) {
-    
     this.user$ = this.afireAuth.authState.pipe(
       switchMap(user => {
         console.log('in switchMap')
@@ -35,12 +34,11 @@ export class AuthService {
           return of(null);
         }
       })
-    )
+    );
   }
 
   private updateUserInfo(user) {
     const userRef: AngularFirestoreDocument<User> = this.afirestore.doc(`users/${user.uid}`);
-    debugger;
     const data = {
       uid: user.uid,
       email : user.email,
@@ -52,25 +50,50 @@ export class AuthService {
   }
 
   async googleSignin() {
+    var self = this;
+
     const provider = new auth.GoogleAuthProvider();
-    const credential = await this.afireAuth.auth.signInWithPopup(provider);
-    return this.updateUserInfo(credential.user);
+    await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
+      //successful login
+      self.updateUserInfo(result.user);
+    }).catch(error => this.errorCatch(error));
   }
 
   async facebookSignin() {
+    var self = this;
+
     const provider = new auth.FacebookAuthProvider();
-    const credential = await this.afireAuth.auth.signInWithPopup(provider);
-    return this.updateUserInfo(credential.user);
+    await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
+      //successful login
+      self.updateUserInfo(result.user);
+    }).catch(error => this.errorCatch(error));;
+
   }
 
   async githubSignin() {
+    var self = this;
+
     const provider = new auth.GithubAuthProvider();
-    const credential = await this.afireAuth.auth.signInWithPopup(provider);
-    return this.updateUserInfo(credential.user);
+    await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
+      //successful login
+      self.updateUserInfo(result.user);
+    }).catch(error => this.errorCatch(error));
   }
 
   async signOut() {
     await this.afireAuth.auth.signOut();
     this.router.navigate(['/'])
+  }
+
+  errorCatch(error) {
+      //metadata
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;
+
+      //type of auth
+      var credential = error.credential;
+
+      console.error('auth error - logged with analytics');
   }
 }
