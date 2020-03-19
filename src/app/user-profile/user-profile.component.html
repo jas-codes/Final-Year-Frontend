@@ -7,7 +7,9 @@
         <mat-card-title>TradeWork.NET</mat-card-title>
         <mat-card-subtitle>Welcome! Please login or create an account</mat-card-subtitle>
     </mat-card-header>
+    
     <mat-card-content>
+        <mat-divider></mat-divider>
         <div *ngIf="auth.user$ | async as authed; else guest">
             <h1>authed</h1>
             {{authed.user$}}
@@ -34,9 +36,8 @@
             <input matInput type="password" placeholder="password" [(ngModel)]="password">
         </mat-form-field>
     </div>
-    <!-- <button (click)="auth.createAccount(email, password)" mat-raised-button>Create Account</button> -->
     <div class="login-buttons-div">
-        <button (click)="auth.emailAndPasswordSignin(email, password)" mat-raised-button>Login
+        <button color="primary" (click)="auth.emailAndPasswordSignin(email, password)" mat-raised-button>Login
         </button>
 
         <mat-divider>
@@ -57,5 +58,9 @@
         <button (click)="auth.microsoftSignin()" mat-raised-button>
             <i class="fa fa-windows"></i> Connect Microsoft
         </button>
+
+        <mat-divider>
+        </mat-divider>
+            <button color="warn" (click)="auth.createAccount(email, password)" mat-raised-button>Create Account</button>
     </div>
 </ng-template>
