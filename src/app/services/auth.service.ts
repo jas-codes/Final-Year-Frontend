@@ -53,7 +53,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
+      self.ngZone.run(() =>  self.router.navigate(['home']));
     }).catch(error => this.errorCatch(error));
   }
 
@@ -64,7 +64,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
+      self.ngZone.run(() =>  self.router.navigate(['home']));
     }).catch(error => this.errorCatch(error));;
 
   }
@@ -76,7 +76,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
+      self.ngZone.run(() =>  self.router.navigate(['home']));
     }).catch(error => this.errorCatch(error));
   }
 
@@ -87,7 +87,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
+      self.ngZone.run(() =>  self.router.navigate(['home']));
     }).catch(error => this.errorCatch(error));    
   }
 
@@ -96,7 +96,7 @@ export class AuthService {
     this.afireAuth.auth.signInWithEmailAndPassword(email, password).then(function(result) {
       //successful Login
       self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
+      self.ngZone.run(() =>  self.router.navigate(['home']));
     }).catch(error => this.errorCatch(error));        
   }
 
@@ -132,6 +132,6 @@ export class AuthService {
       if(error.credential)
         credential = error.credential;
 
-      console.error('auth error - logged with analytics');
+      console.error('auth error - logged with analytics', error);
   }
 }
