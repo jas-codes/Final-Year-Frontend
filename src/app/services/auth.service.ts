@@ -53,7 +53,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate(['/home']));
+      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
     }).catch(error => this.errorCatch(error));
   }
 
@@ -64,6 +64,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
+      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
     }).catch(error => this.errorCatch(error));;
 
   }
@@ -75,6 +76,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
+      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
     }).catch(error => this.errorCatch(error));
   }
 
@@ -85,6 +87,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
+      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
     }).catch(error => this.errorCatch(error));    
   }
 
@@ -93,6 +96,7 @@ export class AuthService {
     this.afireAuth.auth.signInWithEmailAndPassword(email, password).then(function(result) {
       //successful Login
       self.updateUserInfo(result.user);
+      self.ngZone.run(() =>  self.router.navigate([{outlets: {'primary':'home'}}]));
     }).catch(error => this.errorCatch(error));        
   }
 
@@ -101,6 +105,7 @@ export class AuthService {
     this.afireAuth.auth.createUserWithEmailAndPassword(email, password).then(function(result) {
       //successful account creation
       self.updateUserInfo(result.user); 
+      self.ngZone.run(() =>  self.router.navigate(['home']));
     }).catch(error => this.errorCatch(error));
   }
 
