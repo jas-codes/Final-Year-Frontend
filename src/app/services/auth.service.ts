@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { User } from './user.model';
 import { Router } from '@angular/router';
 
@@ -18,7 +18,8 @@ export class AuthService {
   constructor(
     private afireAuth: AngularFireAuth,
     private afirestore: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) {
     this.user$ = this.afireAuth.authState.pipe(
       switchMap(user => {
@@ -52,7 +53,7 @@ export class AuthService {
     await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
       //successful login
       self.updateUserInfo(result.user);
-      self.router.navigate(['/home']);
+      self.ngZone.run(() =>  self.router.navigate(['/home']));
     }).catch(error => this.errorCatch(error));
   }
 
