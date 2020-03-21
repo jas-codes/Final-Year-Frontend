@@ -15,21 +15,27 @@ import { ChatsComponent } from './chats/chats.component';
 import { NewJobComponent } from './map/map-components/new-job-component/new-job/new-job.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { JobListComponent } from './my-jobs/components/job-list/job-list.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import {  AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker'; 
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDU0JQdGmW2MY0G1DHPNO4a7fHm6IuMh-Y",
@@ -52,7 +58,10 @@ const ANGULAR_MATERIAL_MODULES = [
   FormsModule,
   MatIconModule,
   MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatButtonToggleModule,
+  MatDatepickerModule,
+  MatNativeDateModule 
 ]
 @NgModule({
   declarations: [
@@ -66,6 +75,7 @@ const ANGULAR_MATERIAL_MODULES = [
     JobListComponent,
     UserProfileComponent,
     NavBarComponent,
+    CreateAccountComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,10 +89,13 @@ const ANGULAR_MATERIAL_MODULES = [
     ANGULAR_MATERIAL_MODULES,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    MatDatepickerModule
+  ],
   bootstrap: [AppComponent],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

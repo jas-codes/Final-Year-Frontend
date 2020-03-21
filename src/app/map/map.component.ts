@@ -11,13 +11,12 @@ export class MapComponent implements OnInit, AfterViewInit  {
   centre: google.maps.LatLngLiteral;
   postJob: boolean = false;
   options = { enableHighAccuracy: true, maximumAge:Infinity, timeout: 5000};
-  
+
   constructor() { }
 
   ngOnInit(): void {
     var self = this;
     navigator.geolocation.getCurrentPosition( function(position) {
-      console.log(position);
       self.centre = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
