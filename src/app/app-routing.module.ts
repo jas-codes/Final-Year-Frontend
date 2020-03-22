@@ -7,10 +7,13 @@ import { JobHistoryComponent } from './job-history/job-history.component';
 import { MyPageComponent } from './my-page/my-page.component';
 import { ChatsComponent } from './chats/chats.component';
 import { MapComponent } from './map/map.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
 
 
 const routes: Routes = [
-  { path: '', component: UserProfileComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: UserProfileComponent},
+  { path: 'create-account', component: CreateAccountComponent },
   { path: 'home', component: NavBarComponent,
     children: [
       { path: 'map', component: MapComponent, outlet: 'nav-links' },

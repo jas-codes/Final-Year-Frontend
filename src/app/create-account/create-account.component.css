@@ -1,5 +1,7 @@
 svg {
-    margin-top: 0.7rem;
+    width: 2rem;
+    margin-top: 0.5rem;
+    color: var(--bg-primary);
 }
 
 mat-form-field {
@@ -13,6 +15,20 @@ button {
     margin-left: 0.6rem;
 }
 
+.title {
+    display: ruby;
+}
+
+.title button {
+    left: 2.5rem;
+}
+
+.submit {
+    display: block;
+    width: 100%;
+    margin-top: 0.7rem;
+    margin-left: 0.8rem;
+}
 mat-button-toggle-group {
     margin-left: 0.7rem;
 }
@@ -26,13 +42,34 @@ p {
     margin: 0;
 }
 
-mat-divider {
-    margin-bottom: 1rem;
+.mat-card mat-divider {
     margin-left: 1rem;
-    width: 16rem;
+    width: 18rem;
 }
 
-h5, h3 {
+.mat-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18.5rem;
+}
+
+form mat-divider {
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    width: 18rem;
+}
+
+.headings {
     margin-left: 0.7rem;
     margin-bottom: 0.6rem;
+}
+
+h3 {
+    width: 8rem;
+}
+
+.error {
+    color: red;
 }

@@ -1,98 +1,114 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <mat-divider></mat-divider>
-    <h3>Enter Details</h3>
-    <div class="names">
-        <mat-form-field>
-            <input #firstName matInput placeholder="First Name" formControlName="firstName" required>
-        </mat-form-field>
-        <mat-form-field>
-            <input #LastName matInput placeholder="Last Name" formControlName="lastName" required>
-        </mat-form-field>
-    </div>
-    <div>
-        <mat-form-field>
-            <input #nickName matInput placeholder="Nickname" formControlName="nickname" required>
-        </mat-form-field>
-        <mat-form-field class="date-picker">
-            <input matInput [max]="maxDate" [matDatepicker]="picker" placeholder="Date of Birth" formControlName="dob"
-                required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-    </div>
-    <div>
-        <mat-form-field>
-            <input #phoneNumber type="tel" matInput placeholder="07740 301298" formControlName="phoneNumber" required>
-        </mat-form-field>
-
-        <mat-form-field>
-            <input #emailAddress matInput type="email" placeholder="Enter email" formControlName="emailAddress"
-                required>
-        </mat-form-field>
-    </div>
-    <div>
-        <mat-form-field>
-            <input #postcode matInput placeholder="postcode" formControlName="postcode" required>
-        </mat-form-field>
-        <button mat-button (click)="addPicture">Add Profile Picture</button>
-    </div>
-    <mat-divider>
-    </mat-divider>
-    <div>
-        <h5>What Kind of User Are You?</h5>
-        <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="accountType" >
-            <mat-button-toggle value="Trader" aria-label="trader">
-                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-hard-hat" role="img"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
-                    class="svg-inline--fa fa-user-hard-hat fa-w-14 fa-fw fa-lg">
-                    <path fill="currentColor"
-                        d="M88 176h272a8 8 0 0 0 8-8v-32a8 8 0 0 0-8-8h-8a112 112 0 0 0-68.4-103.2L256 80V16a16 16 0 0 0-16-16h-32a16 16 0 0 0-16 16v64l-27.6-55.2A112 112 0 0 0 96 128h-8a8 8 0 0 0-8 8v32a8 8 0 0 0 8 8zm225.6 176h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.4 134.4 0 0 0 0 486.4 25.6 25.6 0 0 0 25.6 512h396.8a25.6 25.6 0 0 0 25.6-25.6A134.4 134.4 0 0 0 313.6 352zM224 320c65.22 0 118.44-48.94 126.39-112H97.61c7.95 63.06 61.17 112 126.39 112z"
-                        class="">
-                    </path>
-                </svg>
-            </mat-button-toggle>
-            <mat-button-toggle value="User" aria-label="user">
-                <svg 
-                    aria-hidden="true" 
-                    focusable="false" 
-                    data-prefix="fas" 
-                    data-icon="user" 
-                    role="img" 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    viewBox="0 0 448 512" 
-                    class="svg-inline--fa fa-user fa-w-14 fa-fw fa-lg">
-                    <path 
-                        fill="currentColor" 
-                        d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z" 
-                        class="">
-                    </path>
-                </svg>
-            </mat-button-toggle>
-        </mat-button-toggle-group>
-        <span>I am a...<br/> 
-            <p *ngIf="group.value; else unknown">
-                {{group.value}}
-            </p>
-            </span>
-    </div>
-    <mat-form-field>
-        <mat-label>Trade Required</mat-label>
-        <mat-select formControlName="tradeType">
-            <mat-option *ngFor="let trade of trades" [value]="trade">
-                {{trade}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-        <input #companyName matInput placeholder="companyName" formControlName="companyName" required>
-    </mat-form-field>
-
-    <p>
-        Form Status: {{form.status}}
-    </p>
-    <button mat-raised-button type="submit" [disabled]="form.valid">Submit</button>
-    <button (click)="onSubmit()">check form</button>
-</form>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Create Account</mat-card-title>
+        <mat-card-subtitle>Enter Details</mat-card-subtitle>
+        <div class="title">
+            <button mat-button color="primary" (click)="cancel()">cancel</button>
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="names">
+                <mat-form-field>
+                    <input #firstName matInput placeholder="First Name" formControlName="firstName" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <input #LastName matInput placeholder="Last Name" formControlName="lastName" required>
+                </mat-form-field>
+            </div>
+            <div class="names">
+                <mat-form-field>
+                    <input #password matInput placeholder="Password" (keyup)="comparePasswords()" formControlName="password" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <input #repassword matInput placeholder="Repeat Password" (keyup)="comparePasswords()" formControlName="rePassword" required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input #nickName matInput placeholder="Nickname" formControlName="nickname" required>
+                </mat-form-field>
+                <mat-form-field class="date-picker">
+                    <input matInput [max]="maxDate" [matDatepicker]="picker" placeholder="Date of Birth" formControlName="dob"
+                        required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input #phoneNumber type="tel" matInput placeholder="Phone number" formControlName="phoneNumber" required>
+                </mat-form-field>       
+                <mat-form-field>
+                    <input #emailAddress matInput type="email" placeholder="Enter email" formControlName="emailAddress"
+                        required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input #postcode matInput placeholder="postcode" formControlName="postcode" required>
+                </mat-form-field>
+                <button mat-button (click)="addPicture">Add Profile Picture</button>
+            </div>
+            <mat-divider>
+            </mat-divider>
+            <div>
+                <h5 class="headings">What Kind of User Are You?</h5>
+                <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="accountType">
+                    <mat-button-toggle value="Trader" aria-label="trader" (change)="traderSelected($event.value)">
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-hard-hat" role="img"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                            class="svg-inline--fa fa-user-hard-hat fa-w-14 fa-fw fa-lg">
+                            <path fill="currentColor"
+                                d="M88 176h272a8 8 0 0 0 8-8v-32a8 8 0 0 0-8-8h-8a112 112 0 0 0-68.4-103.2L256 80V16a16 16 0 0 0-16-16h-32a16 16 0 0 0-16 16v64l-27.6-55.2A112 112 0 0 0 96 128h-8a8 8 0 0 0-8 8v32a8 8 0 0 0 8 8zm225.6 176h-16.7a174.08 174.08 0 0 1-145.8 0h-16.7A134.4 134.4 0 0 0 0 486.4 25.6 25.6 0 0 0 25.6 512h396.8a25.6 25.6 0 0 0 25.6-25.6A134.4 134.4 0 0 0 313.6 352zM224 320c65.22 0 118.44-48.94 126.39-112H97.61c7.95 63.06 61.17 112 126.39 112z"
+                                class="">
+                            </path>
+                        </svg>
+                    </mat-button-toggle>
+                    <mat-button-toggle value="User" aria-label="user" (change)="traderSelected($event.value)">
+                        <svg 
+                            aria-hidden="true" 
+                            focusable="false" 
+                            data-prefix="fas" 
+                            data-icon="user" 
+                            role="img" 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 448 512" 
+                            class="svg-inline--fa fa-user fa-w-14 fa-fw fa-lg">
+                            <path 
+                                fill="currentColor" 
+                                d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z" 
+                                class="">
+                            </path>
+                        </svg>
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+                <span>I am a...<br/> 
+                    <p *ngIf="group.value; else unknown">
+                        {{group.value}}
+                    </p>
+                    </span>
+            </div>
+            <ng-container *ngIf="trader">
+                <mat-form-field>
+                    <mat-label>Trade Required</mat-label>
+                    <mat-select formControlName="tradeType" [required]="trader">
+                        <mat-option *ngFor="let trade of trades" [value]="trade">
+                            {{trade}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <input #companyName matInput placeholder="companyName" formControlName="companyName" [required]="trader">
+                </mat-form-field>
+            </ng-container>
+        </form>
+        <h5 *ngIf="!passwordMatch" class="error">*Passwords do not match</h5> 
+    </mat-card-content>
+    <mat-card-actions>
+        <button color="primary" class="submit" mat-raised-button type="submit" [disabled]="!form.valid || !passwordMatch">Submit</button>
+    </mat-card-actions>
+</mat-card>
 
 <ng-template #unknown>
     <p>
