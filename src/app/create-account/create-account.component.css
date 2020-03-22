@@ -1,0 +1,38 @@
+svg {
+    margin-top: 0.7rem;
+}
+
+mat-form-field {
+    margin-left: 0.7rem;
+    width: 8rem;
+}
+
+button {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin-left: 0.6rem;
+}
+
+mat-button-toggle-group {
+    margin-left: 0.7rem;
+}
+
+span {
+    margin-left: 2.2rem;
+    display: inline-block;
+}
+
+p {
+    margin: 0;
+}
+
+mat-divider {
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    width: 16rem;
+}
+
+h5, h3 {
+    margin-left: 0.7rem;
+    margin-bottom: 0.6rem;
+}
