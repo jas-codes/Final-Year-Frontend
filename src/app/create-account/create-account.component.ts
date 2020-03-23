@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserTypes } from '../enums/user-types';
 import { Router } from '@angular/router';
 import { FileUploadService } from '../services/file-upload.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-create-account',
@@ -17,6 +18,7 @@ export class CreateAccountComponent implements OnInit {
   maxDate = new Date();
   trader: boolean = false;
   passwordMatch: boolean = true;
+  photoURL: string;
 
   form = new FormGroup({
     firstName: new FormControl('', Validators.required),
@@ -36,7 +38,8 @@ export class CreateAccountComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -80,10 +83,18 @@ export class CreateAccountComponent implements OnInit {
   }
 
   onSubmit() {
+    var self = this;
     console.log(this.form.value);
     console.log(this.file);
-    debugger;
-    this.fileUploadService.uploadFile(this.file);
+    this.fileUploadService.uploadFile(this.file, function(result){
+      if(result === 'error')
+        console.log('there was an error with the upload');
+      else {
+        self.photoURL = result;
+        self.authService.createAccount('','');
+      }
+
+    });
   }
 
   cancel() {

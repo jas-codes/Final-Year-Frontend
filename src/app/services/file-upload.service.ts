@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import * as firebase from 'firebase';
@@ -29,12 +29,13 @@ export class FileUploadService {
     var newImageRef = this.storageRef.child(`images/${this.fileName}`);
   }
 
-  uploadFile(file:File) {
+  async uploadFile(file:File, result) {
     this.createFileName(file[0].name);
     this.createReference();
     var uploadTask = this.storageRef.child(`images/${this.fileName}`).put(file[0]);
 
-    uploadTask.on('state_changed', function(snapshot){
+    return uploadTask.on(
+      'state_changed', function(snapshot){
       // Observe state change events
       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       console.log('Upload is ' + progress + '% done');
@@ -46,13 +47,16 @@ export class FileUploadService {
           console.log('Upload is running');
           break;
       }
-    }, function(error) {
+    },
+    function(error) {
       console.log(error);
+      result('error');
     }, function() {
       // Handle successful uploads on complete
       // For instance, get the download URL: https://firebasestorage.googleapis.com/...
       uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
         console.log('File available at', downloadURL);
+        result(downloadURL);
       });
     });
     
