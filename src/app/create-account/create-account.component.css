@@ -73,3 +73,7 @@ h3 {
 .error {
     color: red;
 }
+
+.upload {
+    display: inline-block;
+}

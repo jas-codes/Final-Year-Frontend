@@ -7,7 +7,7 @@
         </div>
     </mat-card-header>
     <mat-card-content>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form [formGroup]="form">
             <div class="names">
                 <mat-form-field>
                     <input #firstName matInput placeholder="First Name" formControlName="firstName" required>
@@ -48,7 +48,10 @@
                 <mat-form-field>
                     <input #postcode matInput placeholder="postcode" formControlName="postcode" required>
                 </mat-form-field>
-                <button mat-button (click)="addPicture">Add Profile Picture</button>
+                <div class="upload">
+                    <button type="button" mat-button (click)="onClick()">Profile Picture <mat-icon>file_upload</mat-icon></button>
+                    <input type="file" #fileUpload id="fileUpload" name="fileUpload" accept=".png, .jpg" style="display:none;" />
+                </div>
             </div>
             <mat-divider>
             </mat-divider>
@@ -106,7 +109,7 @@
         <h5 *ngIf="!passwordMatch" class="error">*Passwords do not match</h5> 
     </mat-card-content>
     <mat-card-actions>
-        <button color="primary" class="submit" mat-raised-button type="submit" [disabled]="!form.valid || !passwordMatch">Submit</button>
+        <button color="primary" (click)="onSubmit()" class="submit" mat-raised-button type="submit" [disabled]="!form.valid || !passwordMatch">Submit</button>
     </mat-card-actions>
 </mat-card>
 
