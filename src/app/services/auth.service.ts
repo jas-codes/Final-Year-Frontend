@@ -8,6 +8,8 @@ import { switchMap } from 'rxjs/operators';
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore,  AngularFirestoreDocument } from '@angular/fire/firestore';
+import { FormGroup } from '@angular/forms';
+import { UserTypes } from '../enums/user-types';
 
 @Injectable({
   providedIn: 'root'
@@ -34,14 +36,37 @@ export class AuthService {
     );
   }
 
-  private updateUserInfo(user) {
+  private updateUserInfo(user, form?: FormGroup, photoURL?: string) {
     const userRef: AngularFirestoreDocument<User> = this.afirestore.doc(`users/${user.uid}`);
     const data = {
       uid: user.uid,
       email : user.email,
       displayName: user.displayName,
-      photoURL: user.photoURL
+      photoURL: user.photoURL,
+      phoneNumber: user.phoneNumber,
+      firstName: '',
+      lastName: '',
+      dob: new Date(null),
+      postcode: '',
+      accountType: '',
+      companyName: '',
+      tradeType: '',
     };
+
+    if(form) {
+      data.firstName = form.get('firstName').value;
+      data.lastName = form.get('lastName').value;
+      data.phoneNumber = form.get('phoneNumber').value;
+      data.photoURL = photoURL;
+      data.displayName = form.get('nickname').value;
+      data.dob = form.get('dob').value;
+      data.postcode = form.get('postcode').value;
+      data.accountType = form.get('accountType').value;
+      if(data.accountType = UserTypes.trader){
+        data.companyName = form.get('companyName').value;
+        data.tradeType = form.get('tradeType').value;
+      }
+    }
 
     return userRef.set(data, {merge: true})
   }
@@ -100,11 +125,12 @@ export class AuthService {
     }).catch(error => this.errorCatch(error));        
   }
 
-  async createAccount(email, password) {
+  async createAccount(email, password, photoURL, form: FormGroup) {
+    console.log('creating account...')
     var self = this;
     this.afireAuth.auth.createUserWithEmailAndPassword(email, password).then(function(result) {
       //successful account creation
-      self.updateUserInfo(result.user); 
+      self.updateUserInfo(result.user, form, photoURL); 
       self.ngZone.run(() =>  self.router.navigate(['home']));
     }).catch(error => this.errorCatch(error));
   }

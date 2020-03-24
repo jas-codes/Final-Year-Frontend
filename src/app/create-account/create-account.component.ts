@@ -27,13 +27,13 @@ export class CreateAccountComponent implements OnInit {
     postcode: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]),
     phoneNumber: new FormControl('', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]),
     companyName: new FormControl(''),
-    password: new FormControl('', Validators.required),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     rePassword: new FormControl('', Validators.required),
     tradeType: new FormControl(''),
     accountType: new FormControl('', Validators.required),
     dob: new FormControl('', Validators.required),
     emailAddress: new FormControl('', [Validators.required, Validators.email]),
-  })
+  });
 
 
   constructor(
@@ -47,7 +47,7 @@ export class CreateAccountComponent implements OnInit {
   }
 
   calcMaxDate(): number {
-    return (this.maxDate.getDate() - (365 * 18))
+    return (this.maxDate.getDate() - (365 * 18));
   }
 
   comparePasswords() {
@@ -85,15 +85,13 @@ export class CreateAccountComponent implements OnInit {
   onSubmit() {
     var self = this;
     console.log(this.form.value);
-    console.log(this.file);
     this.fileUploadService.uploadFile(this.file, function(result){
       if(result === 'error')
         console.log('there was an error with the upload');
       else {
         self.photoURL = result;
-        self.authService.createAccount('','');
+        self.authService.createAccount(self.form.get('emailAddress').value, self.form.get('password').value, self.photoURL, self.form );
       }
-
     });
   }
 
