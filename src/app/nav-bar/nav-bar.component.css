@@ -4,23 +4,23 @@
         bottom: 0;
         width: 100vw;
         height: 5rem;
-        }
+    }
 
-        .navbar-logo {
+    .navbar-logo {
         display: none;
-        }
+    }
 
-        .navbar-nav {
+    .navbar-nav {
         flex-direction: row;
-        }
+    }
 
-        .navbar-link {
+    .navbar-link {
         justify-content: center;
-        }
+    }
 
-        main {
+    main {
         margin: 0 !important;
-        }
+    }
 }
 
 /*only render the expanding nav bar for larger devices*/

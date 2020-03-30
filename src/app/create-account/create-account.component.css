@@ -19,8 +19,14 @@ button {
     display: ruby;
 }
 
-.title button {
+.createAccount button {
     left: 2.5rem;
+    position: relative;
+}
+
+.details button {
+    left: 0.5rem;
+    position: relative;
 }
 
 .submit {

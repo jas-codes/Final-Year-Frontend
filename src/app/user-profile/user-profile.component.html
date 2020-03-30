@@ -9,13 +9,13 @@
     
     <mat-card-content>
         <mat-divider></mat-divider>
-        <div *ngIf="auth.user$ | async as user; else guest">
+        <div *ngIf="authService.user$ | async as user; else guest">
             <h1>You're already Logged in!</h1>
             <h3>Hi, {{user.displayName}}</h3>
             <img [src]="user.photoURL">
             <p>UID: {{user.uid}}</p>
             <p>Review Score: {{user.reviewScore}}</p>
-            <button (click)="auth.signOut()" class="login-Buttons" mat-raised-button>Logout</button>
+            <button (click)="authService.signOut()" class="login-Buttons" mat-raised-button>Logout</button>
         </div>
     </mat-card-content>
 </mat-card>
@@ -33,25 +33,25 @@
         </mat-form-field>
     </div>
     <div class="login-buttons-div">
-        <button color="primary" (click)="auth.emailAndPasswordSignin(email, password)" mat-raised-button>Login
+        <button color="primary" (click)="authService.emailAndPasswordSignin(email, password)" mat-raised-button>Login
         </button>
 
         <mat-divider>
         </mat-divider>
     
-        <button (click)="auth.googleSignin()" mat-raised-button>
+        <button (click)="authService.googleSignin()" mat-raised-button>
             <i class="fa fa-google"></i> Login With Google
         </button>
 
-        <button (click)="auth.facebookSignin()" mat-raised-button>
+        <button (click)="authService.facebookSignin()" mat-raised-button>
             <i class="fa fa-facebook-square"></i> Login With Facebook
         </button>
 
-        <button (click)="auth.githubSignin()" mat-raised-button>
+        <button (click)="authService.githubSignin()" mat-raised-button>
             <i class="fa fa-github" aria-hidden="true"></i> Login With Github
         </button>
 
-        <button (click)="auth.microsoftSignin()" mat-raised-button>
+        <button (click)="authService.microsoftSignin()" mat-raised-button>
             <i class="fa fa-windows"></i> Connect Microsoft
         </button>
 

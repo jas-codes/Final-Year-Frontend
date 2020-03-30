@@ -16,6 +16,7 @@ import { UserTypes } from '../enums/user-types';
 })
 export class AuthService {
   user$: Observable<User>;
+  user: User;
 
   constructor(
     private afireAuth: AngularFireAuth,
@@ -36,8 +37,14 @@ export class AuthService {
     );
   }
 
+  getSignedInUser(){
+    return auth().currentUser;
+  }
+  
+
   private updateUserInfo(user, form?: FormGroup, photoURL?: string) {
     const userRef: AngularFirestoreDocument<User> = this.afirestore.doc(`users/${user.uid}`);
+
     const data = {
       uid: user.uid,
       email : user.email,
@@ -57,8 +64,6 @@ export class AuthService {
       data.firstName = form.get('firstName').value;
       data.lastName = form.get('lastName').value;
       data.phoneNumber = form.get('phoneNumber').value;
-      data.photoURL = photoURL;
-      data.displayName = form.get('nickname').value;
       data.dob = form.get('dob').value;
       data.postcode = form.get('postcode').value;
       data.accountType = form.get('accountType').value;
@@ -66,78 +71,69 @@ export class AuthService {
         data.companyName = form.get('companyName').value;
         data.tradeType = form.get('tradeType').value;
       }
+      if(photoURL) {
+        data.photoURL = photoURL;
+      }
+      if(form.get('nickname').value !== '') {
+        data.displayName = form.get('nickname').value;
+      }
     }
 
     return userRef.set(data, {merge: true})
   }
 
-  async googleSignin() {
-    var self = this;
-
-    const provider = new auth.GoogleAuthProvider();
-    await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
+  uploadSignInDetails(form: FormGroup) {
       //successful login
-      self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate(['home']));
-    }).catch(error => this.errorCatch(error));
+      var user = auth().currentUser;
+      console.log(user)
+      if(user) {
+        this.updateUserInfo(user, form).then(() => {
+          this.ngZone.run(() =>  this.router.navigate(['home']));
+        });
+      }
+  }
+
+  async googleSignin() {
+    const provider = new auth.GoogleAuthProvider();
+    await this.afireAuth.auth.signInWithRedirect(provider);
   }
 
   async facebookSignin() {
-    var self = this;
-
     const provider = new auth.FacebookAuthProvider();
-    await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
-      //successful login
-      self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate(['home']));
-    }).catch(error => this.errorCatch(error));;
-
+    await this.afireAuth.auth.signInWithRedirect(provider);
   }
 
   async githubSignin() {
-    var self = this;
-
     const provider = new auth.GithubAuthProvider();
-    await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
-      //successful login
-      self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate(['home']));
-    }).catch(error => this.errorCatch(error));
+    await this.afireAuth.auth.signInWithRedirect(provider);
   }
 
   async microsoftSignin() {
-    var self = this;
-
     const provider = new auth.OAuthProvider('microsoft.com');
-    await this.afireAuth.auth.signInWithPopup(provider).then(function(result) {
-      //successful login
-      self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate(['home']));
-    }).catch(error => this.errorCatch(error));    
+    await this.afireAuth.auth.signInWithRedirect(provider);
   }
 
   async emailAndPasswordSignin(email, password) {
     var self = this;
-    this.afireAuth.auth.signInWithEmailAndPassword(email, password).then(function(result) {
-      //successful Login
-      self.updateUserInfo(result.user);
-      self.ngZone.run(() =>  self.router.navigate(['home']));
-    }).catch(error => this.errorCatch(error));        
+    this.afireAuth.auth.signInWithEmailAndPassword(email, password)
+      .catch(error => this.errorCatch(error));        
   }
 
-  async createAccount(email, password, photoURL, form: FormGroup) {
-    console.log('creating account...')
+  async createAccount(email, password, form: FormGroup, photoURL?) {
     var self = this;
     this.afireAuth.auth.createUserWithEmailAndPassword(email, password).then(function(result) {
       //successful account creation
-      self.updateUserInfo(result.user, form, photoURL); 
+      if(photoURL)
+        self.updateUserInfo(result.user, form, photoURL); 
+      else
+        self.updateUserInfo(result.user, form);
       self.ngZone.run(() =>  self.router.navigate(['home']));
     }).catch(error => this.errorCatch(error));
   }
 
   async signOut() {
-    await this.afireAuth.auth.signOut().then(function() {
-      this.router.navigate(['/']);
+    await auth().signOut().then(function() {
+      window.location.href = '/';
     }).catch(error => this.errorCatch(error));
   }
 

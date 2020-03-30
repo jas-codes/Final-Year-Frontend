@@ -1,11 +1,5 @@
 <mat-card>
-    <mat-card-header>
-        <mat-card-title>Create Account</mat-card-title>
-        <mat-card-subtitle>Enter Details</mat-card-subtitle>
-        <div class="title">
-            <button mat-button color="primary" (click)="cancel()">cancel</button>
-        </div>
-    </mat-card-header>
+    <ng-container *ngIf="!signedInAlready; then createAccountForm; else detailsForm"></ng-container>
     <mat-card-content>
         <form [formGroup]="form">
             <div class="names">
@@ -16,7 +10,7 @@
                     <input #LastName matInput placeholder="Last Name" formControlName="lastName" required>
                 </mat-form-field>
             </div>
-            <div class="names">
+            <div class="names" *ngIf="!signedInAlready;">
                 <mat-form-field>
                     <input #password matInput placeholder="Password" (keyup)="comparePasswords()" formControlName="password" required>
                 </mat-form-field>
@@ -24,10 +18,19 @@
                     <input #repassword matInput placeholder="Repeat Password" (keyup)="comparePasswords()" formControlName="rePassword" required>
                 </mat-form-field>
             </div>
-            <div>
+            <div *ngIf="!signedInAlready;">
+                <mat-form-field>
+                    <input #emailAddress matInput type="email" placeholder="Enter email" formControlName="emailAddress"
+                        required>
+                </mat-form-field>
                 <mat-form-field>
                     <input #nickName matInput placeholder="Nickname" formControlName="nickname" required>
                 </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input #phoneNumber type="tel" matInput placeholder="Phone number" formControlName="phoneNumber" required>
+                </mat-form-field>       
                 <mat-form-field class="date-picker">
                     <input matInput [max]="maxDate" [matDatepicker]="picker" placeholder="Date of Birth" formControlName="dob"
                         required>
@@ -37,18 +40,9 @@
             </div>
             <div>
                 <mat-form-field>
-                    <input #phoneNumber type="tel" matInput placeholder="Phone number" formControlName="phoneNumber" required>
-                </mat-form-field>       
-                <mat-form-field>
-                    <input #emailAddress matInput type="email" placeholder="Enter email" formControlName="emailAddress"
-                        required>
-                </mat-form-field>
-            </div>
-            <div>
-                <mat-form-field>
                     <input #postcode matInput placeholder="postcode" formControlName="postcode" required>
                 </mat-form-field>
-                <div class="upload">
+                <div class="upload" *ngIf="!signedInAlready;">
                     <button type="button" mat-button (click)="onClick()">Profile Picture <mat-icon>file_upload</mat-icon></button>
                     <input type="file" #fileUpload id="fileUpload" name="fileUpload" accept=".png, .jpg" style="display:none;" />
                 </div>
@@ -117,4 +111,24 @@
     <p>
         Unselected
     </p>
+</ng-template>
+
+<ng-template #createAccountForm>
+    <mat-card-header>
+        <mat-card-title>Create Account</mat-card-title>
+        <mat-card-subtitle>Enter Details</mat-card-subtitle>
+        <div class="title createAccount">
+            <button mat-button color="primary" (click)="cancel()">cancel</button>
+        </div>
+    </mat-card-header>
+</ng-template>
+
+<ng-template #detailsForm>
+    <mat-card-header>
+        <mat-card-title>First Sign-In Details</mat-card-title>
+        <mat-card-subtitle>Please provide some extra information</mat-card-subtitle>
+        <div class="title details">
+            <button mat-button color="primary" (click)="cancelDetails()">cancel</button>
+        </div>
+    </mat-card-header>
 </ng-template>

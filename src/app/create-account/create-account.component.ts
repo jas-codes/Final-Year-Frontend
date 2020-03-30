@@ -2,9 +2,11 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { TradeType } from '../enums/trade-types';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserTypes } from '../enums/user-types';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FileUploadService } from '../services/file-upload.service';
 import { AuthService } from '../services/auth.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-account',
@@ -19,12 +21,14 @@ export class CreateAccountComponent implements OnInit {
   trader: boolean = false;
   passwordMatch: boolean = true;
   photoURL: string;
+  signInDetails: Observable<string>;
+  signedInAlready: boolean;
 
   form = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     nickname: new FormControl('', Validators.required),
-    postcode: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]),
+    postcode: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(8)]),
     phoneNumber: new FormControl('', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]),
     companyName: new FormControl(''),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -39,11 +43,25 @@ export class CreateAccountComponent implements OnInit {
   constructor(
     private router: Router,
     private fileUploadService: FileUploadService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
     this.maxDate.setDate(this.calcMaxDate());
+    this.signInDetails = this.route
+    .queryParamMap
+    .pipe(map(params => params.get('signedIn')||'false'));
+
+    this.signInDetails.subscribe((res) => {
+      if(res === 'true') {
+        this.removeValidators('password');
+        this.removeValidators('rePassword');
+        this.removeValidators('nickname');
+        this.removeValidators('emailAddress');
+        this.signedInAlready = true;
+      }
+    });
   }
 
   calcMaxDate(): number {
@@ -53,10 +71,6 @@ export class CreateAccountComponent implements OnInit {
   comparePasswords() {
     if (this.form.get('password').value !== '' || this.form.get('rePassword').value !== '')
       this.passwordMatch = (this.form.get('password').value === this.form.get('rePassword').value);
-  }
-
-  addPicture() {
-
   }
 
   traderSelected(value) {
@@ -84,19 +98,31 @@ export class CreateAccountComponent implements OnInit {
 
   onSubmit() {
     var self = this;
-    console.log(this.form.value);
-    this.fileUploadService.uploadFile(this.file, function(result){
-      if(result === 'error')
-        console.log('there was an error with the upload');
-      else {
-        self.photoURL = result;
-        self.authService.createAccount(self.form.get('emailAddress').value, self.form.get('password').value, self.photoURL, self.form );
+    if(!this.signedInAlready){
+      if(this.file) {
+        this.fileUploadService.uploadFile(this.file, function(result){
+          if(result === 'error')
+            console.log('there was an error with the upload');
+          else {
+            self.photoURL = result;
+            self.authService.createAccount(self.form.get('emailAddress').value, self.form.get('password').value, self.form, self.photoURL);
+          }
+        });
+      } else {
+        self.authService.createAccount(self.form.get('emailAddress').value, self.form.get('password').value, self.form);
       }
-    });
+    } else {
+      console.log('here')
+      this.authService.uploadSignInDetails(this.form);
+    }
   }
 
   cancel() {
     this.router.navigate(['login']);
+  }
+
+  cancelDetails() {
+    this.authService.signOut();
   }
 
   onClick() {
@@ -104,9 +130,6 @@ export class CreateAccountComponent implements OnInit {
     fileUpload.onchange = () => {
         this.file = fileUpload.files;
       };
-    console.log('here');
     fileUpload.click();
   }
-
-
 }

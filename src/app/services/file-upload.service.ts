@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { map, catchError } from 'rxjs/operators';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +10,9 @@ export class FileUploadService {
   fileName: string;
   storage = firebase.storage();
   storageRef: firebase.storage.Reference;
-
   constructor() { }
 
   ngOnInit(): void {
-    
   }
 
   createFileName(fileName) {
@@ -53,9 +49,7 @@ export class FileUploadService {
       result('error');
     }, function() {
       // Handle successful uploads on complete
-      // For instance, get the download URL: https://firebasestorage.googleapis.com/...
       uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        console.log('File available at', downloadURL);
         result(downloadURL);
       });
     });
