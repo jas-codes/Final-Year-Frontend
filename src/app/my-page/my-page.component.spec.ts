@@ -1,14 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MyPageComponent } from './my-page.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-xdescribe('MyPageComponent', () => {
+describe('MyPageComponent', () => {
   let component: MyPageComponent;
   let fixture: ComponentFixture<MyPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MyPageComponent ]
+      declarations: [ MyPageComponent ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   }));

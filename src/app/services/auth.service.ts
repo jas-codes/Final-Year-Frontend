@@ -24,6 +24,10 @@ export class AuthService {
     private router: Router,
     private ngZone: NgZone
   ) {
+    this.registerUserObservable()
+  }
+
+  registerUserObservable() {
     this.user$ = this.afireAuth.authState.pipe(
       switchMap(user => {
         //logged in user
@@ -38,7 +42,7 @@ export class AuthService {
   }
 
   getSignedInUser(){
-    return auth().currentUser;
+    return this.afireAuth.auth.currentUser;
   }
   
 
@@ -67,7 +71,7 @@ export class AuthService {
       data.dob = form.get('dob').value;
       data.postcode = form.get('postcode').value;
       data.accountType = form.get('accountType').value;
-      if(data.accountType = UserTypes.trader){
+      if(data.accountType == UserTypes.trader){
         data.companyName = form.get('companyName').value;
         data.tradeType = form.get('tradeType').value;
       }
@@ -84,11 +88,10 @@ export class AuthService {
 
   uploadSignInDetails(form: FormGroup) {
       //successful login
-      var user = auth().currentUser;
-      console.log(user)
+      var user = this.afireAuth.auth.currentUser;
       if(user) {
         this.updateUserInfo(user, form).then(() => {
-          this.ngZone.run(() =>  this.router.navigate(['home']));
+          this.ngZone.run(() =>  this.router.navigate(['home/(nav-links:map)']));
         });
       }
   }
@@ -127,12 +130,12 @@ export class AuthService {
         self.updateUserInfo(result.user, form, photoURL); 
       else
         self.updateUserInfo(result.user, form);
-      self.ngZone.run(() =>  self.router.navigate(['home']));
+      self.ngZone.run(() =>  self.router.navigate(['home/(nav-links:map)']));
     }).catch(error => this.errorCatch(error));
   }
 
   async signOut() {
-    await auth().signOut().then(function() {
+    await this.afireAuth.auth.signOut().then(function() {
       window.location.href = '/';
     }).catch(error => this.errorCatch(error));
   }

@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'home', component: NavBarComponent,
     children: [
+      { path: '', redirectTo: 'map', pathMatch: 'full'},
       { path: 'map', component: MapComponent, outlet: 'nav-links' },
       { path: 'my-jobs', component: MyJobsComponent, outlet: 'nav-links'},
       { path: 'job-history', component: JobHistoryComponent, outlet: 'nav-links'},

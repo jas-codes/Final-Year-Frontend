@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NgZone } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -35,18 +35,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker'; 
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
+import { FirebaseConfig } from 'src/environments/firebase-config';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDU0JQdGmW2MY0G1DHPNO4a7fHm6IuMh-Y",
-  authDomain: "tradesman-application.firebaseapp.com",
-  databaseURL: "https://tradesman-application.firebaseio.com",
-  projectId: "tradesman-application",
-  storageBucket: "tradesman-application.appspot.com",
-  messagingSenderId: "468613656053",
-  appId: "1:468613656053:web:1cc160661ac2b8d74744bc",
-  measurementId: "G-EYSG4Y0LF7"
-};
+
+
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule,
@@ -87,9 +81,10 @@ const ANGULAR_MATERIAL_MODULES = [
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
     ANGULAR_MATERIAL_MODULES,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(FirebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    AngularFireStorageModule,
     ReactiveFormsModule
   ],
   providers: [

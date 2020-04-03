@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./create-account.component.css']
 })
 export class CreateAccountComponent implements OnInit {
-  @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;
+  @ViewChild("fileUpload", { static: false }) fileUpload: ElementRef;
   trades = Object.values(TradeType);
   file: any;
   maxDate = new Date();
@@ -50,11 +50,11 @@ export class CreateAccountComponent implements OnInit {
   ngOnInit(): void {
     this.maxDate.setDate(this.calcMaxDate());
     this.signInDetails = this.route
-    .queryParamMap
-    .pipe(map(params => params.get('signedIn')||'false'));
+      .queryParamMap
+      .pipe(map(params => params.get('signedIn') || 'false'));
 
     this.signInDetails.subscribe((res) => {
-      if(res === 'true') {
+      if (res === 'true') {
         this.removeValidators('password');
         this.removeValidators('rePassword');
         this.removeValidators('nickname');
@@ -98,9 +98,9 @@ export class CreateAccountComponent implements OnInit {
 
   onSubmit() {
     var self = this;
-    if(!this.signedInAlready){
-      if(this.file) {
-        this.fileUploadService.uploadFile(this.file, function(result){
+    if (!this.signedInAlready) {
+      if (this.file) {
+        this.fileUploadService.uploadFile(this.file, function (result) {
           if(result === 'error')
             console.log('there was an error with the upload');
           else {
@@ -112,7 +112,6 @@ export class CreateAccountComponent implements OnInit {
         self.authService.createAccount(self.form.get('emailAddress').value, self.form.get('password').value, self.form);
       }
     } else {
-      console.log('here')
       this.authService.uploadSignInDetails(this.form);
     }
   }
@@ -128,8 +127,8 @@ export class CreateAccountComponent implements OnInit {
   onClick() {
     const fileUpload = this.fileUpload.nativeElement;
     fileUpload.onchange = () => {
-        this.file = fileUpload.files;
-      };
+      this.file = fileUpload.files;
+    };
     fileUpload.click();
   }
 }

@@ -1,14 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { JobHistoryComponent } from './job-history.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-xdescribe('JobHistoryComponent', () => {
+describe('JobHistoryComponent', () => {
   let component: JobHistoryComponent;
   let fixture: ComponentFixture<JobHistoryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JobHistoryComponent ]
+      declarations: [ JobHistoryComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

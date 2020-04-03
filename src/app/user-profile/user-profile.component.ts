@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { auth } from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,49 +14,52 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
+    private afireAuth: AngularFireAuth,
     private router: Router,
     private ngZone: NgZone,
   ) { }
 
   ngOnInit(): void {
-    auth().getRedirectResult().then((result) => {
-      this.authService.user$.subscribe(user => {
-        if(user)
-          this.checkUserDetailsComplete(user);
-        else if(result.user)
-          this.checkUserDetailsComplete(result.user);
-      });
-    }).catch(error => this.errorCatch)
+    if (this.afireAuth.auth) {
+      this.afireAuth.auth.getRedirectResult().then((result) => {
+        this.authService.user$.subscribe(user => {
+          if (user)
+            this.checkUserDetailsComplete(user);
+          else if (result.user)
+            this.checkUserDetailsComplete(result.user);
+        });
+      }).catch(error => this.errorCatch)
+    }
   }
 
-  navigateCreateAccount(){
+  navigateCreateAccount() {
     this.router.navigate(['create-account']);
   }
 
   checkUserDetailsComplete(user) {
-    if(user.accountType)
-      this.ngZone.run(() =>  this.router.navigate(['home']));
+    if (user.accountType)
+      this.ngZone.run(() => this.router.navigate(['home']));
     else
-      this.ngZone.run(() =>  this.router.navigate(['create-account'], {queryParams: {signedIn: true}}));
+      this.ngZone.run(() => this.router.navigate(['create-account'], { queryParams: { signedIn: true } }));
   }
 
   errorCatch(error) {
-      //metadata
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      var email = "";
-      var credential = "";
+    //metadata
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    var email = "";
+    var credential = "";
 
-      if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
-      }
+    if (errorCode === 'auth/wrong-password') {
+      alert('Wrong password.');
+    }
 
-      if(error.email)
-        email = error.email;
-      //type of auth
-      if(error.credential)
-        credential = error.credential;
+    if (error.email)
+      email = error.email;
+    //type of auth
+    if (error.credential)
+      credential = error.credential;
 
-      console.error('auth error - logged with analytics', error);
+    console.error('auth error - logged with analytics', error);
   }
 }
