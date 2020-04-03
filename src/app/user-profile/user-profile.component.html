@@ -1,0 +1,62 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>TradeWork.NET</mat-card-title>
+        <mat-card-subtitle>Welcome! Please login or create an account</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+        <mat-divider></mat-divider>
+        <div *ngIf="authService.user$ | async as user; else guest">
+            <h1>You're already Logged in!</h1>
+            <h3>Hi, {{user.displayName}}</h3>
+            <img [src]="user.photoURL">
+            <p>UID: {{user.uid}}</p>
+            <p>Review Score: {{user.reviewScore}}</p>
+            <button (click)="authService.signOut()" class="login-Buttons" mat-raised-button>Logout</button>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<ng-template #guest>
+    <div class="input-fields">
+        <mat-form-field appearance="outline">
+            <mat-label>Enter Email</mat-label>
+            <input matInput placeholder="email" [(ngModel)]="email">
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Enter Password</mat-label>
+            <input matInput type="password" placeholder="password" [(ngModel)]="password">
+        </mat-form-field>
+    </div>
+    <div class="login-buttons-div">
+        <button color="primary" (click)="authService.emailAndPasswordSignin(email, password)" mat-raised-button>Login
+        </button>
+
+        <mat-divider>
+        </mat-divider>
+    
+        <button (click)="authService.googleSignin()" mat-raised-button>
+            <i class="fa fa-google"></i> Login With Google
+        </button>
+
+        <button (click)="authService.facebookSignin()" mat-raised-button>
+            <i class="fa fa-facebook-square"></i> Login With Facebook
+        </button>
+
+        <button (click)="authService.githubSignin()" mat-raised-button>
+            <i class="fa fa-github" aria-hidden="true"></i> Login With Github
+        </button>
+
+        <button (click)="authService.microsoftSignin()" mat-raised-button>
+            <i class="fa fa-windows"></i> Connect Microsoft
+        </button>
+
+        <mat-divider>
+        </mat-divider>
+            <button color="warn" (click)="navigateCreateAccount()" mat-raised-button>Create Account</button>
+    </div>
+</ng-template>

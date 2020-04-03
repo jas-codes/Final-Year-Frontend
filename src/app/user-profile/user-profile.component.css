@@ -1,0 +1,42 @@
+
+
+.login-buttons-div button {
+    width: 20rem;
+    display: block;
+    margin: 0.3rem;
+}
+
+.login-buttons-div mat-divider {
+    width: 19rem;
+    margin: 1rem;
+    left: 0.5rem;
+}
+
+.mat-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 21rem;
+    background-color: var(--bg-primary);
+}
+
+.mat-card .mat-divider-horizontal {
+    position: unset;
+}
+
+.input-fields mat-form-field {
+    display: block;
+    width: 15rem;
+    left: 1rem;
+}
+
+.input-fields {
+    width: 17rem;
+    margin-left: 1.75rem;
+    background-color: white;
+    border-radius: 2.5%;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

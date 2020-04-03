@@ -1,0 +1,85 @@
+svg {
+    width: 2rem;
+    margin-top: 0.5rem;
+    color: var(--bg-primary);
+}
+
+mat-form-field {
+    margin-left: 0.7rem;
+    width: 8rem;
+}
+
+button {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin-left: 0.6rem;
+}
+
+.title {
+    display: ruby;
+}
+
+.createAccount button {
+    left: 2.5rem;
+    position: relative;
+}
+
+.details button {
+    left: 0.5rem;
+    position: relative;
+}
+
+.submit {
+    display: block;
+    width: 100%;
+    margin-top: 0.7rem;
+    margin-left: 0.8rem;
+}
+mat-button-toggle-group {
+    margin-left: 0.7rem;
+}
+
+span {
+    margin-left: 2.2rem;
+    display: inline-block;
+}
+
+p {
+    margin: 0;
+}
+
+.mat-card mat-divider {
+    margin-left: 1rem;
+    width: 18rem;
+}
+
+.mat-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18.5rem;
+}
+
+form mat-divider {
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    width: 18rem;
+}
+
+.headings {
+    margin-left: 0.7rem;
+    margin-bottom: 0.6rem;
+}
+
+h3 {
+    width: 8rem;
+}
+
+.error {
+    color: red;
+}
+
+.upload {
+    display: inline-block;
+}

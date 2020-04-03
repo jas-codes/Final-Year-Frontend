@@ -10,6 +10,7 @@ export class MapComponent implements OnInit, AfterViewInit  {
   mapHeight = window.innerHeight;
   centre: google.maps.LatLngLiteral;
   postJob: boolean = false;
+  options = { enableHighAccuracy: true, maximumAge:Infinity, timeout: 5000};
 
   constructor() { }
 
@@ -22,7 +23,7 @@ export class MapComponent implements OnInit, AfterViewInit  {
       }
     }, 
     this.errorCallbackAccuracy,
-      { enableHighAccuracy: true, maximumAge:Infinity, timeout: 0}
+    this.options
     );
   }
 
@@ -30,8 +31,9 @@ export class MapComponent implements OnInit, AfterViewInit  {
   
   }
 
-  errorCallbackAccuracy() {
+  errorCallbackAccuracy(err) {
     console.log('you have committed an oopsie');
+    console.error(err)
   }
 
   showPostJob() {
