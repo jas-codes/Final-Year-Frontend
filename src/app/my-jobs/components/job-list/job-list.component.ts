@@ -28,6 +28,7 @@ export class JobListComponent implements OnInit {
     timeframe: "2 weeks",
     trade: TradeType.carpentry,
     postcode:"PL4 8PS",
+    issueUid: ''
   }
 
   job1: Job = {
@@ -42,6 +43,7 @@ export class JobListComponent implements OnInit {
     timeframe: "2 weeks",
     trade: TradeType.carpentry,
     postcode:"PL4 8PS",
+    issueUid: ''
   }
 
   job2: Job = {
@@ -56,6 +58,7 @@ export class JobListComponent implements OnInit {
     timeframe: "2 weeks",
     trade: TradeType.carpentry,
     postcode:"PL4 8PS",
+    issueUid: ''
   }
 
   constructor() { }

@@ -37,6 +37,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FirebaseConfig } from 'src/environments/firebase-config';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 
@@ -85,7 +86,8 @@ const ANGULAR_MATERIAL_MODULES = [
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     MatDatepickerModule

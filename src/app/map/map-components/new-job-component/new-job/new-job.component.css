@@ -1,6 +1,6 @@
 .card {
     width: 35rem;
-    height: 31.5rem;
+    height: 31rem;
     background-color: white;
     border-radius: 5%;
     z-index: 500;
@@ -46,9 +46,11 @@
     height: 15rem;
     background-color: lightgray;
     border-radius: 5%;
-    left: 18rem;
+    left: 17.5rem;
     position: relative;
-    bottom: 50%;
+    bottom: 18rem;
+    cursor: pointer;
+
 }
 
 .image-heading {
@@ -77,6 +79,11 @@ mat-divider {
     margin-left: 4%;
 }
 
+.bottom-divider {
+    margin-top: -5%;
+}
+
+
 svg {
     height: 2rem;
     width: 2rem;
@@ -89,4 +96,11 @@ h2 {
 mat-form-field {
     width: 40%;
     margin-left: 4%;
+}
+
+img {
+    max-width: 95%;
+    max-height: 95%;
+    margin: 2.5%;
+
 }

@@ -1,7 +1,7 @@
 <div class="card border">
     <h2>Post a New Job</h2>
     <mat-icon class="exit" (click)="dismissComponent()">clear</mat-icon>
-    <mat-divider></mat-divider>
+    <mat-divider #heading></mat-divider>
     <div class="sub-headings">
         <h4>Fill out the details below</h4>
         <h4 class="image-heading">Add an image (optional)</h4>
@@ -30,18 +30,34 @@
         <mat-label>Postcode</mat-label>
         <input matInput type="text" placeholder="Ex. PL4 8PN" [(ngModel)]="postcodeValue">
     </mat-form-field>
-    <div class="add-image border">
-        <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas"
-                data-icon="plus-circle" class="svg-inline--fa fa-plus-circle fa-w-16" role="img" viewBox="0 0 512 512">
-                <path fill="currentColor"
-                    d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z" />
-            </svg>
-        </div>
-    </div>
+    <ng-container *ngIf="!newJob.picture; then selectImage; else showImage"></ng-container>
     <div class="buttons">
-        <mat-divider></mat-divider>
-        <button #post mat-raised-button color="primary">Post Job</button>
+        <mat-divider class="bottom-divider"></mat-divider>
+        <button (click)="submit()" #post mat-raised-button color="primary">Post Job</button>
         <button #cancel mat-raised-button color="warn">Cancel</button>
     </div>
 </div>
+
+<ng-template #selectImage>
+    <div class="add-image border" (click)="onClick()">
+        <div>
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas"
+                    data-icon="plus-circle" class="svg-inline--fa fa-plus-circle fa-w-16" role="img"
+                    viewBox="0 0 512 512">
+                    <path fill="currentColor"
+                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z" />
+                </svg>
+            </div>
+        </div>
+        <input type="file" #fileUpload id="fileUpload" name="fileUpload" accept=".png, .jpg" style="display:none;" />
+    </div>
+</ng-template>
+
+
+
+<ng-template #showImage>
+    <div class="add-image border">
+        <img src={{newJob.picture}}> 
+    </div>
+</ng-template>

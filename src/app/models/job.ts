@@ -14,4 +14,5 @@ export class Job {
     issueDate: Date;
     conclusionDate: Date;
     completionState: CompletionState;
+    issueUid: string;
 }
