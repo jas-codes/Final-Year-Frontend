@@ -91,7 +91,7 @@ export class AuthService {
       var user = this.afireAuth.auth.currentUser;
       if(user) {
         this.updateUserInfo(user, form).then(() => {
-          this.ngZone.run(() =>  this.router.navigate(['home/(nav-links:map)']));
+          this.ngZone.run(() =>  this.router.navigate(['home/']));
         });
       }
   }
@@ -130,7 +130,7 @@ export class AuthService {
         self.updateUserInfo(result.user, form, photoURL); 
       else
         self.updateUserInfo(result.user, form);
-      self.ngZone.run(() =>  self.router.navigate(['home/(nav-links:map)']));
+      self.ngZone.run(() =>  self.router.navigate(['home/']));
     }).catch(error => this.errorCatch(error));
   }
 
