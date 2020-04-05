@@ -23,12 +23,13 @@ export class JobListComponent implements OnInit {
     conclusionDate: new Date(Date.now()) ,
     description: "i am a description",
     issueDate: new Date(Date.now()),
-    lngLat: new google.maps.LatLng(50,-4),
+    lngLat: {lat: 50, lng: -4},
     quote: 0,
     timeframe: "2 weeks",
     trade: TradeType.carpentry,
     postcode:"PL4 8PS",
-    issueUid: ''
+    issueUid: '',
+    budget: 1
   }
 
   job1: Job = {
@@ -38,12 +39,13 @@ export class JobListComponent implements OnInit {
     conclusionDate: new Date(Date.now()) ,
     description: "i am a description",
     issueDate: new Date(Date.now()),
-    lngLat: new google.maps.LatLng(50,-4),
+    lngLat: {lat: 50, lng: -4},
     quote: 0,
     timeframe: "2 weeks",
     trade: TradeType.carpentry,
     postcode:"PL4 8PS",
-    issueUid: ''
+    issueUid: '',
+    budget: 1
   }
 
   job2: Job = {
@@ -53,12 +55,13 @@ export class JobListComponent implements OnInit {
     conclusionDate: new Date(Date.now()) ,
     description: "i am a description",
     issueDate: new Date(Date.now()),
-    lngLat: new google.maps.LatLng(50,-4),
+    lngLat: {lat: 50, lng: -4},
     quote: 0,
     timeframe: "2 weeks",
     trade: TradeType.carpentry,
     postcode:"PL4 8PS",
-    issueUid: ''
+    issueUid: '',
+    budget: 1
   }
 
   constructor() { }

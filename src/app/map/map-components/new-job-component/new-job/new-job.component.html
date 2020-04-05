@@ -1,40 +1,55 @@
 <div class="card border">
-    <h2>Post a New Job</h2>
-    <mat-icon class="exit" (click)="dismissComponent()">clear</mat-icon>
+    <div class="cardTitle">
+        <h2>Post a New Job</h2>
+        <button class="exit" mat-button color="primary" (click)="dismissComponent()">cancel</button>
+    </div>
     <mat-divider #heading></mat-divider>
     <div class="sub-headings">
         <h4>Fill out the details below</h4>
         <h4 class="image-heading">Add an image (optional)</h4>
     </div>
-    <mat-form-field>
-        <mat-label>Trade Required</mat-label>
-        <mat-select>
-            <mat-option *ngFor="let trade of trades" [value]="trade">
-                {{trade}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Describe the job</mat-label>
-        <textarea matInput placeholder="Ex. Replaster a 10x10 wall..." [(ngModel)]="jobDescriptionValue"></textarea>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Estimated Budget</mat-label>
-        <span matPrefix>£ &nbsp;</span>
-        <input type="number" matInput placeholder="00.00" [(ngModel)]="budgetValue">
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Postcode</mat-label>
-        <input matInput type="text" placeholder="Ex. PL4 8PN" [(ngModel)]="postcodeValue">
-    </mat-form-field>
-    <ng-container *ngIf="!newJob.picture; then selectImage; else showImage"></ng-container>
+    <form [formGroup]="form">
+        <mat-form-field>
+            <mat-label>Trade Required</mat-label>
+            <mat-select formControlName="tradeType" required [(ngModel)]="newJob.trade">
+                <mat-option *ngFor="let trade of trades" [value]="trade">
+                    {{trade}}
+                </mat-option>
+            </mat-select>
+            <mat-error>Must select a trade</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+            <mat-label>Describe the job</mat-label>
+            <textarea matInput placeholder="Ex. Replaster a 10x10 wall..." formControlName="description" required [(ngModel)]="newJob.description"></textarea>
+            <mat-error>Max Length of 300 Characters</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+            <mat-label>Estimated Budget</mat-label>
+            <span matPrefix>£ &nbsp;</span>
+            <input type="number" matInput placeholder="00.00" formControlName="budget" required [(ngModel)]="newJob.budget">
+            <mat-error>Min Budget of £50</mat-error>
+        </mat-form-field>
+        <br />
+        <div>
+            <mat-form-field>
+                <mat-label>Postcode</mat-label>
+                <input (keyup)="postcodeChange()" matInput type="text" placeholder="Ex. PL4 8PN" formControlName="postcode" required [(ngModel)]="newJob.postcode">
+                <mat-error>Must be of length 6-8</mat-error>
+            </mat-form-field>
+            <mat-form-field class="title">
+                <input matInput type="text" placeholder="Enter Title" formControlName="title" required [(ngModel)]="newJob.title">
+                <mat-error>Max Length of 30 Characters</mat-error>
+            </mat-form-field>
+        </div>
+        <ng-container *ngIf="!newJob.picture; then selectImage; else showImage"></ng-container>
+    </form>
     <div class="buttons">
-        <mat-divider class="bottom-divider"></mat-divider>
-        <button (click)="submit()" #post mat-raised-button color="primary">Post Job</button>
-        <button #cancel mat-raised-button color="warn">Cancel</button>
+        <mat-divider></mat-divider>
+        <button (click)="submit()" class="submit" #post mat-raised-button color="primary" [disabled]="!form.valid">
+            Post Job</button>
+        <h5 *ngIf="postcodeInvalid || uploadError" class="error">*{{customErrorText}}</h5> 
     </div>
 </div>
 
@@ -58,6 +73,6 @@
 
 <ng-template #showImage>
     <div class="add-image border">
-        <img src={{newJob.picture}}> 
+        <img src={{newJob.picture}}>
     </div>
 </ng-template>
