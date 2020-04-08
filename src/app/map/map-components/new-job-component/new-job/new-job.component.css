@@ -1,12 +1,16 @@
 .card {
     width: 35rem;
-    height: 31.5rem;
+    height: 32rem;
     background-color: white;
     border-radius: 5%;
     z-index: 500;
     box-shadow: 0.4rem 0.4rem 0.2rem grey;
-    margin-left: 20%;
+    margin-left: 15rem;
     position: relative;
+}
+
+.cardTitle{
+    display: ruby;
 }
 
 .buttons {
@@ -17,22 +21,14 @@
 
 .exit {
     position: absolute;
-    right: 2rem;
-    top: 1.2rem;
-}
-
-.exit:hover {
-    background-color: red;
-    border-radius: 50%;
-    opacity: 0.8;
-    cursor: pointer;
+    right: 1.5rem;
+    top: 0.6rem;
 }
 
 .icon {
-    height: 95%;
-    margin: auto;
-    padding-top: 6.5rem;
-    padding-left: 7rem;
+    position: relative;
+    left: 6rem;
+    top: 5.5rem;
     opacity: 0.7;
     cursor: pointer;
 }
@@ -42,13 +38,15 @@
 }
 
 .add-image {
-    width: 16rem;
-    height: 15rem;
+    width: 14rem;
+    height: 13rem;
     background-color: lightgray;
     border-radius: 5%;
-    left: 18rem;
+    left: 17.5rem;
     position: relative;
-    bottom: 50%;
+    bottom: 18rem;
+    cursor: pointer;
+
 }
 
 .image-heading {
@@ -59,6 +57,23 @@
     margin-left: 4%;
     clear: both;
     display: inline-flex;
+}
+
+.title {
+    margin-left: 2rem;
+}
+
+.submit {
+    display: block;
+    width: 95%;
+    margin-top: 0.7rem;
+    margin-left: 0.8rem;
+}
+
+.error {
+    margin-left: 1.5rem;
+    margin-top: 0rem;
+    color: red;
 }
 
 button {
@@ -73,6 +88,7 @@ button #cancel {
 }
 
 mat-divider {
+    margin-top: 0.3rem;
     margin-right: 4%;
     margin-left: 4%;
 }
@@ -87,6 +103,13 @@ h2 {
 }
 
 mat-form-field {
-    width: 40%;
-    margin-left: 4%;
+    width: 14rem;
+    margin-left: 1.5rem;
+}
+
+img {
+    max-width: 95%;
+    max-height: 95%;
+    margin: 2.5%;
+
 }

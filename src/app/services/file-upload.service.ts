@@ -18,11 +18,11 @@ export class FileUploadService {
     this.fileName = fileName + '-' + (Math.round(Math.random()*10000)).toString();
   }
 
-  uploadFile(file:File, result) {
+  uploadFile(file:File, blobLocation: string ,result) {
     this.createFileName(file[0].name);
 
-    var storageRef = this.aFireStorage.ref(`images/${this.fileName}`);
-    this.task = this.aFireStorage.upload(`images/${this.fileName}`, file[0]);
+    var storageRef = this.aFireStorage.ref(`${blobLocation}/${this.fileName}`);
+    this.task = this.aFireStorage.upload(`${blobLocation}/${this.fileName}`, file[0]);
     this.percentage = this.task.percentageChanges();
 
     this.task.then(() => {

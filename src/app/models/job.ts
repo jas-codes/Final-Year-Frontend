@@ -4,9 +4,10 @@ import { TradeType } from '../enums/trade-types';
 export class Job {
     title: string;
     quote: number;
+    budget: number;
     postcode: string;
     address: string;
-    lngLat: google.maps.LatLng;
+    lngLat: google.maps.LatLngLiteral;
     description: string;
     picture?: string;
     timeframe: string;
@@ -14,4 +15,5 @@ export class Job {
     issueDate: Date;
     conclusionDate: Date;
     completionState: CompletionState;
+    issueUid: string;
 }

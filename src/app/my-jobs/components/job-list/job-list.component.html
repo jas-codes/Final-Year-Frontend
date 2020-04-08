@@ -7,7 +7,9 @@
         <mat-list role="list">
             <mat-list-item *ngFor="let job of currentJobs; index as i" (click)="select(job)">
                 <div *ngIf="listType == job.completionState" class="list-item" [ngClass]="{'extra-spacing': i == 0 }">
-                    <div class="image"></div>
+                    <div class="image">
+                        <img src={{job.picture}}>
+                    </div>
                     <div class="text">
                         <b>{{job.title}}</b>
                         <br>

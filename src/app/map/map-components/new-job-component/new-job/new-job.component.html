@@ -1,47 +1,78 @@
 <div class="card border">
-    <h2>Post a New Job</h2>
-    <mat-icon class="exit" (click)="dismissComponent()">clear</mat-icon>
-    <mat-divider></mat-divider>
+    <div class="cardTitle">
+        <h2>Post a New Job</h2>
+        <button class="exit" mat-button color="primary" (click)="dismissComponent()">cancel</button>
+    </div>
+    <mat-divider #heading></mat-divider>
     <div class="sub-headings">
         <h4>Fill out the details below</h4>
         <h4 class="image-heading">Add an image (optional)</h4>
     </div>
-    <mat-form-field>
-        <mat-label>Trade Required</mat-label>
-        <mat-select>
-            <mat-option *ngFor="let trade of trades" [value]="trade">
-                {{trade}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Describe the job</mat-label>
-        <textarea matInput placeholder="Ex. Replaster a 10x10 wall..." [(ngModel)]="jobDescriptionValue"></textarea>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Estimated Budget</mat-label>
-        <span matPrefix>£ &nbsp;</span>
-        <input type="number" matInput placeholder="00.00" [(ngModel)]="budgetValue">
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Postcode</mat-label>
-        <input matInput type="text" placeholder="Ex. PL4 8PN" [(ngModel)]="postcodeValue">
-    </mat-form-field>
-    <div class="add-image border">
-        <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas"
-                data-icon="plus-circle" class="svg-inline--fa fa-plus-circle fa-w-16" role="img" viewBox="0 0 512 512">
-                <path fill="currentColor"
-                    d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z" />
-            </svg>
+    <form [formGroup]="form">
+        <mat-form-field>
+            <mat-label>Trade Required</mat-label>
+            <mat-select formControlName="tradeType" required [(ngModel)]="newJob.trade">
+                <mat-option *ngFor="let trade of trades" [value]="trade">
+                    {{trade}}
+                </mat-option>
+            </mat-select>
+            <mat-error>Must select a trade</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+            <mat-label>Describe the job</mat-label>
+            <textarea matInput placeholder="Ex. Replaster a 10x10 wall..." formControlName="description" required [(ngModel)]="newJob.description"></textarea>
+            <mat-error>Max Length of 300 Characters</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+            <mat-label>Estimated Budget</mat-label>
+            <span matPrefix>£ &nbsp;</span>
+            <input type="number" matInput placeholder="00.00" formControlName="budget" required [(ngModel)]="newJob.budget">
+            <mat-error>Min Budget of £50</mat-error>
+        </mat-form-field>
+        <br />
+        <div>
+            <mat-form-field>
+                <mat-label>Postcode</mat-label>
+                <input (keyup)="postcodeChange()" matInput type="text" placeholder="Ex. PL4 8PN" formControlName="postcode" required [(ngModel)]="newJob.postcode">
+                <mat-error>Must be of length 6-8</mat-error>
+            </mat-form-field>
+            <mat-form-field class="title">
+                <input matInput type="text" placeholder="Enter Title" formControlName="title" required [(ngModel)]="newJob.title">
+                <mat-error>Max Length of 30 Characters</mat-error>
+            </mat-form-field>
         </div>
-    </div>
+        <ng-container *ngIf="!newJob.picture; then selectImage; else showImage"></ng-container>
+    </form>
     <div class="buttons">
         <mat-divider></mat-divider>
-        <button #post mat-raised-button color="primary">Post Job</button>
-        <button #cancel mat-raised-button color="warn">Cancel</button>
+        <button (click)="submit()" class="submit" #post mat-raised-button color="primary" [disabled]="!form.valid">
+            Post Job</button>
+        <h5 *ngIf="postcodeInvalid || uploadError" class="error">*{{customErrorText}}</h5> 
     </div>
 </div>
+
+<ng-template #selectImage>
+    <div class="add-image border" (click)="onClick()">
+        <div>
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas"
+                    data-icon="plus-circle" class="svg-inline--fa fa-plus-circle fa-w-16" role="img"
+                    viewBox="0 0 512 512">
+                    <path fill="currentColor"
+                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z" />
+                </svg>
+            </div>
+        </div>
+        <input type="file" #fileUpload id="fileUpload" name="fileUpload" accept=".png, .jpg" style="display:none;" />
+    </div>
+</ng-template>
+
+
+
+<ng-template #showImage>
+    <div class="add-image border">
+        <img src={{newJob.picture}}>
+    </div>
+</ng-template>

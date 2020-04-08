@@ -38,7 +38,7 @@ export class UserProfileComponent implements OnInit {
 
   checkUserDetailsComplete(user) {
     if (user.accountType)
-      this.ngZone.run(() => this.router.navigate(['home']));
+      this.ngZone.run(() => this.router.navigate(['home/']));
     else
       this.ngZone.run(() => this.router.navigate(['create-account'], { queryParams: { signedIn: true } }));
   }

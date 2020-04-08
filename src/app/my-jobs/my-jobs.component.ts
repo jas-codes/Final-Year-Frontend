@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Job } from '../models/job';
 import { CompletionState } from '../enums/completionState';
-import { TradeType } from '../enums/trade-types';
 
 @Component({
   selector: 'app-my-jobs',
@@ -15,8 +14,7 @@ export class MyJobsComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   setJob(job) {
     this.selectedJob = job

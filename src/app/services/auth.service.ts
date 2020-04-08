@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { User } from './user.model';
+import { IUser } from './user.model';
 import { Router } from '@angular/router';
 
 import { Observable, of } from 'rxjs';
@@ -15,8 +15,8 @@ import { UserTypes } from '../enums/user-types';
   providedIn: 'root'
 })
 export class AuthService {
-  user$: Observable<User>;
-  user: User;
+  user$: Observable<IUser>;
+  user: IUser;
 
   constructor(
     private afireAuth: AngularFireAuth,
@@ -32,7 +32,7 @@ export class AuthService {
       switchMap(user => {
         //logged in user
         if(user) {
-          return this.afirestore.doc<User>(`users/${user.uid}`).valueChanges();
+          return this.afirestore.doc<IUser>(`users/${user.uid}`).valueChanges();
         } else {
           //logged out user
           return of(null);
@@ -47,7 +47,7 @@ export class AuthService {
   
 
   private updateUserInfo(user, form?: FormGroup, photoURL?: string) {
-    const userRef: AngularFirestoreDocument<User> = this.afirestore.doc(`users/${user.uid}`);
+    const userRef: AngularFirestoreDocument<IUser> = this.afirestore.doc(`users/${user.uid}`);
 
     const data = {
       uid: user.uid,

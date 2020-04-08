@@ -7,6 +7,7 @@ import { FileUploadService } from '../services/file-upload.service';
 import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BlobLocations } from '../enums/blob-locations';
 
 @Component({
   selector: 'app-create-account',
@@ -100,7 +101,7 @@ export class CreateAccountComponent implements OnInit {
     var self = this;
     if (!this.signedInAlready) {
       if (this.file) {
-        this.fileUploadService.uploadFile(this.file, function (result) {
+        this.fileUploadService.uploadFile(this.file, BlobLocations.profilePicture, function (result) {
           if(result === 'error')
             console.log('there was an error with the upload');
           else {
