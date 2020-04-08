@@ -1,12 +1,14 @@
-import { Injectable, ErrorHandler } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Job } from '../models/job';
 import { of } from 'rxjs/internal/observable/of';
+import { CompletionState } from '../enums/completionState';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobsService {
+  jobCollection: AngularFirestoreCollection<Job>;
 
   constructor(
     private afirestore: AngularFirestore
@@ -19,6 +21,22 @@ export class JobsService {
       .catch((error) => this.errorHandler(error)
       )
     )
+  }
+
+  getJobs(){
+    return this.jobCollection = this.afirestore.collection('jobs');
+  }
+
+  
+  getMapJobs(){
+    return this.jobCollection = this.afirestore.collection<Job>('jobs', ref => {
+      return ref
+        .where('completionState', '==', CompletionState.pending);
+    });
+  }
+
+  getJobsForUser(uid: string) {
+    return this.jobCollection = this.afirestore.collection('jobs', ref => ref.where('issueUid', '==', uid));
   }
 
   errorHandler(error) {

@@ -56,7 +56,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatToolbarModule,
   MatButtonToggleModule,
   MatDatepickerModule,
-  MatNativeDateModule 
+  MatNativeDateModule
 ]
 @NgModule({
   declarations: [

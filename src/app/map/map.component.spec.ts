@@ -2,6 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MapComponent } from './map.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AngularFireAuthMock } from '../testing/angular-fire-auth-mock';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreMock } from '../testing/angular-firestore-mock';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AuthServiceMock } from '../testing/auth-service-mock';
+import { AuthService } from '../services/auth.service';
 
 describe('MapComponent', () => {
   let component: MapComponent;
@@ -10,6 +17,12 @@ describe('MapComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MapComponent ],
+      providers: [
+        { provide: AngularFireAuth, useValue: AngularFireAuthMock},
+        { provide: AngularFirestore, useValue: AngularFirestoreMock },
+        { provide: AuthService, useValue: AuthServiceMock },
+        RouterTestingModule
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();

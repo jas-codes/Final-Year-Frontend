@@ -1,12 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
 import { PostcodeService } from './postcode.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('PostcodeService', () => {
   let service: PostcodeService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        HttpClient,
+        HttpHandler
+      ]
+    });
     service = TestBed.inject(PostcodeService);
   });
 

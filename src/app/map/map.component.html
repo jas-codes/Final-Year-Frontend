@@ -1,9 +1,39 @@
 <body class="wrapper">
-    <google-map height="{{mapHeight}}" width="100%" [center]="centre"></google-map>
+    <!--Instantiate google maps and add markers as well as info window-->
+        <google-map
+        height="{{mapHeight}}"
+        width="100%"
+        [zoom]="16"
+        [center]="centre"
+        [options]="mapOptions"
+        >
+        <map-marker
+            #element
+            *ngFor="let marker of markers; index as i"
+            [position]="marker.position"
+            [animation]="marker.animation"
+            [title]="marker.title"
+            [options]="marker.options"
+            (mapClick)="openInfo(element, i)">
+        </map-marker>
+        <map-info-window><ng-container *ngTemplateOutlet="mapInfoWindow"></ng-container>
+        </map-info-window>
+    </google-map>
+
+    <!--Post job component toggle-->
     <div class="send-front  new-job-component" *ngIf="postJob">
         <app-new-job (dismiss)="showPostJob()"></app-new-job>
     </div>
-    <div class="send-front add-new-job">
+    <!--Button for opening post job-->
+    <div class="send-front add-new-job" *ngIf="abilityToPostJobs">
         <button mat-fab color="primary" (click)="showPostJob()"><mat-icon>add</mat-icon></button>
     </div>
 </body>
+
+<!--Template for html to be rendered in info window-->
+<ng-template #mapInfoWindow>
+    <h1>Hello, this is the card display</h1>
+    <ng-container *ngIf="selectedJob != undefined">
+        {{selectedJob.title}} 
+    </ng-container>
+</ng-template>

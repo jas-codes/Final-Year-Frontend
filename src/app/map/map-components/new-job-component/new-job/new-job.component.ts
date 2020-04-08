@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { TradeType } from 'src/app/enums/trade-types';
 import { AuthService } from 'src/app/services/auth.service';
-import { User } from 'src/app/services/user.model';
+import { IUser } from 'src/app/services/user.model';
 import { Subscription } from 'rxjs';
 import { PostcodeService } from 'src/app/services/postcode.service';
 import { Job } from 'src/app/models/job';
@@ -9,6 +9,7 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
 import { BlobLocations } from 'src/app/enums/blob-locations';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { JobsService } from 'src/app/services/jobs.service';
+import { CompletionState } from 'src/app/enums/completionState';
 
 @Component({
   selector: 'app-new-job',
@@ -16,21 +17,28 @@ import { JobsService } from 'src/app/services/jobs.service';
   styleUrls: ['./new-job.component.css']
 })
 export class NewJobComponent implements OnInit, OnDestroy {
+  //component variables
   @Output() dismiss = new EventEmitter<boolean>();
   @ViewChild("fileUpload", { static: false }) fileUpload: ElementRef;
-  private userSub: Subscription;
+  file: File;
+  trades = Object.values(TradeType);
+  newJob: Job = new Job();
 
+  //validation variables
   minimunPrice = 50;
   maxDesicriptionLength = 300;
   maxTitleLength = 30
   minPostcodeLength = 6;
   maxPostcodeLength = 8;
   customErrorText = '';
+  postcodeInvalid: boolean;
+  uploadError: boolean;
 
-  trades = Object.values(TradeType);
-  user: User;
-  file: File;
-
+  //user variables
+  private userSub: Subscription;
+  user: IUser;
+  
+  //form and validators
   form = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.maxLength(this.maxTitleLength)]),
     postcode: new FormControl('', [Validators.required, Validators.maxLength(this.maxPostcodeLength), Validators.minLength(this.minPostcodeLength)]),
@@ -38,10 +46,6 @@ export class NewJobComponent implements OnInit, OnDestroy {
     budget: new FormControl('', [Validators.required, Validators.min(this.minimunPrice)]),
     description: new FormControl('', [Validators.required, Validators.maxLength(this.maxDesicriptionLength)])
   });
-
-  newJob: Job = new Job();
-  postcodeInvalid: boolean;
-  uploadError: boolean;
 
   constructor(
     public authService: AuthService,
@@ -51,7 +55,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    if (this.authService.user$) {
+    if (this.authService.user$) { //get user
       this.userSub = this.authService.user$.subscribe((user) => {
         this.user = user;
         this.newJob.issueUid = user.uid;
@@ -59,32 +63,37 @@ export class NewJobComponent implements OnInit, OnDestroy {
     }
   }
 
+  //set postcode to false
   postcodeChange() {
     this.postcodeInvalid = false;
   }
 
+  //submit form and image currently... need to move image upload to independent
   submit() {
     var self = this;
+    //check postcode validity and converto to LatLng for google maps
     this.postcodeService.convertPostcodeToLatLong(this.form.get('postcode').value).subscribe(
       (data) => {
         let lat = ((data as any).result.latitude);
         let lng = ((data as any).result.longitude);
         this.newJob.lngLat = { lat, lng }
+        this.newJob.completionState = CompletionState.pending;
 
-        if (this.file) {
+        if (this.file) { //if a photo, upload it to blob, else post job
           this.fileUploadService.uploadFile(this.file, BlobLocations.jobPostingImages, function (result) {
+            //callback once the photo is uploaded containing image URL
             if (result === 'error') {
               console.log('there was an error with the upload');
               self.customErrorText = "Problem with Image Upload";
               self.uploadError = true;
             }
-            else {
+            else { //post job
               self.newJob.picture = result;
-              self.jobsService.uploadNewJob(self.newJob);
+              self.jobsService.uploadNewJob(self.newJob).toPromise().then(() => self.dismissComponent());
             }
           });
-        } else {
-          this.jobsService.uploadNewJob(this.newJob);
+        } else { 
+          this.jobsService.uploadNewJob(this.newJob).toPromise().then(() => self.dismissComponent());
         }
       },
       (error) => this.errorHandler(error)
@@ -95,6 +104,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
   }
 
+  //error handler
   errorHandler(error) {
     if (error.error.error == 'Invalid postcode') {
       this.postcodeInvalid = true;
@@ -107,6 +117,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
     this.dismiss.emit(true);
   }
 
+  //onclick to open file explorer
   onClick() {
     this.uploadError = false;
     const fileUpload = this.fileUpload.nativeElement;
