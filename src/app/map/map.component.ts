@@ -43,6 +43,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         visibility: "off"
       }]
     }],
+    disableDefaultUI: true
   };
 
   constructor(
