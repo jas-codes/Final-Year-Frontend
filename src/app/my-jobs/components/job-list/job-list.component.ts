@@ -22,53 +22,53 @@ export class JobListComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   user: IUser;
 
-  job: Job = {
-    title: "Building a Wall Actively",
-    completionState: CompletionState.active,
-    address: "random address",
-    conclusionDate: new Date(Date.now()),
-    description: "i am a description",
-    issueDate: new Date(Date.now()),
-    lngLat: { lat: 50, lng: -4 },
-    quote: 0,
-    timeframe: "2 weeks",
-    trade: TradeType.carpentry,
-    postcode: "PL4 8PS",
-    issueUid: '',
-    budget: 1
-  }
+  // job: Job = {
+  //   title: "Building a Wall Actively",
+  //   completionState: CompletionState.active,
+  //   address: "random address",
+  //   conclusionDate: new Date(Date.now()),
+  //   description: "i am a description",
+  //   issueDate: new Date(Date.now()),
+  //   lngLat: { lat: 50, lng: -4 },
+  //   quote: 0,
+  //   timeframe: "2 weeks",
+  //   trade: TradeType.carpentry,
+  //   postcode: "PL4 8PS",
+  //   issueUid: '',
+  //   budget: 1
+  // }
 
-  job1: Job = {
-    title: "Building a Wall Pendingly",
-    completionState: CompletionState.pending,
-    address: "random address",
-    conclusionDate: new Date(Date.now()),
-    description: "i am a description",
-    issueDate: new Date(Date.now()),
-    lngLat: { lat: 50, lng: -4 },
-    quote: 0,
-    timeframe: "2 weeks",
-    trade: TradeType.carpentry,
-    postcode: "PL4 8PS",
-    issueUid: '',
-    budget: 1
-  }
+  // job1: Job = {
+  //   title: "Building a Wall Pendingly",
+  //   completionState: CompletionState.pending,
+  //   address: "random address",
+  //   conclusionDate: new Date(Date.now()),
+  //   description: "i am a description",
+  //   issueDate: new Date(Date.now()),
+  //   lngLat: { lat: 50, lng: -4 },
+  //   quote: 0,
+  //   timeframe: "2 weeks",
+  //   trade: TradeType.carpentry,
+  //   postcode: "PL4 8PS",
+  //   issueUid: '',
+  //   budget: 1
+  // }
 
-  job2: Job = {
-    title: "Building a Wall Historically",
-    completionState: CompletionState.closed,
-    address: "random address",
-    conclusionDate: new Date(Date.now()),
-    description: "i am a description",
-    issueDate: new Date(Date.now()),
-    lngLat: { lat: 50, lng: -4 },
-    quote: 0,
-    timeframe: "2 weeks",
-    trade: TradeType.carpentry,
-    postcode: "PL4 8PS",
-    issueUid: '',
-    budget: 1
-  }
+  // job2: Job = {
+  //   title: "Building a Wall Historically",
+  //   completionState: CompletionState.closed,
+  //   address: "random address",
+  //   conclusionDate: new Date(Date.now()),
+  //   description: "i am a description",
+  //   issueDate: new Date(Date.now()),
+  //   lngLat: { lat: 50, lng: -4 },
+  //   quote: 0,
+  //   timeframe: "2 weeks",
+  //   trade: TradeType.carpentry,
+  //   postcode: "PL4 8PS",
+  //   issueUid: '',
+  //   budget: 1
+  // }
 
   constructor(
     private authService: AuthService,
@@ -88,12 +88,12 @@ export class JobListComponent implements OnInit, OnDestroy {
     }
 
 
-    this.currentJobs.push(this.job);
-    this.currentJobs.push(this.job);
-    this.currentJobs.push(this.job1);
-    this.currentJobs.push(this.job1);
-    this.currentJobs.push(this.job2);
-    this.currentJobs.push(this.job2);
+    // this.currentJobs.push(this.job);
+    // this.currentJobs.push(this.job);
+    // this.currentJobs.push(this.job1);
+    // this.currentJobs.push(this.job1);
+    // this.currentJobs.push(this.job2);
+    // this.currentJobs.push(this.job2);
   }
 
   ngOnDestroy(): void {

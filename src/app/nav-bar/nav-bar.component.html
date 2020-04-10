@@ -6,7 +6,7 @@
     <nav class="navbar">
         <ul class="navbar-nav">
             <li class="navbar-logo">
-                <div [routerLink]="[{ outlets: { 'nav-links': ['map'] } }]" class="navbar-link">
+                <div [routerLink]="[{ outlets: { 'navLinks': ['map'] } }]" class="navbar-link">
                     <span class="navbar-link-text">Tradesman App</span>
                     <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="arrow-to-right" role="img"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
@@ -23,7 +23,7 @@
                 </div>
             </li>
             <li class="navbar-element">
-                <div [routerLink]="[{ outlets: { 'nav-links': ['map'] } }]" class="navbar-link">
+                <div [routerLink]="[{ outlets: { 'navLinks': ['map'] } }]" class="navbar-link">
                     <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="map-marked-alt" role="img"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
                         class="svg-inline--fa fa-map-marked-alt fa-w-18 fa-fw fa-lg">
@@ -41,7 +41,7 @@
                 </div>
             </li>
             <li class="navbar-element">
-                <div [routerLink]="[{ outlets: { 'nav-links': ['my-jobs'] } }]" class="navbar-link">
+                <div [routerLink]="[{ outlets: { 'navLinks': ['my-jobs'] } }]" class="navbar-link">
                     <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-hard-hat" role="img"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
                         class="svg-inline--fa fa-user-hard-hat fa-w-14 fa-fw fa-lg">
@@ -58,7 +58,7 @@
                 </div>
             </li>
             <li class="navbar-element">
-                <div [routerLink]="[{ outlets: { 'nav-links': ['job-history'] } }]" class="navbar-link">
+                <div [routerLink]="[{ outlets: { 'navLinks': ['job-history'] } }]" class="navbar-link">
                     <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="history" role="img"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                         class="svg-inline--fa fa-history fa-w-16 fa-fw fa-lg">
@@ -77,7 +77,7 @@
                 </div>
             </li>
             <li class="navbar-element">
-                <div [routerLink]="[{ outlets: { 'nav-links': ['my-page'] } }]" class="navbar-link">
+                <div [routerLink]="[{ outlets: { 'navLinks': ['my-page'] } }]" class="navbar-link">
                     <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="user-alt" role="img"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                         class="svg-inline--fa fa-user-alt fa-w-16 fa-fw fa-lg">
@@ -94,7 +94,7 @@
                 </div>
             </li>
             <li class="navbar-element">
-                <div [routerLink]="[{ outlets: { 'nav-links': ['chats'] } }]" class="navbar-link">
+                <div [routerLink]="[{ outlets: { 'navLinks': ['chats'] } }]" class="navbar-link">
                     <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="comments" role="img"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
                         class="svg-inline--fa fa-comments fa-w-18 fa-fw fa-lg">
@@ -130,6 +130,6 @@
     </nav>
 
     <main>
-        <router-outlet name="nav-links"></router-outlet>
+        <router-outlet name="navLinks"></router-outlet>
     </main>
 </body>

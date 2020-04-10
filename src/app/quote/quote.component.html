@@ -1,0 +1,19 @@
+<div class="screen-dim">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Provide an estimated quote:</mat-card-title>
+            <mat-card-subtitle>Enter amount below</mat-card-subtitle>
+            <button class="exit" mat-button color="primary" (click)="dismissComponent()">cancel</button>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="form" (ngSubmit)="registerQuote()">
+                <mat-form-field>
+                    <span matPrefix>£ &nbsp;</span>
+                    <input type="number" matInput placeholder="00.00" formControlName="quote" required>
+                    <mat-error>Must Provide a Quote</mat-error>
+                </mat-form-field>
+                <button mat-raised-button color="primary" >Provide Quote</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

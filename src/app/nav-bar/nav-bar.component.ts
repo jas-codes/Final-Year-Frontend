@@ -17,6 +17,6 @@ export class NavBarComponent implements OnInit {
   ) {}
 
   ngOnInit(){
-    this.router.navigate([{outlets: {'nav-links':['map']}}], {relativeTo: this.route});
+    this.router.navigate([{outlets: {'navLinks':['map']}}], {relativeTo: this.route});
   }
 }
