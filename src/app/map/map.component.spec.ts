@@ -17,6 +17,7 @@ describe('MapComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MapComponent ],
+      imports: [RouterTestingModule],
       providers: [
         { provide: AngularFireAuth, useValue: AngularFireAuthMock},
         { provide: AngularFirestore, useValue: AngularFirestoreMock },

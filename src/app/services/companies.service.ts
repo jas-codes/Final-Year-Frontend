@@ -42,10 +42,6 @@ export class CompaniesService {
 
   getCompanyByUid(uid: string) {
     return this.afirestore.doc<Company>(`companies/${uid}`);
-    // return this.companyCollection = this.afirestore.collection('companies', ref => {
-    //   return ref
-    //     .where('uid','==',uid)
-    // });
   }
 
   errorHandler(error) {
