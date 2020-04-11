@@ -7,9 +7,12 @@ import { switchMap } from 'rxjs/operators';
 
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore,  AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
 import { UserTypes } from '../enums/user-types';
+import { CompaniesService } from './companies.service';
+import { Company } from '../models/company';
+import { PostcodeService } from './postcode.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +25,9 @@ export class AuthService {
     private afireAuth: AngularFireAuth,
     private afirestore: AngularFirestore,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private companyService: CompaniesService,
+    private postcodeService: PostcodeService
   ) {
     this.registerUserObservable()
   }
@@ -31,7 +36,7 @@ export class AuthService {
     this.user$ = this.afireAuth.authState.pipe(
       switchMap(user => {
         //logged in user
-        if(user) {
+        if (user) {
           return this.afirestore.doc<IUser>(`users/${user.uid}`).valueChanges();
         } else {
           //logged out user
@@ -41,17 +46,17 @@ export class AuthService {
     );
   }
 
-  getSignedInUser(){
+  getSignedInUser() {
     return this.afireAuth.auth.currentUser;
   }
-  
+
 
   private updateUserInfo(user, form?: FormGroup, photoURL?: string) {
     const userRef: AngularFirestoreDocument<IUser> = this.afirestore.doc(`users/${user.uid}`);
 
     const data = {
       uid: user.uid,
-      email : user.email,
+      email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
       phoneNumber: user.phoneNumber,
@@ -60,39 +65,44 @@ export class AuthService {
       dob: new Date(null),
       postcode: '',
       accountType: '',
-      companyName: '',
-      tradeType: '',
+      lngLat: undefined
     };
 
-    if(form) {
+    if (form) {
       data.firstName = form.get('firstName').value;
       data.lastName = form.get('lastName').value;
       data.phoneNumber = form.get('phoneNumber').value;
       data.dob = form.get('dob').value;
       data.postcode = form.get('postcode').value;
       data.accountType = form.get('accountType').value;
-      if(data.accountType == UserTypes.trader){
-        data.companyName = form.get('companyName').value;
-        data.tradeType = form.get('tradeType').value;
-      }
-      if(photoURL) {
+      if (photoURL) {
         data.photoURL = photoURL;
       }
-      if(form.get('nickname').value !== '') {
+      if (form.get('nickname').value !== '') {
         data.displayName = form.get('nickname').value;
       }
     }
 
-    return userRef.set(data, {merge: true})
+    this.postcodeService.convertPostcodeToLatLong(data.postcode).toPromise()
+      .then((res) => {
+        let lat = ((res as any).result.latitude);
+        let lng = ((res as any).result.longitude);
+        data.lngLat = { lat, lng };
+
+        if (data.accountType == UserTypes.trader) {
+          this.companyService.createCompany(form, data);
+        }
+        
+        userRef.set(data, { merge: true })
+        this.ngZone.run(() =>  this.router.navigate(['home/']));
+      });
   }
 
   uploadSignInDetails(form: FormGroup) {
-      //successful login
-      var user = this.afireAuth.auth.currentUser;
+    //successful login
+    var user = this.afireAuth.auth.currentUser;
       if(user) {
-        this.updateUserInfo(user, form).then(() => {
-          this.ngZone.run(() =>  this.router.navigate(['home/']));
-        });
+        this.updateUserInfo(user, form)
       }
   }
 
@@ -117,46 +127,44 @@ export class AuthService {
   }
 
   async emailAndPasswordSignin(email, password) {
-    var self = this;
     this.afireAuth.auth.signInWithEmailAndPassword(email, password)
-      .catch(error => this.errorCatch(error));        
+      .catch(error => this.errorCatch(error));
   }
 
   async createAccount(email, password, form: FormGroup, photoURL?) {
     var self = this;
-    this.afireAuth.auth.createUserWithEmailAndPassword(email, password).then(function(result) {
+    this.afireAuth.auth.createUserWithEmailAndPassword(email, password).then(function (result) {
       //successful account creation
-      if(photoURL)
-        self.updateUserInfo(result.user, form, photoURL); 
+      if (photoURL)
+        self.updateUserInfo(result.user, form, photoURL);
       else
         self.updateUserInfo(result.user, form);
-      self.ngZone.run(() =>  self.router.navigate(['home/']));
     }).catch(error => this.errorCatch(error));
   }
 
   async signOut() {
-    await this.afireAuth.auth.signOut().then(function() {
+    await this.afireAuth.auth.signOut().then(function () {
       window.location.href = '/';
     }).catch(error => this.errorCatch(error));
   }
 
   errorCatch(error) {
-      //metadata
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      var email = "";
-      var credential = "";
+    //metadata
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    var email = "";
+    var credential = "";
 
-      if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
-      }
+    if (errorCode === 'auth/wrong-password') {
+      alert('Wrong password.');
+    }
 
-      if(error.email)
-        email = error.email;
-      //type of auth
-      if(error.credential)
-        credential = error.credential;
+    if (error.email)
+      email = error.email;
+    //type of auth
+    if (error.credential)
+      credential = error.credential;
 
-      console.error('auth error - logged with analytics', error);
+    console.error('auth error - logged with analytics', error);
   }
 }

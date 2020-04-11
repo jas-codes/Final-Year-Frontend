@@ -22,9 +22,11 @@ import { Company } from '../models/company';
 export class MapComponent implements OnInit, OnDestroy  {
   //component Variables
   @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
-  selectedJob: Job;
+  selected: any;
   jobsList: Job[];
   jobCollection: AngularFirestoreCollection<Job>;
+  companyList: Company[];
+  companycollection: AngularFirestoreCollection<Company>;
   postJob: boolean = false;
   abilityToPostJobs: boolean = false;
   provideQuote: boolean = false;
@@ -70,16 +72,17 @@ export class MapComponent implements OnInit, OnDestroy  {
 
     if (this.authService.user$) { //get the user
       this.userSub = this.authService.user$.subscribe((user) => {
-        this.user = user;
-        if(user.accountType == UserTypes.user) { //what type of user
-          this.drawCompanyMarkers();
-          this.abilityToPostJobs = true;
-        }
-        else {
-          this.drawJobMarkers();
-          this.companiesService.getCompanyByUid(user.uid).subscribe((doc) => {
-            doc.valueChanges().subscribe(company => {console.log(company);this.company = company});
-          })
+        if(user != null){
+          this.user = user;
+          if(user.accountType == UserTypes.user) { //what type of user
+            this.drawCompanyMarkers();
+            this.abilityToPostJobs = true;
+          }
+          else {
+            this.drawJobMarkers(); //draw job markers and get company of user
+            this.companiesService.getCompanyByUid(user.uid).valueChanges()
+              .subscribe((company) => this.company = company)
+          }
         }
       });
     }
@@ -107,14 +110,22 @@ export class MapComponent implements OnInit, OnDestroy  {
       this.markers = []; //reset markers
 
       jobs.forEach((job) => {
-        this.markers.push(this.mapService.addMarker(job));
+        this.markers.push(this.mapService.addMarker(job.lngLat, job.title, job.trade));
       });
     });
   }
 
   //draw the company job markers on map
   private drawCompanyMarkers() {
+    this.companycollection = this.companiesService.getCompanies()
+    this.companycollection.valueChanges().subscribe((companies) => {
+      this.companyList = companies;
+      this.markers = []
 
+      companies.forEach((company) => {
+        this.markers.push(this.mapService.addMarker(company.latlng, company.companyName, company.tradeType))
+      });
+    });
   }
 
   //geolocation error callback
@@ -130,7 +141,10 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   //open marker content when clicked
   openInfo(marker: MapMarker, index) {
-    this.selectedJob = this.jobsList[index];
+    if(this.user.accountType == UserTypes.trader)
+      this.selected = this.jobsList[index];
+    else 
+      this.selected = this.companyList[index];
     this.infoWindow.open(marker);
   }
 
@@ -143,27 +157,19 @@ export class MapComponent implements OnInit, OnDestroy  {
     quote.quote = event;
     quote.uid = this.user.uid;
     quote.companyName = this.company.companyName
-    this.jobsService.setQuote(this.selectedJob, quote);
+    this.jobsService.setQuote(this.selected, quote);
   }
 
   setAccepted(){
-    this.selectedJob.completionState = CompletionState.traderAccepted;
-    this.jobsService.setAcceptedJob(this.selectedJob, this.company.uid);
+    this.selected.completionState = CompletionState.traderAccepted;
+    this.jobsService.setAcceptedJob(this.selected, this.company.uid);
     this.infoWindow.close()
   }
 
   navigationLinks(url) {
     this.router.navigate([
-      {
-        outlets: {
-          navLinks: [url]
-        }
-      }
+      { outlets: { navLinks: [url] }}
     ],
-      {
-        relativeTo: this.activatedRoute.parent
-      }
-    );
+    { relativeTo: this.activatedRoute.parent });
   }
-
 }

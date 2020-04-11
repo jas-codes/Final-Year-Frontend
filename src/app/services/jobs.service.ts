@@ -17,7 +17,11 @@ export class JobsService {
 
   uploadNewJob(job: Job){
     job.id = this.afirestore.createId();
-    return of(this.afirestore.collection('jobs').doc(job.id).set({...job}));
+    return of(this.afirestore.collection('jobs')
+      .doc(job.id)
+      .set({...job})
+      .catch(error => this.errorHandler(error))
+    );
   }
 
   getJobs(){

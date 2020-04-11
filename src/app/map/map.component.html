@@ -25,19 +25,19 @@
 
 <!--Template for html to be rendered in info window-->
 <ng-template #mapInfoWindow>
-    <ng-container *ngIf="selectedJob != undefined">
-        <h1>{{selectedJob.title}}</h1>
+    <ng-container *ngIf="selected != undefined && !abilityToPostJobs">
+        <h1>{{selected.title}}</h1>
         <div class="imageContainer">
-            <img *ngIf="selectedJob.picture != undefined" src="{{selectedJob.picture}}">
+            <img *ngIf="selected.picture != undefined" src="{{selected.picture}}">
         </div>
         <div class="description">
-            <p><b>Description: </b>{{selectedJob.description}}
+            <p><b>Description: </b>{{selected.description}}
                 <br />
-                <b>Budget: </b>{{selectedJob.budget}}
+                <b>Budget: </b>{{selected.budget}}
                 <br />
-                <b>Review Score: </b>{{selectedJob.userReviewScore}}
+                <b>Review Score: </b>{{selected.userReviewScore}}
                 <br />
-                <b>Timeframe: </b>{{selectedJob.timeframe}}
+                <b>Timeframe: </b>{{selected.timeframe}}
             </p>
         </div>
         <!--Icon links-->
@@ -73,4 +73,21 @@
             </div>
         </div>
     </ng-container>
+    <ng-container *ngIf="selected != undefined && abilityToPostJobs">
+        <h1>{{selected.companyName}}</h1>
+        <div class="imageContainer">
+            <img *ngIf="selected.photos[0] != undefined" src="{{selected.photos[0]}}">
+        </div>
+        <div class="description">
+            <p> <b>Trade Type: </b>{{selected.tradeType}}
+                <br />
+                <b>Description: </b>{{selected.description}}
+                <br />
+                <b>email: </b>{{selected.email}}
+                <br />
+                <b>Review Score: </b>{{selected.reviewScore}}
+            </p>
+        </div>
+    </ng-container>
+    
 </ng-template>
