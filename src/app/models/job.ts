@@ -1,9 +1,12 @@
 import { CompletionState } from '../enums/completionState';
 import { TradeType } from '../enums/trade-types';
+import { Quote } from './quote';
+
 
 export class Job {
+    id: string;
     title: string;
-    quote: number;
+    quote: any[] = [];
     budget: number;
     postcode: string;
     address: string;
@@ -15,5 +18,7 @@ export class Job {
     issueDate: Date;
     conclusionDate: Date;
     completionState: CompletionState;
+    workCandidates: any[] = [];
     issueUid: string;
+    userReviewScore: string;
 }

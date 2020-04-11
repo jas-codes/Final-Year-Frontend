@@ -77,7 +77,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
         let lat = ((data as any).result.latitude);
         let lng = ((data as any).result.longitude);
         this.newJob.lngLat = { lat, lng }
-        this.newJob.completionState = CompletionState.pending;
+        this.newJob.completionState = CompletionState.avialable;
 
         if (this.file) { //if a photo, upload it to blob, else post job
           this.fileUploadService.uploadFile(this.file, BlobLocations.jobPostingImages, function (result) {

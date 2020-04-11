@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Job } from '../models/job';
 import { of } from 'rxjs/internal/observable/of';
 import { CompletionState } from '../enums/completionState';
+import { Quote } from '../models/quote';
 
 @Injectable({
   providedIn: 'root'
@@ -15,28 +16,47 @@ export class JobsService {
   ) { }
 
   uploadNewJob(job: Job){
+    job.id = this.afirestore.createId();
     return of(this.afirestore.collection('jobs')
-      .add({...job})
-      .then(data => console.log(data))
-      .catch((error) => this.errorHandler(error)
-      )
-    )
+      .doc(job.id)
+      .set({...job})
+      .catch(error => this.errorHandler(error))
+    );
   }
 
   getJobs(){
-    return this.jobCollection = this.afirestore.collection('jobs');
+    return this.afirestore.collection('jobs');
   }
 
   
   getMapJobs(){
-    return this.jobCollection = this.afirestore.collection<Job>('jobs', ref => {
+    return this.afirestore.collection<Job>('jobs', ref => {
       return ref
-        .where('completionState', '==', CompletionState.pending);
+        .where('completionState', "in", 
+        [
+          CompletionState.pending,
+          CompletionState.traderAccepted,
+          CompletionState.avialable
+        ]);
     });
   }
 
   getJobsForUser(uid: string) {
     return this.jobCollection = this.afirestore.collection('jobs', ref => ref.where('issueUid', '==', uid));
+  }
+
+  updateJob(job: Job) {
+    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job))
+  }
+
+  setQuote(job: Job, quote: Quote) {
+    job.quote.push(Object.assign({}, quote));
+    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job))
+  }
+
+  setAcceptedJob(job: Job, uid: string) {
+    job.workCandidates.push({uid: uid, completionState: CompletionState.traderAccepted})
+    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job));
   }
 
   errorHandler(error) {

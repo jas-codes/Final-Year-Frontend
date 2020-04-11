@@ -11,15 +11,15 @@ export class MapService {
   constructor() { }
 
   //instantiates an object marker
-  addMarker(job: Job) {
+  addMarker(lngLat, title, trade) {
     var marker = { //not using default type google.maps.marker due to bespoke implementation
       position: {
-        lat: job.lngLat.lat,
-        lng: job.lngLat.lng
+        lat: lngLat.lat,
+        lng: lngLat.lng
       },
-      title: 'Title: ' + job.title,
+      title: 'Title: ' + title,
       options: {
-        icon: this.iconSelection(job.trade), 
+        icon: this.iconSelection(trade), 
       }
     }
     return marker

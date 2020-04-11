@@ -38,6 +38,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FirebaseConfig } from 'src/environments/firebase-config';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { QuoteComponent } from './quote/quote.component';
 
 
 
@@ -71,6 +72,7 @@ const ANGULAR_MATERIAL_MODULES = [
     UserProfileComponent,
     NavBarComponent,
     CreateAccountComponent,
+    QuoteComponent,
   ],
   imports: [
     BrowserModule,

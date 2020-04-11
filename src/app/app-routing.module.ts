@@ -11,17 +11,17 @@ import { CreateAccountComponent } from './create-account/create-account.componen
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: UserProfileComponent},
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'home', component: NavBarComponent,
     children: [
       { path: '', redirectTo: 'map', pathMatch: 'full'},
-      { path: 'map', component: MapComponent, outlet: 'nav-links' },
-      { path: 'my-jobs', component: MyJobsComponent, outlet: 'nav-links'},
-      { path: 'job-history', component: JobHistoryComponent, outlet: 'nav-links'},
-      { path: 'my-page', component: MyPageComponent, outlet: 'nav-links'},
-      { path: 'chats', component: ChatsComponent, outlet: 'nav-links' }
+      { path: 'map', component: MapComponent, outlet: 'navLinks' },
+      { path: 'my-jobs', component: MyJobsComponent, outlet: 'navLinks'},
+      { path: 'job-history', component: JobHistoryComponent, outlet: 'navLinks'},
+      { path: 'my-page', component: MyPageComponent, outlet: 'navLinks'},
+      { path: 'chats', component: ChatsComponent, outlet: 'navLinks' }
     ]
   }
 ];
