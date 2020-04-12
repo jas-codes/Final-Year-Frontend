@@ -37,11 +37,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FirebaseConfig } from 'src/environments/firebase-config';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { QuoteComponent } from './quote/quote.component';
-
-
-
+import { ChatListComponent } from './chats/components/chat-list/chat-list.component';
+import { ChatComponent } from './chats/components/chat/chat.component';
+import { ChatListPipe } from './pipes/chat-list.pipe';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -59,6 +59,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatDatepickerModule,
   MatNativeDateModule
 ]
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,6 +74,9 @@ const ANGULAR_MATERIAL_MODULES = [
     NavBarComponent,
     CreateAccountComponent,
     QuoteComponent,
+    ChatListComponent,
+    ChatComponent,
+    ChatListPipe,
   ],
   imports: [
     BrowserModule,

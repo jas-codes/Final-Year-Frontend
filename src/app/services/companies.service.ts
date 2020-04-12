@@ -16,7 +16,6 @@ export class CompaniesService {
 
   createCompany(form: FormGroup, data) {
     var company = new Company();
-    console.log(data);
     company.companyName = form.get('companyName').value;
     company.email = data.email;
     company.phoneNumber = data.phoneNumber;

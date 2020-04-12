@@ -1,6 +1,5 @@
 .list-item:hover {
-    background-color: var(--bg-primary);
-    opacity: 0.7;
+    background-color: rgb(215, 242, 255);
 }
 
 .list-item {
@@ -12,6 +11,7 @@
     position: absolute;
     left: 4rem;
     top: 0.3rem;
+    z-index: 5;;
 }
 
 .extra-spacing {
@@ -19,35 +19,39 @@
     margin-bottom: 1.6rem;
 }
 
-.list {
-    width: 97%;
-    margin-left: 1.5%;
-    margin-top: 1%;
-}
-
 .list-item .image {
     width: 3rem;
     height: 3rem;
-    border-radius: 50%;
     background-color: grey;
+}
+
+.list-item h4, h5 {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 img {
     position: relative;
-    top: 0.4rem;
+    top:0.4rem;
     max-width: 100%;
     max-height: 100%;
-    border-radius: 50%;
+    z-index: 5;
 }
 
 mat-form-field {
     width: 97%;
     margin-left: 1.5%;
-    margin-top: 1%;
+    margin-top: 1%;  
 }
 
 mat-icon {
     position: absolute;
-    right: 3rem;
-    top: 0.6rem;
+    right: 1.5rem;
+    top: 0.7rem;
+    z-index: 5;
+}
+
+span {
+    margin-left: 1rem;
+    color: grey;
 }

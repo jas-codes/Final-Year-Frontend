@@ -13,13 +13,15 @@ import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { CompletionState } from '../enums/completionState';
 import { Quote } from '../models/quote';
 import { Company } from '../models/company';
+import { ChatService } from '../chats/services/chat.service';
+import { Chat } from '../models/chat';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit, OnDestroy  {
+export class MapComponent implements OnInit, OnDestroy {
   //component Variables
   @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
   selected: any;
@@ -38,16 +40,16 @@ export class MapComponent implements OnInit, OnDestroy  {
   company: Company;
 
   //google maps variables
-  getLocationOptions = { enableHighAccuracy: true, maximumAge:Infinity, timeout: 5000};
-  mapHeight:string = window.innerHeight + 'px';
+  getLocationOptions = { enableHighAccuracy: true, maximumAge: Infinity, timeout: 5000 };
+  mapHeight: string = window.innerHeight + 'px';
   centre: google.maps.LatLngLiteral;
   markers: any[] = [];
   mapOptions: google.maps.MapOptions = {
     mapTypeId: 'roadmap',
     styles: [{
       "featureType": "poi",
-      "stylers": [{ 
-        visibility: "off" 
+      "stylers": [{
+        visibility: "off"
       }]
     }, {
       "featureType": "transit.station.bus",
@@ -64,17 +66,18 @@ export class MapComponent implements OnInit, OnDestroy  {
     private companiesService: CompaniesService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private chatService: ChatService,
     public mapService: MapService
   ) { }
 
-  ngOnInit( ): void {
+  ngOnInit(): void {
     var self = this;
 
     if (this.authService.user$) { //get the user
       this.userSub = this.authService.user$.subscribe((user) => {
-        if(user != null){
+        if (user != null) {
           this.user = user;
-          if(user.accountType == UserTypes.user) { //what type of user
+          if (user.accountType == UserTypes.user) { //what type of user
             this.drawCompanyMarkers();
             this.abilityToPostJobs = true;
           }
@@ -87,12 +90,12 @@ export class MapComponent implements OnInit, OnDestroy  {
       });
     }
 
-    navigator.geolocation.getCurrentPosition( function(position) {
+    navigator.geolocation.getCurrentPosition(function (position) {
       self.centre = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       }
-    }, 
+    },
       this.errorCallbackAccuracy,
       this.getLocationOptions
     );
@@ -141,9 +144,9 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   //open marker content when clicked
   openInfo(marker: MapMarker, index) {
-    if(this.user.accountType == UserTypes.trader)
+    if (this.user.accountType == UserTypes.trader)
       this.selected = this.jobsList[index];
-    else 
+    else
       this.selected = this.companyList[index];
     this.infoWindow.open(marker);
   }
@@ -160,16 +163,41 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.jobsService.setQuote(this.selected, quote);
   }
 
-  setAccepted(){
+  setAccepted() {
     this.selected.completionState = CompletionState.traderAccepted;
     this.jobsService.setAcceptedJob(this.selected, this.company.uid);
-    this.infoWindow.close()
+    this.infoWindow.close();
   }
 
-  navigationLinks(url) {
-    this.router.navigate([
-      { outlets: { navLinks: [url] }}
-    ],
-    { relativeTo: this.activatedRoute.parent });
+  createChat() {
+    var chat = new Chat();
+
+    if(this.company.photos[0])
+      chat.companyPicture = this.company.photos[0];
+    if(this.selected.picture)
+      chat.jobPicture = this.selected.picture;
+
+    chat.userUid = this.selected.issueUid;
+    chat.companyName = this.company.companyName;
+    chat.traderUid = this.user.uid;
+    chat.jobTitle = this.selected.title
+    chat.lastContact = Date.now();
+
+    this.chatService.createChat(chat)
+      .then((id) => this.navigationLinks('chats', id));
+  }
+
+  navigationLinks(url, id?) {
+    if (id) {
+      this.router.navigate([
+        { outlets: { navLinks: [url, id] } }
+      ],
+        { relativeTo: this.activatedRoute.parent });
+    } else {
+      this.router.navigate([
+        { outlets: { navLinks: [url] } }
+      ],
+        { relativeTo: this.activatedRoute.parent });
+    }
   }
 }
