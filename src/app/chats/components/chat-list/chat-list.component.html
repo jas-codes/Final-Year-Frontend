@@ -1,0 +1,40 @@
+<mat-form-field appearance="fill">
+    <mat-label>Search</mat-label>
+    <input #search [(ngModel)]="searchTerm" matInput placeholder="Example: Greenbank">
+</mat-form-field>
+
+<mat-list>
+        <ng-container *ngIf="showTraderTable; then traderTemplate; else userTemplate"></ng-container>
+</mat-list>
+
+<!--Show the trader chats and their details-->
+<ng-template #traderTemplate>
+    <mat-list-item *ngFor="let chat of chatList | chatListSearch: searchTerm; index as i" (click)="loadChat(chat.id)">
+        <div class="list-item" [ngClass]="{'extra-spacing': i == 0 }">
+            <div class="image">
+                <img *ngIf="chat.jobPicture" src={{chat.jobPicture}}>
+            </div>
+            <div class="text">
+                <h4>{{ chat.jobTitle }}</h4>
+                <h5>Last Communication: <span>{{chat.lastContact | date:'medium' }}</span></h5>
+            </div>
+            <mat-icon>arrow_forward_ios</mat-icon>
+        </div>
+    </mat-list-item>
+</ng-template>
+
+<!--Show the trader user and their details-->
+<ng-template #userTemplate>
+    <mat-list-item *ngFor="let chat of chatList | chatListSearch: searchTerm; index as i" (click)="loadChat(chat.id)">
+        <div class="list-item" [ngClass]="{'extra-spacing': i == 0 }">
+            <div class="image">
+                <img *ngIf="chat.companyPicture" src={{chat.companyPicture}}>
+            </div>
+            <div class="text">
+                <h4>{{chat.companyName}}</h4>
+                <h5>Job: {{chat.jobTitle}} <span>Last Communication: {{chat.lastContact | date:'medium' }} </span></h5>
+            </div>
+            <mat-icon>arrow_forward_ios</mat-icon>
+        </div>
+    </mat-list-item>
+</ng-template>

@@ -15,29 +15,29 @@ export class JobsService {
     private afirestore: AngularFirestore
   ) { }
 
-  uploadNewJob(job: Job){
+  uploadNewJob(job: Job) {
     job.id = this.afirestore.createId();
     return of(this.afirestore.collection('jobs')
       .doc(job.id)
-      .set({...job})
+      .set({ ...job })
       .catch(error => this.errorHandler(error))
     );
   }
 
-  getJobs(){
+  getJobs() {
     return this.afirestore.collection('jobs');
   }
 
-  
-  getMapJobs(){
+
+  getMapJobs() {
     return this.afirestore.collection<Job>('jobs', ref => {
       return ref
-        .where('completionState', "in", 
-        [
-          CompletionState.pending,
-          CompletionState.traderAccepted,
-          CompletionState.avialable
-        ]);
+        .where('completionState', "in",
+          [
+            CompletionState.pending,
+            CompletionState.traderAccepted,
+            CompletionState.avialable
+          ]);
     });
   }
 
@@ -46,17 +46,20 @@ export class JobsService {
   }
 
   updateJob(job: Job) {
-    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job))
+    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job)
+      .catch(error => this.errorHandler(error)));
   }
 
   setQuote(job: Job, quote: Quote) {
     job.quote.push(Object.assign({}, quote));
-    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job))
+    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job)
+      .catch(error => this.errorHandler(error)));
   }
 
   setAcceptedJob(job: Job, uid: string) {
-    job.workCandidates.push({uid: uid, completionState: CompletionState.traderAccepted})
-    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job));
+    job.workCandidates.push({ uid: uid, completionState: CompletionState.traderAccepted })
+    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job)
+      .catch(error => this.errorHandler(error)));
   }
 
   errorHandler(error) {

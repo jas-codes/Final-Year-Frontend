@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Job } from 'src/app/models/job';
 import { CompletionState } from 'src/app/enums/completionState';
-import { TradeType } from 'src/app/enums/trade-types';
 import { JobsService } from 'src/app/services/jobs.service';
 import { IUser } from 'src/app/services/user.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -81,7 +80,6 @@ export class JobListComponent implements OnInit, OnDestroy {
         this.user = user;
         
         this.jobsService.getJobsForUser(this.user.uid).valueChanges().subscribe((jobs) => {
-          console.log(jobs);
           this.currentJobs = jobs.filter(job => job.completionState == this.listType);
         });
       });

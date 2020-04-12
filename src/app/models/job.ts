@@ -1,7 +1,5 @@
 import { CompletionState } from '../enums/completionState';
 import { TradeType } from '../enums/trade-types';
-import { Quote } from './quote';
-
 
 export class Job {
     id: string;
