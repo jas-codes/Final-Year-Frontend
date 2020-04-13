@@ -12,4 +12,5 @@ export interface IUser {
     accountType?: string,
     companyName?: string,
     tradeType?: string
+    lngLat?: google.maps.LatLngLiteral;
 }

@@ -42,6 +42,15 @@ export class ChatService {
     .catch(error => this.errorHandler(error)));
   }
 
+  openExistingChat(issueUid: string, traderId: string) {
+    return this.chatCollection = this.afireStore.collection('chats',
+      ref => {
+        return ref
+          .where('traderUid', '==', traderId)
+          .where('userUid', '==', issueUid)
+      })
+  }
+
   errorHandler(error) {
     console.log(error);
   }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Job } from 'src/app/models/job';
 import { TradeType } from 'src/app/enums/trade-types';
 import { Icons } from 'src/app/enums/icons';
+import { UserTypes } from 'src/app/enums/user-types';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,19 @@ export class MapService {
       }
     }
     return marker
+  };
+
+  addPersonalMarker(lngLat) {
+    var marker = {
+      position: {
+        lat: lngLat.lat,
+        lng: lngLat.lng
+      },
+      options: {
+        icon: Icons.userHere
+      }
+    }
+    return marker;
   }
 
   //Determines which icon to provide to marker

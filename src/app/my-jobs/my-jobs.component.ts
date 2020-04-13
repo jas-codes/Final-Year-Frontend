@@ -8,16 +8,11 @@ import { CompletionState } from '../enums/completionState';
   styleUrls: ['./my-jobs.component.css']
 })
 export class MyJobsComponent implements OnInit {
-  selectedJob: Job;
-  currentJobList: CompletionState = CompletionState.active;
-  pendingJobList: CompletionState = CompletionState.pending;
+  currentJobList: CompletionState[] = [CompletionState.active];
+  pendingJobList: CompletionState[] = [CompletionState.pending, CompletionState.traderAccepted];
 
   constructor() { }
 
   ngOnInit(): void { }
-
-  setJob(job) {
-    this.selectedJob = job
-  }
 
 }

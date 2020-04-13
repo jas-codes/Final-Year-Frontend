@@ -4,6 +4,8 @@ import { Job } from '../models/job';
 import { of } from 'rxjs/internal/observable/of';
 import { CompletionState } from '../enums/completionState';
 import { Quote } from '../models/quote';
+import { QuotesService } from './quotes.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,8 @@ export class JobsService {
   jobCollection: AngularFirestoreCollection<Job>;
 
   constructor(
-    private afirestore: AngularFirestore
+    private afirestore: AngularFirestore,
+    private quoteService: QuotesService
   ) { }
 
   uploadNewJob(job: Job) {
@@ -45,13 +48,30 @@ export class JobsService {
     return this.jobCollection = this.afirestore.collection('jobs', ref => ref.where('issueUid', '==', uid));
   }
 
-  updateJob(job: Job) {
-    return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job)
-      .catch(error => this.errorHandler(error)));
+  getJobsByIds(jobIds: string[]) {
+    return this.jobCollection = this.afirestore.collection('jobs', ref => 
+      {
+        return ref
+          .where('id', 'in', jobIds)
+      });
   }
 
-  setQuote(job: Job, quote: Quote) {
-    job.quote.push(Object.assign({}, quote));
+  //get the jobs for a trader based on their qutoes and completionstates
+  //Using maps to be able to return nested observables
+  getJobsQuotedByTrader(traderUid: string) {
+    return this.quoteService.getQuotesForTrader(traderUid).pipe( //get the quotes for the trader
+      map(quotesCollection => { //map that collection to get data
+        return quotesCollection.valueChanges().pipe(
+          map(quotes => {
+            let jobIds = quotes.map(quote => quote.jobId);  //get the job ids from that
+            return this.getJobsByIds(jobIds); //get the jobs 
+          })
+        );
+      })
+    )
+  }
+
+  updateJob(job: Job) {
     return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job)
       .catch(error => this.errorHandler(error)));
   }

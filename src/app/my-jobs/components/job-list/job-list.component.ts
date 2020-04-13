@@ -5,6 +5,9 @@ import { JobsService } from 'src/app/services/jobs.service';
 import { IUser } from 'src/app/services/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UserTypes } from 'src/app/enums/user-types';
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-job-list',
@@ -12,94 +15,68 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./job-list.component.css']
 })
 export class JobListComponent implements OnInit, OnDestroy {
-  @Input() listType: CompletionState;
-  @Output() selectedJob = new EventEmitter<Job>();
-
+  @Input() listTypes: CompletionState[];
+  jobCollection: AngularFirestoreCollection<Job>;
   searchTerm: string = "";
-  currentJobs: Job[] = [];
-  pendingJobs: Job[] = [];
+  jobs: Job[] = [];
+
   userSub: Subscription;
   user: IUser;
 
-  // job: Job = {
-  //   title: "Building a Wall Actively",
-  //   completionState: CompletionState.active,
-  //   address: "random address",
-  //   conclusionDate: new Date(Date.now()),
-  //   description: "i am a description",
-  //   issueDate: new Date(Date.now()),
-  //   lngLat: { lat: 50, lng: -4 },
-  //   quote: 0,
-  //   timeframe: "2 weeks",
-  //   trade: TradeType.carpentry,
-  //   postcode: "PL4 8PS",
-  //   issueUid: '',
-  //   budget: 1
-  // }
-
-  // job1: Job = {
-  //   title: "Building a Wall Pendingly",
-  //   completionState: CompletionState.pending,
-  //   address: "random address",
-  //   conclusionDate: new Date(Date.now()),
-  //   description: "i am a description",
-  //   issueDate: new Date(Date.now()),
-  //   lngLat: { lat: 50, lng: -4 },
-  //   quote: 0,
-  //   timeframe: "2 weeks",
-  //   trade: TradeType.carpentry,
-  //   postcode: "PL4 8PS",
-  //   issueUid: '',
-  //   budget: 1
-  // }
-
-  // job2: Job = {
-  //   title: "Building a Wall Historically",
-  //   completionState: CompletionState.closed,
-  //   address: "random address",
-  //   conclusionDate: new Date(Date.now()),
-  //   description: "i am a description",
-  //   issueDate: new Date(Date.now()),
-  //   lngLat: { lat: 50, lng: -4 },
-  //   quote: 0,
-  //   timeframe: "2 weeks",
-  //   trade: TradeType.carpentry,
-  //   postcode: "PL4 8PS",
-  //   issueUid: '',
-  //   budget: 1
-  // }
-
   constructor(
     private authService: AuthService,
-    private jobsService: JobsService
+    private jobsService: JobsService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+
     if (this.authService.user$) {
       this.userSub = this.authService.user$.subscribe((user) => {
         this.user = user;
         
-        this.jobsService.getJobsForUser(this.user.uid).valueChanges().subscribe((jobs) => {
-          this.currentJobs = jobs.filter(job => job.completionState == this.listType);
-        });
+        if(this.user.accountType == UserTypes.trader) { //if trader
+
+          //get the quotes, then get the jobs based on that
+          this.jobsService.getJobsQuotedByTrader(user.uid).subscribe((quoteCollection) => {
+            quoteCollection.subscribe((jobCollection) => {
+              this.jobCollection = jobCollection;
+              this.jobCollection.valueChanges().subscribe((jobs) => {
+                this.jobs = jobs
+                this.filterJobs(); //filter by completionStates
+              })
+            });
+          });
+        } else { //if you are a user get jobs
+          this.jobCollection = this.jobsService.getJobsForUser(user.uid);
+          this.jobCollection.valueChanges().subscribe((jobs) => {
+            this.jobs = jobs
+            this.filterJobs();
+          })
+        }
       });
     }
-
-
-    // this.currentJobs.push(this.job);
-    // this.currentJobs.push(this.job);
-    // this.currentJobs.push(this.job1);
-    // this.currentJobs.push(this.job1);
-    // this.currentJobs.push(this.job2);
-    // this.currentJobs.push(this.job2);
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
   }
 
-  select(job) {
-    this.selectedJob.emit(job);
+  filterJobs() {
+    this.jobs = this.jobs.filter((job) => {
+      if (this.listTypes.indexOf(job.completionState) >= 0)
+        return true
+      else 
+        return false
+    })
+  }
+
+  loadJobDetails(id: number, index: number){
+    this.router.navigate([
+      { outlets: { navLinks: ['my-jobs', id] } }
+    ],
+      { relativeTo: this.activatedRoute.parent, state: { data: this.jobs[index] } });
   }
 
 }

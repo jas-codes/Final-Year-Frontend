@@ -1,5 +1,6 @@
 export class Quote {
-    companyName: string;
-    uid: string;
-    quote: number;
+    id: string;
+    traderUid: string;
+    jobId: string;
+    amount: number;
 }

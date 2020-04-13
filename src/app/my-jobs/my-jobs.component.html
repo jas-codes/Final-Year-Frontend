@@ -3,9 +3,9 @@
 </mat-toolbar>
 <mat-tab-group color="primary" dynamicHeight>
     <mat-tab label="Current Jobs">
-        <app-job-list [listType]="currentJobList" (selectedJob)="setJob($event)"></app-job-list>
+        <app-job-list [listTypes]="currentJobList"></app-job-list>
     </mat-tab>
     <mat-tab label="Pending Jobs">
-        <app-job-list [listType]="pendingJobList" (selectedJob)="setJob($event)"></app-job-list>
+        <app-job-list [listTypes]="pendingJobList"></app-job-list>
     </mat-tab>
 </mat-tab-group>

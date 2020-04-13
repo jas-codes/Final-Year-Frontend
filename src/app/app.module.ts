@@ -42,6 +42,8 @@ import { QuoteComponent } from './quote/quote.component';
 import { ChatListComponent } from './chats/components/chat-list/chat-list.component';
 import { ChatComponent } from './chats/components/chat/chat.component';
 import { ChatListPipe } from './pipes/chat-list.pipe';
+import { JobDetailsComponent } from './my-jobs/components/job-details/job-details.component';
+import { JobSearchPipe } from './pipes/job-search.pipe';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -77,6 +79,8 @@ const ANGULAR_MATERIAL_MODULES = [
     ChatListComponent,
     ChatComponent,
     ChatListPipe,
+    JobDetailsComponent,
+    JobSearchPipe
   ],
   imports: [
     BrowserModule,

@@ -71,6 +71,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
   //submit form and image currently... need to move image upload to independent
   submit() {
     var self = this;
+    this.newJob.issueDate = Date.now();
     //check postcode validity and converto to LatLng for google maps
     this.postcodeService.convertPostcodeToLatLong(this.form.get('postcode').value).subscribe(
       (data) => {

@@ -8,5 +8,6 @@ export enum Icons {
     cleaner = '/assets/icons/job-icons/cleaning.png',
     carpentry = '/assets/icons/job-icons/saw.png',
     landscaper = '/assets/icons/job-icons/pruning-shears.png',
+    userHere = '/assets/icons/job-icons/down.png',
     other = '/assets/icons/job-icons/toolbox.png',
 }

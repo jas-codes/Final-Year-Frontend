@@ -4,7 +4,7 @@ import { TradeType } from '../enums/trade-types';
 export class Job {
     id: string;
     title: string;
-    quote: any[] = [];
+    quotes: string[] = [];
     budget: number;
     postcode: string;
     address: string;
@@ -13,10 +13,11 @@ export class Job {
     picture?: string;
     timeframe: string;
     trade: TradeType;
-    issueDate: Date;
-    conclusionDate: Date;
+    issueDate: number;
+    conclusionDate: number;
     completionState: CompletionState;
     workCandidates: any[] = [];
     issueUid: string;
     userReviewScore: string;
+    reviewScore: number;
 }
