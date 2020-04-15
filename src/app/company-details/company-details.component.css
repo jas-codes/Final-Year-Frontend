@@ -1,0 +1,44 @@
+.screen-dim {
+    background-color: rgba(0,0,0,0.4);
+    height: 100%;
+    width: 100%;
+    margin-left: -10%;
+}
+
+.exit {
+    position: absolute;
+    right: 1rem;
+    top: 0.6rem;
+}
+
+mat-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 28rem;
+}
+
+ul {
+    padding-left: 2rem;
+    padding-right: 4rem;
+    list-style-type: none;
+}
+
+li {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #ccc;
+}
+
+li span {
+    float: right;
+}
+
+li:last-child {
+    border: none;
+}
+
+mat-card-actions button {
+    width: 45%
+}

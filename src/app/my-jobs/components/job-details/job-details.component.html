@@ -1,6 +1,7 @@
 <body class="container">
-    <app-quote class="send-front quote-card" *ngIf="provideQuote" (dismiss)="showProvideQuote()"
+    <app-quote class="send-front component-card" *ngIf="provideQuote" (dismiss)="showProvideQuote()"
         (quote)="createQuote($event)"></app-quote>
+    <app-company-details class="send-front component-card" *ngIf="companyInfo" [company]="company" (dismiss)="showCompanyInfo()"></app-company-details>
     <mat-toolbar color="primary">
         <span>My Jobs > Job Details > {{job.title}}</span>
     </mat-toolbar>
@@ -105,9 +106,10 @@
 </ng-template>
 
 <ng-template #quotesListContainer>
-    <span>Select your desired trader from quotes</span>
+    <span>Select Quote</span>
+    <button mat-button color="primary" [disabled]="!chosenQuote" (click)="showCompanyInfo()">Inspect Company</button>
     <mat-radio-group class="radio-group" aria-label="Select an option" [(ngModel)]="chosenQuote">
         <mat-radio-button class="radio-button" *ngFor="let quote of quotesList" [value]="quote">
-            {{quote.companyName}} - £{{quote.amount}}</mat-radio-button>
+            {{quote.companyName}} - £{{quote.amount}} <span *ngIf="false">Accepted</span></mat-radio-button>
     </mat-radio-group>
 </ng-template>

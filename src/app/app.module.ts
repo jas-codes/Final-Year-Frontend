@@ -45,6 +45,7 @@ import { ChatListPipe } from './pipes/chat-list.pipe';
 import { JobDetailsComponent } from './my-jobs/components/job-details/job-details.component';
 import { JobSearchPipe } from './pipes/job-search.pipe';
 import { MatRadioModule } from '@angular/material/radio';
+import { CompanyDetailsComponent } from './company-details/company-details.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -82,7 +83,8 @@ const ANGULAR_MATERIAL_MODULES = [
     ChatComponent,
     ChatListPipe,
     JobDetailsComponent,
-    JobSearchPipe
+    JobSearchPipe,
+    CompanyDetailsComponent
   ],
   imports: [
     BrowserModule,

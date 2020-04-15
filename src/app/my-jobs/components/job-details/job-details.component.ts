@@ -32,6 +32,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   quotesCollection: AngularFirestoreCollection<Quote>;
   quotesList: Quote[] = [];
   tradersQuote: Quote = new Quote();
+  companyInfo: boolean = false;
 
   userSub: Subscription;
   user: IUser;
@@ -148,12 +149,12 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           return this.chosenQuote.traderUid == wcUid;
         });
 
-        this.job.quotes.forEach((quoteId) => {
-          if (quoteId != this.chosenQuote.id)
-            this.quoteService.deleteQuote(quoteId);
-        })
-
         if (findTraderInJobWC) {
+          this.job.quotes.forEach((quoteId) => {
+            if (quoteId != this.chosenQuote.id)
+              this.quoteService.deleteQuote(quoteId);
+          });
+
           this.job.quotes = [];
           this.job.quotes.push(this.chosenQuote.id);
           this.job.workCandidates = [];
@@ -161,11 +162,11 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           this.job.completionState = CompletionState.active;
         }
       }
-    } else {
+    } else if (this.user.accountType == UserTypes.trader) {
       let findTraderInJobWC = this.job.workCandidates.find((wcUid) => {
         return wcUid == this.user.uid
       });
-      if (findTraderInJobWC) {
+      if (!findTraderInJobWC) {
         this.job.completionState = CompletionState.traderAccepted;
         this.jobsService.setAcceptedJob(this.job, this.company.uid);
       }
@@ -215,7 +216,6 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         else {
           var chat = new Chat();
 
-          console.log(company);
           if (company.photos[0])
             chat.companyPicture = company.photos[0];
           if (this.job.picture)
@@ -226,13 +226,20 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           chat.traderUid = company.uid;
           chat.jobTitle = this.job.title
           chat.lastContact = Date.now();
-          console.log(chat);
           this.chatService.createChat(chat)
             .then((id) => this.navigationLinks('chats', id));
         }
       })
       )
     }));
+  }
+
+  showCompanyInfo() {
+    var companySubscription = this.companyService.getCompanyByUid(this.chosenQuote.traderUid).valueChanges().subscribe((company) => {
+      this.company = company;
+      this.companyInfo = !this.companyInfo;
+      companySubscription.unsubscribe();
+    });
   }
 
   navigationLinks(url, id?) {
