@@ -90,12 +90,11 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
             if (quotes[0])
               this.tradersQuote = quotes[0];
           }));
-        } else {
-          this.quotesCollection = this.quoteService.getQuotesForJob(this.job.id)
-          this.subscriptions.push(this.quotesCollection.valueChanges().subscribe((quotes) => {
-            this.quotesList = quotes;
-          }));
         }
+        this.quotesCollection = this.quoteService.getQuotesForJob(this.job.id)
+        this.subscriptions.push(this.quotesCollection.valueChanges().subscribe((quotes) => {
+          this.quotesList = quotes;
+        }));      
       });
     }
   }
@@ -143,12 +142,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   }
 
   setAccepted() {
+    console.log('in accepting', (this.user.accountType == UserTypes.user));
     if (this.user.accountType == UserTypes.user) {
       if (this.job.completionState == CompletionState.traderAccepted) {
         let findTraderInJobWC = this.job.workCandidates.find((wcUid) => {
           return this.chosenQuote.traderUid == wcUid;
         });
-
+        console.log('traderWC',findTraderInJobWC)
         if (findTraderInJobWC) {
           this.job.quotes.forEach((quoteId) => {
             if (quoteId != this.chosenQuote.id)
@@ -160,6 +160,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           this.job.workCandidates = [];
           this.job.workCandidates = [this.chosenQuote.traderUid];
           this.job.completionState = CompletionState.active;
+          this.jobsService.updateJob(this.job);
         }
       }
     } else if (this.user.accountType == UserTypes.trader) {

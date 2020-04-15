@@ -67,10 +67,10 @@ export class QuotesService {
     this.afireStore.doc<Quote>(`quotes/${id}`).delete();
   }
 
-  removeQuoteFromJob(quotesList: Quote[], jobQuotes: string[], uid): string[] {
+  removeQuoteFromJob(quotesList: Quote[], jobQuotes: string[], uid:string): string[] {
     var quoteId = quotesList.find((quote) => {
       return quote.traderUid == uid
-    }).id
+    }).id;
 
     if (quoteId) {
       var quoteSet = new Set(jobQuotes);
