@@ -44,6 +44,7 @@ import { ChatComponent } from './chats/components/chat/chat.component';
 import { ChatListPipe } from './pipes/chat-list.pipe';
 import { JobDetailsComponent } from './my-jobs/components/job-details/job-details.component';
 import { JobSearchPipe } from './pipes/job-search.pipe';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -59,7 +60,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatToolbarModule,
   MatButtonToggleModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatRadioModule
 ]
 
 @NgModule({

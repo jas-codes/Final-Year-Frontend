@@ -2,10 +2,13 @@
     <span>My Jobs</span>
 </mat-toolbar>
 <mat-tab-group color="primary" dynamicHeight>
-    <mat-tab label="Current Jobs">
+    <mat-tab label="Active Jobs">
         <app-job-list [listTypes]="currentJobList"></app-job-list>
     </mat-tab>
-    <mat-tab label="Pending Jobs">
-        <app-job-list [listTypes]="pendingJobList"></app-job-list>
+    <mat-tab label="Quoted Jobs">
+        <app-job-list [listTypes]="quotedJobList"></app-job-list>
+    </mat-tab>
+    <mat-tab *ngIf="showAvailableList" label="Available Jobs">
+        <app-job-list [listTypes]="availableJobList"></app-job-list>
     </mat-tab>
 </mat-tab-group>

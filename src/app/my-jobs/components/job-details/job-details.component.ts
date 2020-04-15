@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { JobsService } from 'src/app/services/jobs.service';
 import { CompaniesService } from 'src/app/services/companies.service';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { IUser } from 'src/app/services/user.model';
 import { UserTypes } from 'src/app/enums/user-types';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -12,20 +12,26 @@ import { Chat } from 'src/app/models/chat';
 import { Quote } from 'src/app/models/quote';
 import { QuotesService } from 'src/app/services/quotes.service';
 import { ChatService } from 'src/app/chats/services/chat.service';
-import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { Company } from 'src/app/models/company';
 import { CompletionState } from 'src/app/enums/completionState';
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-job-details',
   templateUrl: './job-details.component.html',
   styleUrls: ['./job-details.component.css']
 })
-export class JobDetailsComponent implements OnInit {
+export class JobDetailsComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   job: Job = new Job();
   trader: boolean = false;
   provideQuote: boolean = false;
   statusText: string = '';
+  chosenQuote: Quote;
+  quotesCollection: AngularFirestoreCollection<Quote>;
+  quotesList: Quote[] = [];
+  tradersQuote: Quote = new Quote();
 
   userSub: Subscription;
   user: IUser;
@@ -57,27 +63,52 @@ export class JobDetailsComponent implements OnInit {
     private chatService: ChatService,
     private quoteService: QuotesService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
-    this.job = history.state.data
-    this.setStatusText();
+    of(history.state.data).subscribe((data) => {
+      this.job = data;
+      this.setStatusText();
+    });
+
     if (this.authService.user$) {
       this.userSub = this.authService.user$.subscribe((user) => {
         this.user = user;
         this.centre = this.calculateCentre(this.job.lngLat, this.user.lngLat);
-        this.markers.push(this.mapService.addMarker(this.job.lngLat, this.job.title, this.job.trade));
-        this.markers.push(this.mapService.addPersonalMarker(this.user.lngLat));
+        this.drawMapMarkers();
 
         if (this.user.accountType == UserTypes.trader) { //if trader
           this.trader = true;
-          this.companyService.getCompanyByUid(user.uid).valueChanges().subscribe((company) => {
-            this.company = company
-          })
+          this.subscriptions.push(this.companyService.getCompanyByUid(user.uid).valueChanges().subscribe((company) => {
+            this.company = company;
+          }));
+          this.quotesCollection = this.quoteService.getQuoteByTrader(this.user.uid, this.job.id);
+          this.subscriptions.push(this.quotesCollection.valueChanges().subscribe((quotes) => {
+            if (quotes[0])
+              this.tradersQuote = quotes[0];
+          }));
+        } else {
+          this.quotesCollection = this.quoteService.getQuotesForJob(this.job.id)
+          this.subscriptions.push(this.quotesCollection.valueChanges().subscribe((quotes) => {
+            this.quotesList = quotes;
+          }));
         }
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+
+  }
+
+  drawMapMarkers() {
+    this.markers.push(this.mapService.addMarker(this.job.lngLat, this.job.title, this.job.trade));
+    if (!this.mapService.CompareLngLatPoints(this.user.lngLat, this.job.lngLat))
+      this.markers.push(this.mapService.addPersonalMarker(this.user.lngLat));
   }
 
   calculateCentre(jobLngLat: google.maps.LatLngLiteral, userLngLat: google.maps.LatLngLiteral) {
@@ -86,7 +117,7 @@ export class JobDetailsComponent implements OnInit {
     return { lat: lat, lng: lng }
   }
 
-  setStatusText(){
+  setStatusText() {
     switch (this.job.completionState) {
       case CompletionState.active:
         this.statusText = 'Active -> The job is currently in progress'
@@ -97,8 +128,8 @@ export class JobDetailsComponent implements OnInit {
       case CompletionState.closed:
         this.statusText = 'Closed -> The job has concluded'
         break;
-      case CompletionState.pending:
-        this.statusText = 'Pending -> The job has quotes for review'
+      case CompletionState.quoted:
+        this.statusText = 'Quoted -> The job has quotes for review'
         break;
       case CompletionState.traderAccepted:
         this.statusText = 'Accepted -> A trader has accepted the job for the budget'
@@ -111,13 +142,47 @@ export class JobDetailsComponent implements OnInit {
   }
 
   setAccepted() {
-    this.job.completionState = CompletionState.traderAccepted;
-    this.createQuote(this.job.budget);
-    this.jobsService.setAcceptedJob(this.job, this.company.uid);
+    if (this.user.accountType == UserTypes.user) {
+      if (this.job.completionState == CompletionState.traderAccepted) {
+        let findTraderInJobWC = this.job.workCandidates.find((wcUid) => {
+          return this.chosenQuote.traderUid == wcUid;
+        });
+
+        this.job.quotes.forEach((quoteId) => {
+          if (quoteId != this.chosenQuote.id)
+            this.quoteService.deleteQuote(quoteId);
+        })
+
+        if (findTraderInJobWC) {
+          this.job.quotes = [];
+          this.job.quotes.push(this.chosenQuote.id);
+          this.job.workCandidates = [];
+          this.job.workCandidates = [this.chosenQuote.traderUid];
+          this.job.completionState = CompletionState.active;
+        }
+      }
+    } else {
+      let findTraderInJobWC = this.job.workCandidates.find((wcUid) => {
+        return wcUid == this.user.uid
+      });
+      if (findTraderInJobWC) {
+        this.job.completionState = CompletionState.traderAccepted;
+        this.jobsService.setAcceptedJob(this.job, this.company.uid);
+      }
+    }
   }
 
   setRejected() {
-    
+    this.job.quotes = this.quoteService.removeQuoteFromJob(this.quotesList, this.job.quotes, this.user.uid);
+    this.job.workCandidates = this.jobsService.removeWorkCandidates(this.user.uid, this.job.workCandidates);
+    this.jobsService.updateJob(this.job);
+    this.location.back();
+  }
+
+  deleteJob() {
+    this.quoteService.deleteAllQuotesFromJob(this.job.id);
+    this.jobsService.deleteJob(this.job);
+    this.location.back();
   }
 
   createQuote(event: number) {
@@ -125,33 +190,49 @@ export class JobDetailsComponent implements OnInit {
     quote.amount = event;
     quote.traderUid = this.user.uid;
     quote.jobId = this.job.id;
-    this.quoteService.createQuote(quote).toPromise().then(() => {
-      this.job.quotes.push(quote.id);
-      this.jobsService.updateJob(this.job);
-    });
+    quote.companyName = this.company.companyName; 
+    this.subscriptions.push(this.quoteService.createOrUpdateQuote(quote).subscribe((update) => {
+      if (!update) {
+        this.quoteService.createQuote(quote).toPromise().then(() => {
+          this.job.quotes.push(quote.id);
+          this.jobsService.updateJob(this.job);
+        });
+      }
+    }));
   }
 
   createChat() {
-    this.chatService.openExistingChat(this.job.issueUid, this.user.uid).valueChanges().subscribe((chats) => {
-      if(chats[0])
-        this.navigationLinks('chats', chats[0].id);
-      else {
-        var chat = new Chat();
+    let traderUid;
+    if (this.user.accountType == UserTypes.user)
+      traderUid = this.chosenQuote.traderUid;
+    else
+      traderUid = this.user.uid;
 
-        if(this.company.photos[0])
-          chat.companyPicture = this.company.photos[0];
-        if(this.job.picture)
-          chat.jobPicture = this.job.picture;
-    
-        chat.userUid = this.job.issueUid;
-        chat.companyName = this.company.companyName;
-        chat.traderUid = this.user.uid;
-        chat.jobTitle = this.job.title
-        chat.lastContact = Date.now();
-        this.chatService.createChat(chat)
-        .then((id) => this.navigationLinks('chats', id));
-      }
-    })
+    this.subscriptions.push(this.companyService.getCompanyByUid(traderUid).valueChanges().subscribe((company) => {
+      this.subscriptions.push(this.chatService.openExistingChat(this.job.issueUid, company.uid).valueChanges().subscribe((chats) => {
+        if (chats[0])
+          this.navigationLinks('chats', chats[0].id);
+        else {
+          var chat = new Chat();
+
+          console.log(company);
+          if (company.photos[0])
+            chat.companyPicture = company.photos[0];
+          if (this.job.picture)
+            chat.jobPicture = this.job.picture;
+
+          chat.userUid = this.job.issueUid;
+          chat.companyName = company.companyName;
+          chat.traderUid = company.uid;
+          chat.jobTitle = this.job.title
+          chat.lastContact = Date.now();
+          console.log(chat);
+          this.chatService.createChat(chat)
+            .then((id) => this.navigationLinks('chats', id));
+        }
+      })
+      )
+    }));
   }
 
   navigationLinks(url, id?) {

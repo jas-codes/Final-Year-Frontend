@@ -3,4 +3,5 @@ export class Quote {
     traderUid: string;
     jobId: string;
     amount: number;
+    companyName: string;
 }

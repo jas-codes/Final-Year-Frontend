@@ -35,6 +35,10 @@ export class FileUploadService {
     })
   }
 
+  deleteFile(url: string) {
+    this.aFireStorage.storage.refFromURL(url).delete();
+  }
+
   errorHandler(error) {
     //log error with firebase analytics
     console.log(error);

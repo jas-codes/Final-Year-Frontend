@@ -16,7 +16,9 @@ import { AngularFirestoreCollection } from '@angular/fire/firestore';
 })
 export class JobListComponent implements OnInit, OnDestroy {
   @Input() listTypes: CompletionState[];
+  private subscriptions: Subscription[] = [];
   jobCollection: AngularFirestoreCollection<Job>;
+
   searchTerm: string = "";
   jobs: Job[] = [];
 
@@ -35,44 +37,58 @@ export class JobListComponent implements OnInit, OnDestroy {
     if (this.authService.user$) {
       this.userSub = this.authService.user$.subscribe((user) => {
         this.user = user;
-        
-        if(this.user.accountType == UserTypes.trader) { //if trader
 
-          //get the quotes, then get the jobs based on that
-          this.jobsService.getJobsQuotedByTrader(user.uid).subscribe((quoteCollection) => {
-            quoteCollection.subscribe((jobCollection) => {
-              this.jobCollection = jobCollection;
-              this.jobCollection.valueChanges().subscribe((jobs) => {
-                this.jobs = jobs
-                this.filterJobs(); //filter by completionStates
-              })
-            });
-          });
+        if (this.user.accountType == UserTypes.trader) { //if trader
+          this.getJobsForTrader();
         } else { //if you are a user get jobs
-          this.jobCollection = this.jobsService.getJobsForUser(user.uid);
-          this.jobCollection.valueChanges().subscribe((jobs) => {
-            this.jobs = jobs
-            this.filterJobs();
-          })
+          this.getJobsForUser();
         }
       });
     }
   }
 
+  getJobsForUser() {
+    this.jobCollection = this.jobsService.getJobsForUser(this.user.uid);
+    if (this.jobCollection) {
+      this.subscriptions.push(this.jobCollection.valueChanges().subscribe((jobs) => {
+        this.jobs = jobs
+        if (jobs)
+          this.filterJobs();
+      }))
+    }
+  }
+
+  getJobsForTrader() {
+    //get the jobs based on the quotes and accepts the trader has made
+    this.subscriptions.push(this.jobsService.getJobsQuotedByTrader(this.user.uid).subscribe((quotedJobsCollection) => {
+      this.subscriptions.push(quotedJobsCollection.subscribe((jobsQuotedCollection) => {
+        if (jobsQuotedCollection) {
+          this.jobCollection = jobsQuotedCollection;
+          this.subscriptions.push(this.jobCollection.valueChanges().subscribe((quotedJobs) => {
+            if (quotedJobs)
+              this.jobs = quotedJobs;
+            this.filterJobs();
+          }));
+        }
+      }));
+    }));
+  }
+
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   filterJobs() {
     this.jobs = this.jobs.filter((job) => {
       if (this.listTypes.indexOf(job.completionState) >= 0)
         return true
-      else 
+      else
         return false
     })
   }
 
-  loadJobDetails(id: number, index: number){
+  loadJobDetails(id: number, index: number) {
     this.router.navigate([
       { outlets: { navLinks: ['my-jobs', id] } }
     ],

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Job } from '../models/job';
 import { CompletionState } from '../enums/completionState';
+import { AuthService } from '../services/auth.service';
+import { IUser } from '../services/user.model';
+import { Subscription } from 'rxjs';
+import { UserTypes } from '../enums/user-types';
 
 @Component({
   selector: 'app-my-jobs',
@@ -9,10 +13,26 @@ import { CompletionState } from '../enums/completionState';
 })
 export class MyJobsComponent implements OnInit {
   currentJobList: CompletionState[] = [CompletionState.active];
-  pendingJobList: CompletionState[] = [CompletionState.pending, CompletionState.traderAccepted];
+  quotedJobList: CompletionState[] = [CompletionState.quoted, CompletionState.traderAccepted];
+  availableJobList: CompletionState[] = [CompletionState.avialable];
+  showAvailableList: boolean = false;
 
-  constructor() { }
+  userSub: Subscription;
+  user: IUser;
 
-  ngOnInit(): void { }
+  constructor(
+    private authService: AuthService
+  ) { }
+
+  ngOnInit(): void {
+    if (this.authService.user$) {
+      this.userSub = this.authService.user$.subscribe((user) => {
+        this.user = user;
+        if(this.user.accountType == UserTypes.user) {
+          this.showAvailableList = true;
+        }
+      });
+    }
+  }
 
 }

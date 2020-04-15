@@ -25,9 +25,11 @@ import { QuotesService } from '../services/quotes.service';
 export class MapComponent implements OnInit, OnDestroy {
   //component Variables
   @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
+  private subscriptions: Subscription[] = [];
   selected: any;
   jobsList: Job[];
   jobCollection: AngularFirestoreCollection<Job>;
+  quotedJobCollection: AngularFirestoreCollection<Quote>;
   companyList: Company[];
   companycollection: AngularFirestoreCollection<Company>;
   postJob: boolean = false;
@@ -85,8 +87,8 @@ export class MapComponent implements OnInit, OnDestroy {
           }
           else {
             this.drawJobMarkers(); //draw job markers and get company of user
-            this.companiesService.getCompanyByUid(user.uid).valueChanges()
-              .subscribe((company) => this.company = company)
+            this.subscriptions.push(this.companiesService.getCompanyByUid(user.uid).valueChanges()
+              .subscribe((company) => this.company = company));
           }
         }
       });
@@ -105,32 +107,33 @@ export class MapComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   //draw the available job markers on map
   private drawJobMarkers() {
     this.jobCollection = this.jobsService.getMapJobs()
-    this.jobCollection.valueChanges().subscribe((jobs) => {
+    this.subscriptions.push(this.jobCollection.valueChanges().subscribe((jobs) => {
       this.jobsList = jobs;
       this.markers = []; //reset markers
 
       jobs.forEach((job) => {
         this.markers.push(this.mapService.addMarker(job.lngLat, job.title, job.trade));
       });
-    });
+    }));
   }
 
   //draw the company job markers on map
   private drawCompanyMarkers() {
     this.companycollection = this.companiesService.getCompanies()
-    this.companycollection.valueChanges().subscribe((companies) => {
+    this.subscriptions.push(this.companycollection.valueChanges().subscribe((companies) => {
       this.companyList = companies;
       this.markers = []
 
       companies.forEach((company) => {
         this.markers.push(this.mapService.addMarker(company.latlng, company.companyName, company.tradeType))
       });
-    });
+    }));
   }
 
   //geolocation error callback
@@ -162,23 +165,45 @@ export class MapComponent implements OnInit, OnDestroy {
     quote.amount = event;
     quote.traderUid = this.user.uid;
     quote.jobId = this.selected.id;
-    this.quoteService.createQuote(quote).toPromise().then(() => {
-      this.selected.quotes.push(quote.id);
-      this.jobsService.updateJob(this.selected);
-    });
+    quote.companyName = this.company.companyName;
+    this.subscriptions.push(this.quoteService.createOrUpdateQuote(quote).subscribe((update) => {
+      if(!update) {
+        this.quoteService.createQuote(quote).toPromise().then(() => {
+          this.selected.quotes.push(quote.id);
+          this.jobsService.updateJob(this.selected);
+        });
+      }
+    }));
   }
 
   setAccepted() {
+    var quoteSubscription: Subscription;
     this.selected.completionState = CompletionState.traderAccepted;
-    this.createQuote(this.selected.budget);
-    this.jobsService.setAcceptedJob(this.selected, this.company.uid);
+    this.quotedJobCollection = this.quoteService.getQuotesForJob(this.selected.id);
+    quoteSubscription = this.quotedJobCollection.valueChanges().subscribe((quotes) => {
+      if(quotes) {
+        console.log(quotes);
+        let searchQuotesForTrader = quotes.find((quote) => {
+          return quote.traderUid == this.user.uid
+        });
+        console.log(searchQuotesForTrader);
+        if(searchQuotesForTrader) {
+          this.jobsService.setAcceptedJob(this.selected, this.company.uid);
+          quoteSubscription.unsubscribe();
+        } else {
+          this.createQuote(this.selected.budget);
+          this.jobsService.setAcceptedJob(this.selected, this.company.uid);
+          quoteSubscription.unsubscribe();
+        }
+      }
+    });
     this.infoWindow.close();
   }
 
   //create a chat with the job owner
   createChat() {
     //if they already have a chat
-    this.chatService.openExistingChat(this.selected.issueUid, this.user.uid).valueChanges().subscribe((chats) => {
+    this.subscriptions.push(this.chatService.openExistingChat(this.selected.issueUid, this.user.uid).valueChanges().subscribe((chats) => {
       if(chats[0]) // will return 1 or none always, due to firebase collections this has to be an array
         this.navigationLinks('chats', chats[0].id);
       else { // create new chat
@@ -197,7 +222,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.chatService.createChat(chat)
         .then((id) => this.navigationLinks('chats', id));
       }
-    })
+    }))
   }
 
   navigationLinks(url, id?) {

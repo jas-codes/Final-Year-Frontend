@@ -39,6 +39,13 @@ export class MapService {
     return marker;
   }
 
+  CompareLngLatPoints(a, b) {
+    if(a.lng == b.lng)
+      if(a.lat == b.lat)
+        return true
+    return false;
+  }
+
   //Determines which icon to provide to marker
   iconSelection(trade: TradeType){
     switch (trade) {

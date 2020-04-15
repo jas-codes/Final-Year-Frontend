@@ -16,7 +16,7 @@ export class Job {
     issueDate: number;
     conclusionDate: number;
     completionState: CompletionState;
-    workCandidates: any[] = [];
+    workCandidates: string[] = [];
     issueUid: string;
     userReviewScore: string;
     reviewScore: number;

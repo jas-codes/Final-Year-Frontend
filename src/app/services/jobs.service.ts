@@ -3,9 +3,9 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Job } from '../models/job';
 import { of } from 'rxjs/internal/observable/of';
 import { CompletionState } from '../enums/completionState';
-import { Quote } from '../models/quote';
 import { QuotesService } from './quotes.service';
 import { map } from 'rxjs/operators';
+import { FileUploadService } from './file-upload.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,8 @@ export class JobsService {
 
   constructor(
     private afirestore: AngularFirestore,
-    private quoteService: QuotesService
+    private quoteService: QuotesService,
+    private uploadService: FileUploadService
   ) { }
 
   uploadNewJob(job: Job) {
@@ -37,7 +38,7 @@ export class JobsService {
       return ref
         .where('completionState', "in",
           [
-            CompletionState.pending,
+            CompletionState.quoted,
             CompletionState.traderAccepted,
             CompletionState.avialable
           ]);
@@ -63,12 +64,22 @@ export class JobsService {
       map(quotesCollection => { //map that collection to get data
         return quotesCollection.valueChanges().pipe(
           map(quotes => {
-            let jobIds = quotes.map(quote => quote.jobId);  //get the job ids from that
-            return this.getJobsByIds(jobIds); //get the jobs 
+            let jobIds = quotes.map(quote => quote.jobId);
+            if(jobIds.length > 0)  //get the job ids from that
+              return this.getJobsByIds(jobIds); //get the jobs 
+            else
+              return undefined
           })
         );
       })
     )
+  }
+
+  getJobsAcceptedByTrader(traderUid: string) {
+    return this.jobCollection = this.afirestore.collection<Job>('jobs', ref => {
+      return ref
+        .where('workCandidates', 'array-contains', traderUid)
+    })
   }
 
   updateJob(job: Job) {
@@ -77,9 +88,29 @@ export class JobsService {
   }
 
   setAcceptedJob(job: Job, uid: string) {
-    job.workCandidates.push({ uid: uid, completionState: CompletionState.traderAccepted })
+    job.workCandidates.push(uid)
     return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job)
       .catch(error => this.errorHandler(error)));
+  }
+
+  removeWorkCandidates(uid: string, workCandidates: string[]): any[] {
+    var index = workCandidates.findIndex((candidateUid) => {
+      return candidateUid == uid
+    });
+
+    if(index >= 0) {
+      var wcSet = new Set(workCandidates);
+      wcSet.delete(workCandidates[index]);
+      return Array.from(wcSet);
+    }
+    return workCandidates;
+  }
+
+  deleteJob(job: Job) {
+    console.log('deleting job')
+    if(job.picture)
+      this.uploadService.deleteFile(job.picture);
+    this.afirestore.doc<Job>(`jobs/${job.id}`).delete();
   }
 
   errorHandler(error) {
