@@ -73,10 +73,12 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     if(history.state) {
       this.subscriptions.push(of(history.state.data).subscribe((data) => {
         if(data) {
-        this.job = data;
-        this.setStatusText();
-        (this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed)
-          ? this.onGoing = true : this.onGoing = false
+          this.job = data;
+          this.subscriptions.push(this.jobsService.getJob(this.job.id).valueChanges().subscribe((job) => {
+            this.setStatusText();
+            (this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed)
+              ? this.onGoing = true : this.onGoing = false
+          }));
         }
       }));
     }
