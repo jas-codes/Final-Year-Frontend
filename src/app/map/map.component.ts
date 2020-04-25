@@ -184,11 +184,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.quotedJobCollection = this.quoteService.getQuotesForJob(this.selected.id);
     quoteSubscription = this.quotedJobCollection.valueChanges().subscribe((quotes) => {
       if(quotes) {
-        console.log(quotes);
         let searchQuotesForTrader = quotes.find((quote) => {
           return quote.traderUid == this.user.uid
         });
-        console.log(searchQuotesForTrader);
         if(searchQuotesForTrader) {
           this.jobsService.setAcceptedJob(this.selected, this.company.uid);
           quoteSubscription.unsubscribe();

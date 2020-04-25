@@ -83,14 +83,12 @@ export class QuotesService {
   }
 
   deleteAllQuotesFromJob(jobId: string) {
-    console.log(jobId);
     this.quotesCollection = this.afireStore.collection<Quote>('quotes', ref => {
       return ref
         .where('jobId', '==', jobId)
     })
 
     this.quotesCollection.valueChanges().subscribe((quotes) => {
-      console.log('deleting quotes', quotes);
       quotes.forEach(quote => {
         this.deleteQuote(quote.id);
       });

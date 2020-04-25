@@ -154,13 +154,11 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   }
 
   setAccepted() {
-    console.log('in accepting', (this.user.accountType == UserTypes.user));
     if (this.user.accountType == UserTypes.user) {
       if (this.job.completionState == CompletionState.traderAccepted) {
         let findTraderInJobWC = this.job.workCandidates.find((wcUid) => {
           return this.chosenQuote.traderUid == wcUid;
         });
-        console.log('traderWC',findTraderInJobWC)
         if (findTraderInJobWC) {
           this.job.quotes.forEach((quoteId) => {
             if (quoteId != this.chosenQuote.id)

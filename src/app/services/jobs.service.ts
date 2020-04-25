@@ -107,7 +107,6 @@ export class JobsService {
   }
 
   deleteJob(job: Job) {
-    console.log('deleting job')
     if(job.picture)
       this.uploadService.deleteFile(job.picture);
     this.afirestore.doc<Job>(`jobs/${job.id}`).delete();
