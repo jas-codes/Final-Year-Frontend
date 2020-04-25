@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { AuthServiceMock } from 'src/app/testing/auth-service-mock';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFireStorageMock } from 'src/app/testing/angular-fire-storage-mock';
+import { DatePipe } from '@angular/common';
 
 describe('JobDetailsComponent', () => {
   let component: JobDetailsComponent;
@@ -26,7 +27,8 @@ describe('JobDetailsComponent', () => {
         {provide: AngularFireAuth, useValue: AngularFireAuthMock},
         {provide: AngularFirestore, useValue: AngularFirestoreMock},
         {provide: AuthService, useValue: AuthServiceMock},
-        {provide: AngularFireStorage, useValue: AngularFireStorageMock}
+        {provide: AngularFireStorage, useValue: AngularFireStorageMock},
+        DatePipe
       ],
       imports: [
         RouterTestingModule
