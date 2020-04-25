@@ -170,6 +170,8 @@ export class MapComponent implements OnInit, OnDestroy {
       if(!update) {
         this.quoteService.createQuote(quote).toPromise().then(() => {
           this.selected.quotes.push(quote.id);
+          if(this.selected.completionState == CompletionState.avialable)
+            this.selected.completionState = CompletionState.quoted;
           this.jobsService.updateJob(this.selected);
         });
       }
@@ -203,7 +205,7 @@ export class MapComponent implements OnInit, OnDestroy {
   //create a chat with the job owner
   createChat() {
     //if they already have a chat
-    this.subscriptions.push(this.chatService.openExistingChat(this.selected.issueUid, this.user.uid).valueChanges().subscribe((chats) => {
+    this.subscriptions.push(this.chatService.openExistingChat(this.selected.id, this.selected.issueUid, this.user.uid).valueChanges().subscribe((chats) => {
       if(chats[0]) // will return 1 or none always, due to firebase collections this has to be an array
         this.navigationLinks('chats', chats[0].id);
       else { // create new chat
@@ -217,7 +219,8 @@ export class MapComponent implements OnInit, OnDestroy {
         chat.userUid = this.selected.issueUid;
         chat.companyName = this.company.companyName;
         chat.traderUid = this.user.uid;
-        chat.jobTitle = this.selected.title
+        chat.jobTitle = this.selected.title;
+        chat.jobId = this.selected.id;
         chat.lastContact = Date.now();
         this.chatService.createChat(chat)
         .then((id) => this.navigationLinks('chats', id));

@@ -4,7 +4,7 @@
             <mat-card-title>Company Details:</mat-card-title>
             <button class="exit" mat-button color="primary" (click)="dismissComponent()">cancel</button>
         </mat-card-header>
-        <img mat-card-image [src]="currentImage">
+        <img *ngIf="currentImage != ''" mat-card-image [src]="currentImage">
         <mat-card-content>
             <ul>
                 <li>Name: <span>{{company.companyName}}</span></li>
@@ -16,7 +16,7 @@
                 <li>Description: <p>{{company.description}}</p></li>
             </ul>
         </mat-card-content>
-        <mat-card-actions>
+        <mat-card-actions *ngIf="currentImage != ''">
             <button mat-button color="primary" (click)="moveImageIndex(negativeIncrement)">Last Picture</button>
             <button mat-button color="primary" (click)="moveImageIndex(positiveIncrement)">Next Picture</button>
         </mat-card-actions>

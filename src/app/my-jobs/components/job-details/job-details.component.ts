@@ -33,6 +33,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   quotesList: Quote[] = [];
   tradersQuote: Quote = new Quote();
   companyInfo: boolean = false;
+  onGoing: boolean = false;
 
   userSub: Subscription;
   user: IUser;
@@ -69,10 +70,14 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    of(history.state.data).subscribe((data) => {
+    this.subscriptions.push(of(history.state.data).subscribe((data) => {
+      if(data) {
       this.job = data;
       this.setStatusText();
-    });
+      (this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed)
+        ? this.onGoing = true : this.onGoing = false
+      }
+    }));
 
     if (this.authService.user$) {
       this.userSub = this.authService.user$.subscribe((user) => {
@@ -81,28 +86,33 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         this.drawMapMarkers();
 
         if (this.user.accountType == UserTypes.trader) { //if trader
-          this.trader = true;
+          this.trader = true; //get the company
           this.subscriptions.push(this.companyService.getCompanyByUid(user.uid).valueChanges().subscribe((company) => {
             this.company = company;
           }));
-          this.quotesCollection = this.quoteService.getQuoteByTrader(this.user.uid, this.job.id);
+          this.quotesCollection = this.quoteService.getQuoteByTrader(this.user.uid, this.job.id); //get traders quote
           this.subscriptions.push(this.quotesCollection.valueChanges().subscribe((quotes) => {
             if (quotes[0])
               this.tradersQuote = quotes[0];
           }));
         }
+
         this.quotesCollection = this.quoteService.getQuotesForJob(this.job.id)
         this.subscriptions.push(this.quotesCollection.valueChanges().subscribe((quotes) => {
+          if(this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed){
+            this.chosenQuote = quotes[0];
+          }
           this.quotesList = quotes;
         }));      
       });
+      
     }
+
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-
   }
 
   drawMapMarkers() {
@@ -177,6 +187,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   setRejected() {
     this.job.quotes = this.quoteService.removeQuoteFromJob(this.quotesList, this.job.quotes, this.user.uid);
     this.job.workCandidates = this.jobsService.removeWorkCandidates(this.user.uid, this.job.workCandidates);
+    if(this.job.quotes.length <= 0)
+      this.job.completionState = CompletionState.avialable;
     this.jobsService.updateJob(this.job);
     this.location.back();
   }
@@ -211,7 +223,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       traderUid = this.user.uid;
 
     this.subscriptions.push(this.companyService.getCompanyByUid(traderUid).valueChanges().subscribe((company) => {
-      this.subscriptions.push(this.chatService.openExistingChat(this.job.issueUid, company.uid).valueChanges().subscribe((chats) => {
+      this.subscriptions.push(this.chatService.openExistingChat(this.job.id, this.job.issueUid, company.uid).valueChanges().subscribe((chats) => {
         if (chats[0])
           this.navigationLinks('chats', chats[0].id);
         else {
@@ -225,7 +237,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           chat.userUid = this.job.issueUid;
           chat.companyName = company.companyName;
           chat.traderUid = company.uid;
-          chat.jobTitle = this.job.title
+          chat.jobTitle = this.job.title;
+          chat.jobId = this.job.id;
           chat.lastContact = Date.now();
           this.chatService.createChat(chat)
             .then((id) => this.navigationLinks('chats', id));

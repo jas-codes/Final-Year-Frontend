@@ -53,7 +53,7 @@
                 </path>
             </svg><b>Chat</b>
         </div>
-        <div class="iconSVG" *ngIf="trader" (click)="showProvideQuote()">
+        <div class="iconSVG" *ngIf="trader && !onGoing" (click)="showProvideQuote()">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pound-sign" role="img"
                 xmlns="http://www.w3.org/2000/svg" class="iconOnClick" viewBox="0 0 320 512">
                 <path fill="currentColor"
@@ -62,7 +62,7 @@
                 </path>
             </svg><b>Quote</b>
         </div>
-        <div (click)="setAccepted()" [ngClass]="{'iconSVG-disabled': !chosenQuote && !trader, 'iconSVG': chosenQuote || trader}">
+        <div (click)="setAccepted()" *ngIf="!onGoing" [ngClass]="{'iconSVG-disabled': !chosenQuote && !trader, 'iconSVG': chosenQuote || trader}">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img"
                 xmlns="http://www.w3.org/2000/svg" class="iconOnClick" viewBox="0 0 512 512">
                 <path fill="currentColor"
@@ -71,7 +71,7 @@
                 </path>
             </svg><b>Accept</b>
         </div>
-        <div class="iconSVG" (click)="setRejected()" *ngIf="trader">
+        <div class="iconSVG" (click)="setRejected()" *ngIf="trader && !onGoing">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" role="img"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512" class="iconOnClick">
                 <path fill="currentColor"
@@ -79,7 +79,7 @@
                     class=""></path>
             </svg><b>Reject</b>
         </div>
-        <div class="iconSVG" (click)="deleteJob()" *ngIf="!trader">
+        <div class="iconSVG" (click)="deleteJob()" *ngIf="!trader && !onGoing">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash" role="img"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="iconOnClick">
                 <path fill="currentColor"
@@ -88,7 +88,7 @@
             </svg>
             <b>Delete</b>
         </div>
-        <span *ngIf="!chosenQuote && !trader">Choose a quote to enable accept and chat</span>
+        <span *ngIf="!chosenQuote && !trader && !onGoing">Choose a quote to enable accept and chat</span>
         <span *ngIf="trader">Amount Quoted: {{tradersQuote.amount}}</span>
     </div>
 </ng-template>
@@ -106,7 +106,8 @@
 </ng-template>
 
 <ng-template #quotesListContainer>
-    <span>Select Quote</span>
+    <span *ngIf="!onGoing">Select Quote</span>
+    <span *ngIf="onGoing">Selected Quote</span>
     <button mat-button color="primary" [disabled]="!chosenQuote" (click)="showCompanyInfo()">Inspect Company</button>
     <mat-radio-group class="radio-group" aria-label="Select an option" [(ngModel)]="chosenQuote">
         <mat-radio-button class="radio-button" *ngFor="let quote of quotesList" [value]="quote">
