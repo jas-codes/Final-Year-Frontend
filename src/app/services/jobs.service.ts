@@ -82,6 +82,10 @@ export class JobsService {
     })
   }
 
+  getJob(jobId: string) {
+    return this.afirestore.doc<Job>(`jobs/${jobId}`);
+  }
+
   updateJob(job: Job) {
     return of(this.afirestore.doc<Job>(`jobs/${job.id}`).update(job)
       .catch(error => this.errorHandler(error)));

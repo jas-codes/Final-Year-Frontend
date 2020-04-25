@@ -46,6 +46,7 @@ import { JobDetailsComponent } from './my-jobs/components/job-details/job-detail
 import { JobSearchPipe } from './pipes/job-search.pipe';
 import { MatRadioModule } from '@angular/material/radio';
 import { CompanyDetailsComponent } from './company-details/company-details.component';
+import { DatePipe } from '@angular/common';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -104,7 +105,8 @@ const ANGULAR_MATERIAL_MODULES = [
     HttpClientModule
   ],
   providers: [
-    MatDatepickerModule
+    MatDatepickerModule,
+    DatePipe
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

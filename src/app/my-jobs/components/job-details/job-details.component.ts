@@ -15,7 +15,7 @@ import { ChatService } from 'src/app/chats/services/chat.service';
 import { Company } from 'src/app/models/company';
 import { CompletionState } from 'src/app/enums/completionState';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Location } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-job-details',
@@ -34,6 +34,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   tradersQuote: Quote = new Quote();
   companyInfo: boolean = false;
   onGoing: boolean = false;
+  finishedJob: boolean = false;
 
   userSub: Subscription;
   user: IUser;
@@ -66,17 +67,21 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     private quoteService: QuotesService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
     if(history.state) {
       this.subscriptions.push(of(history.state.data).subscribe((data) => {
         if(data) {
-        this.job = data;
-        this.setStatusText();
-        (this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed)
-          ? this.onGoing = true : this.onGoing = false
+          this.job = data;
+          this.subscriptions.push(this.jobsService.getJob(this.job.id).valueChanges().subscribe((job) => {
+            this.job = job;
+            this.setStatusText();
+            this.job.completionState == CompletionState.active ? this.onGoing = true : this.onGoing = false
+            this.job.completionState == CompletionState.closed ? this.finishedJob = true : this.finishedJob = false;
+          }));
         }
       }));
     }
@@ -107,9 +112,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           this.quotesList = quotes;
         }));      
       });
-      
     }
-
   }
 
   ngOnDestroy(): void {
@@ -138,7 +141,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         this.statusText = 'Available -> Still available for traders'
         break;
       case CompletionState.closed:
-        this.statusText = 'Closed -> The job has concluded'
+        this.statusText = 'Closed -> The job has been completed'
+        if(this.job.conclusionDate != undefined)
+          this.statusText += ', Conclusion Date: ' + this.datePipe.transform(this.job.conclusionDate, 'MMM dd, yyyy');  
         break;
       case CompletionState.quoted:
         this.statusText = 'Quoted -> The job has quotes for review'
@@ -257,6 +262,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   }
 
   completeJob() {
+    this.job.conclusionDate = Date.now();
     this.job.completionState = CompletionState.closed;
     this.jobsService.updateJob(this.job);
   }
