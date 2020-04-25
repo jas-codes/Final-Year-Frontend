@@ -1,6 +1,6 @@
 export enum CompletionState{
     avialable = 'Available',
-    pending = 'Pending',
+    quoted = 'Quoted',
     traderAccepted = 'Trader Accepted',
     active = 'Active',
     closed = 'Closed'

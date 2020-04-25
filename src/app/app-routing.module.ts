@@ -9,6 +9,7 @@ import { ChatsComponent } from './chats/chats.component';
 import { MapComponent } from './map/map.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { ChatComponent } from './chats/components/chat/chat.component';
+import { JobDetailsComponent } from './my-jobs/components/job-details/job-details.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'map', pathMatch: 'full'},
       { path: 'map', component: MapComponent, outlet: 'navLinks' },
       { path: 'my-jobs', component: MyJobsComponent, outlet: 'navLinks'},
+      { path: 'my-jobs/:id', component: JobDetailsComponent, outlet:'navLinks'},
       { path: 'job-history', component: JobHistoryComponent, outlet: 'navLinks'},
       { path: 'my-page', component: MyPageComponent, outlet: 'navLinks'},
       { path: 'chats', component: ChatsComponent, outlet: 'navLinks' },

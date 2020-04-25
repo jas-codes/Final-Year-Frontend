@@ -12,4 +12,5 @@ export class User {
     accountType: string;
     companyName: string;
     tradeType: string;
+    lngLat: google.maps.LatLngLiteral;
 }

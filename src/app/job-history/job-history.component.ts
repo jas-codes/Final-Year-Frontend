@@ -9,7 +9,7 @@ import { CompletionState } from '../enums/completionState';
 })
 export class JobHistoryComponent implements OnInit {
   selectedJob: Job;
-  historicalJobList: CompletionState = CompletionState.closed
+  historicalJobList: CompletionState = CompletionState.closed;
 
   constructor() { }
 

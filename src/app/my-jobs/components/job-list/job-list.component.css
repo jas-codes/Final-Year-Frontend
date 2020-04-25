@@ -1,6 +1,5 @@
 .list-item:hover {
-    background-color: var(--bg-primary);
-    opacity: 0.7;
+    background-color: rgb(215, 242, 255);
 }
 
 .list-item {
@@ -28,16 +27,12 @@
 .list-item .image {
     width: 3rem;
     height: 3rem;
-    border-radius: 50%;
     background-color: grey;
 }
 
 img {
-    position: relative;
-    top: 0.4rem;
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
 }
 
 mat-form-field {
@@ -50,4 +45,13 @@ mat-icon {
     position: absolute;
     right: 3rem;
     top: 0.6rem;
+}
+
+p {
+    margin: 0;
+    color: ccc;
+}
+
+p b {
+    margin-left: 1rem;
 }

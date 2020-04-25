@@ -2,6 +2,7 @@ import { Message } from './message';
 
 export class Chat {
     id: string;
+    jobId: string;
     traderUid: string;
     userUid: string;
     jobPicture?: string;

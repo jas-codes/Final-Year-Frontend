@@ -8,5 +8,5 @@ export class Company {
     companyName: string;
     tradeType: string;
     photos: string[] = [];
-    descirption: string;
+    description: string;
 }

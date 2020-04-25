@@ -9,6 +9,8 @@ import { AngularFirestoreMock } from '../testing/angular-firestore-mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthServiceMock } from '../testing/auth-service-mock';
 import { AuthService } from '../services/auth.service';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireStorageMock } from '../testing/angular-fire-storage-mock';
 
 describe('MapComponent', () => {
   let component: MapComponent;
@@ -22,6 +24,7 @@ describe('MapComponent', () => {
         { provide: AngularFireAuth, useValue: AngularFireAuthMock},
         { provide: AngularFirestore, useValue: AngularFirestoreMock },
         { provide: AuthService, useValue: AuthServiceMock },
+        { provide: AngularFireStorage, useValue: AngularFireStorageMock},
         RouterTestingModule
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]

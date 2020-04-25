@@ -1,41 +1,43 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { JobListComponent } from './job-list.component';
+import { JobDetailsComponent } from './job-details.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireAuthMock } from 'src/app/testing/angular-fire-auth-mock';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestoreMock } from 'src/app/testing/angular-firestore-mock';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreMock } from 'src/app/testing/angular-firestore-mock';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 import { AuthServiceMock } from 'src/app/testing/auth-service-mock';
-import { JobSearchPipe } from 'src/app/pipes/job-search.pipe';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFireStorageMock } from 'src/app/testing/angular-fire-storage-mock';
 
-describe('JobListComponent', () => {
-  let component: JobListComponent;
-  let fixture: ComponentFixture<JobListComponent>;
+describe('JobDetailsComponent', () => {
+  let component: JobDetailsComponent;
+  let fixture: ComponentFixture<JobDetailsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [JobListComponent, JobSearchPipe],
+      declarations: [ JobDetailsComponent ],
       providers: [
-        RouterTestingModule,
-        { provide: AuthService, useValue: AuthServiceMock },
-        { provide: AngularFirestore, useValue: AngularFirestoreMock },
-        { provide: AngularFireAuth, useValue: AngularFireAuthMock },
-        { provide: AngularFireStorage, useValue: AngularFireStorageMock}
+        HttpClient,
+        HttpHandler,
+        {provide: AngularFireAuth, useValue: AngularFireAuthMock},
+        {provide: AngularFirestore, useValue: AngularFirestoreMock},
+        {provide: AuthService, useValue: AuthServiceMock},
+        {provide: AngularFireStorage, useValue: AngularFireStorageMock}
       ],
-      imports: [ReactiveFormsModule, FormsModule, RouterTestingModule],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      imports: [
+        RouterTestingModule
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(JobListComponent);
+    fixture = TestBed.createComponent(JobDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

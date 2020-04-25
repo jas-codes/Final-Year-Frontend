@@ -23,6 +23,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
   file: File;
   trades = Object.values(TradeType);
   newJob: Job = new Job();
+  timeframeDuration: string = 'Days';
 
   //validation variables
   minimunPrice = 50;
@@ -44,7 +45,8 @@ export class NewJobComponent implements OnInit, OnDestroy {
     postcode: new FormControl('', [Validators.required, Validators.maxLength(this.maxPostcodeLength), Validators.minLength(this.minPostcodeLength)]),
     tradeType: new FormControl('', Validators.required),
     budget: new FormControl('', [Validators.required, Validators.min(this.minimunPrice)]),
-    description: new FormControl('', [Validators.required, Validators.maxLength(this.maxDesicriptionLength)])
+    description: new FormControl('', [Validators.required, Validators.maxLength(this.maxDesicriptionLength)]),
+    timeframe: new FormControl('', [Validators.required, Validators.min(1)])
   });
 
   constructor(
@@ -71,6 +73,8 @@ export class NewJobComponent implements OnInit, OnDestroy {
   //submit form and image currently... need to move image upload to independent
   submit() {
     var self = this;
+    this.newJob.issueDate = Date.now();
+    this.newJob.timeframe += ' ' + this.timeframeDuration;
     //check postcode validity and converto to LatLng for google maps
     this.postcodeService.convertPostcodeToLatLong(this.form.get('postcode').value).subscribe(
       (data) => {
