@@ -15,7 +15,7 @@ import { ChatService } from 'src/app/chats/services/chat.service';
 import { Company } from 'src/app/models/company';
 import { CompletionState } from 'src/app/enums/completionState';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Location } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-job-details',
@@ -67,7 +67,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     private quoteService: QuotesService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
@@ -140,7 +141,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         this.statusText = 'Available -> Still available for traders'
         break;
       case CompletionState.closed:
-        this.statusText = 'Closed -> The job has concluded'
+        this.statusText = 'Closed -> The job has been completed'
+        if(this.job.conclusionDate != undefined)
+          this.statusText += ', Conclusion Date: ' + this.datePipe.transform(this.job.conclusionDate, 'MMM dd, yyyy');  
         break;
       case CompletionState.quoted:
         this.statusText = 'Quoted -> The job has quotes for review'
