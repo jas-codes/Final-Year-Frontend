@@ -34,6 +34,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   tradersQuote: Quote = new Quote();
   companyInfo: boolean = false;
   onGoing: boolean = false;
+  finishedJob: boolean = false;
 
   userSub: Subscription;
   user: IUser;
@@ -75,9 +76,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         if(data) {
           this.job = data;
           this.subscriptions.push(this.jobsService.getJob(this.job.id).valueChanges().subscribe((job) => {
+            this.job = job;
             this.setStatusText();
-            (this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed)
-              ? this.onGoing = true : this.onGoing = false
+            this.job.completionState == CompletionState.active ? this.onGoing = true : this.onGoing = false
+            this.job.completionState == CompletionState.closed ? this.finishedJob = true : this.finishedJob = false;
           }));
         }
       }));
@@ -109,9 +111,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           this.quotesList = quotes;
         }));      
       });
-      
     }
-
   }
 
   ngOnDestroy(): void {
@@ -259,6 +259,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   }
 
   completeJob() {
+    this.job.conclusionDate = Date.now();
     this.job.completionState = CompletionState.closed;
     this.jobsService.updateJob(this.job);
   }
