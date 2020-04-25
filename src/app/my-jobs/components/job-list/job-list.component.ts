@@ -80,7 +80,9 @@ export class JobListComponent implements OnInit, OnDestroy {
   }
 
   filterJobs() {
+    console.log('filtering jobs', this.jobs)
     this.jobs = this.jobs.filter((job) => {
+      console.log(this.listTypes)
       if (this.listTypes.indexOf(job.completionState) >= 0)
         return true
       else

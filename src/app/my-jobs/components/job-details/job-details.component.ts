@@ -256,6 +256,11 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  completeJob() {
+    this.job.completionState = CompletionState.closed;
+    this.jobsService.updateJob(this.job);
+  }
+
   navigationLinks(url, id?) {
     if (id) {
       this.router.navigate([
