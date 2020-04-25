@@ -10,6 +10,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'src/app/services/auth.service';
 import { AuthServiceMock } from 'src/app/testing/auth-service-mock';
+import { JobSearchPipe } from 'src/app/pipes/job-search.pipe';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireStorageMock } from 'src/app/testing/angular-fire-storage-mock';
 
 describe('JobListComponent', () => {
   let component: JobListComponent;
@@ -17,14 +20,15 @@ describe('JobListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [JobListComponent],
+      declarations: [JobListComponent, JobSearchPipe],
       providers: [
         RouterTestingModule,
         { provide: AuthService, useValue: AuthServiceMock },
         { provide: AngularFirestore, useValue: AngularFirestoreMock },
-        { provide: AngularFireAuth, useValue: AngularFireAuthMock }
+        { provide: AngularFireAuth, useValue: AngularFireAuthMock },
+        { provide: AngularFireStorage, useValue: AngularFireStorageMock}
       ],
-      imports: [ReactiveFormsModule, FormsModule],
+      imports: [ReactiveFormsModule, FormsModule, RouterTestingModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();

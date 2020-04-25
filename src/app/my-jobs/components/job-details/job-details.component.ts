@@ -70,14 +70,16 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscriptions.push(of(history.state.data).subscribe((data) => {
-      if(data) {
-      this.job = data;
-      this.setStatusText();
-      (this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed)
-        ? this.onGoing = true : this.onGoing = false
-      }
-    }));
+    if(history.state) {
+      this.subscriptions.push(of(history.state.data).subscribe((data) => {
+        if(data) {
+        this.job = data;
+        this.setStatusText();
+        (this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed)
+          ? this.onGoing = true : this.onGoing = false
+        }
+      }));
+    }
 
     if (this.authService.user$) {
       this.userSub = this.authService.user$.subscribe((user) => {

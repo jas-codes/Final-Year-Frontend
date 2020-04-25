@@ -7,7 +7,7 @@ import { Company } from '../models/company';
   styleUrls: ['./company-details.component.css']
 })
 export class CompanyDetailsComponent implements OnInit {
-  @Input() company: Company;
+  @Input() company: Company = new Company();
   @Output() dismiss = new EventEmitter<boolean>();
 
   positiveIncrement = 1;
