@@ -16,10 +16,12 @@
                         <br>
                         <p>
                             <b>Location:</b> {{job.postcode}}
-                            <b>Completion State:</b> {{job.completionState}}
-                            <b>Issue Date:</b> {{job.issueDate | date}}
-                            <span *ngIf="job.conclusionDate != undefined">
-                                <b>Conclusion Date:</b> {{job.conclusionDate | date}}
+                            <b><span class="mobile-display">Completion </span>State:</b> {{job.completionState}}
+                            <span class="mobile-display">
+                                <b>Issue Date:</b> {{job.issueDate | date}}
+                                <span *ngIf="job.conclusionDate != undefined">
+                                    <b>Conclusion Date:</b> {{job.conclusionDate | date}}
+                                </span>
                             </span>
                         </p>
                     </div>

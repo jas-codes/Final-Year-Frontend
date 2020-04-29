@@ -20,10 +20,10 @@
                 <div *ngIf="message.posterUid == chat.userUid">
                     <img src="{{chat.jobPicture}}">
                     <div class="userText">
-                    <p >{{message.message}}
-                        <br/>
-                    <span class="time">{{message.sentDate | date:'shortTime'}}</span>
-                    </p>
+                        <p >{{message.message}}
+                            <br/>
+                        <span class="time">{{message.sentDate | date:'shortTime'}}</span>
+                        </p>
                     </div>
                 </div>
             </div>

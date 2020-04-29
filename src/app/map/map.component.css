@@ -10,8 +10,8 @@
 }
 
 .add-new-job {
-    right: 5%;
-    bottom: 4%;
+    right: 4rem;
+    bottom: 4rem;
 }
 
 .new-job-component {
@@ -70,4 +70,12 @@ img {
 svg {
     width:1.5rem;
     height: 1.5rem;
+}
+
+/*Change new message bar for horizontal navbar*/
+@media only screen and (max-width: 600px) {
+    .add-new-job {
+        top: 1rem;
+        right: 1rem;
+    }
 }

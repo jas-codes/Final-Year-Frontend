@@ -118,9 +118,10 @@
 
 <ng-template #quotesListContainer>
     <span *ngIf="!onGoing">Select Quote</span>
-    <span *ngIf="onGoing && finishedJob">Selected Quote</span>
+    <span *ngIf="onGoing || finishedJob">Selected Quote</span>
     <button mat-button color="primary" [disabled]="!chosenQuote" (click)="showCompanyInfo()">Inspect Company</button>
-    <mat-radio-group disabled="this.finishedJob" class="radio-group" aria-label="Select an option" [(ngModel)]="chosenQuote">
+    {{finishedJob}}
+    <mat-radio-group class="radio-group" aria-label="Select an option" [(ngModel)]="chosenQuote">
         <mat-radio-button class="radio-button" *ngFor="let quote of quotesList" [value]="quote">
             {{quote.companyName}} - £{{quote.amount}} <span *ngIf="false">Accepted</span></mat-radio-button>
     </mat-radio-group>
