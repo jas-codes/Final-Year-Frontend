@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { JobDetailsComponent } from './job-details.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AngularFireAuthMock } from 'src/app/testing/angular-fire-auth-mock';

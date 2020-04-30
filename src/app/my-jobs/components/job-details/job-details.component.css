@@ -1,4 +1,6 @@
 .container {
+    overflow-y: auto;
+    overflow-x: hidden;
     width: 100%;
     height: 100vh;
     position: relative;
@@ -38,6 +40,7 @@
 }
 
 .icons span{
+    white-space: pre;
     display: flex;
     align-items: center;
 }
@@ -73,29 +76,8 @@
     height: 100vh;
 }
 
-.jobDetailsContainer {
-    width: 100%;
-    height: 100%;
-    display: inline-flex;
-}
-
-.secondaryInfo {
-    padding: 1rem;
-    margin-left: 1rem;
-    width: 30%;
-    height: 100%;
-}
-
 .secondaryInfo span {
     padding-bottom: 0.5rem;
-}
-.infoImg {
-    padding: 1rem;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    width: 26%;
-    height: 100%;
 }
 
 .infoImg img {
@@ -107,23 +89,10 @@
     max-height: 18rem;
 }
 
-.quotesListContainer {
-    margin-right: 1rem;
-    padding: 1rem;;
-    width: 30%;
-    height: 100%;
-    position: relative;
-}
-
 .quotesListContainer button {
     position: absolute;
     top: 0.5rem;
-    right: 2rem;
-}
-
-
-.backgroundGreyColour {
-    /* background-color: rgb(174, 174, 174); */
+    right: 3.5rem;
 }
 
 .imageBackground {
@@ -176,4 +145,74 @@ li span {
 
 li:last-child {
     border: none;
+}
+
+/*Change job details bar for horizontal navbar*/
+@media only screen and (max-width: 600px) {
+    .secondaryInfo {
+        padding: 1rem;
+        width: 100%;
+    }
+    
+    .infoImg {
+        padding: 1rem;
+        display: block;
+        width: 90%;
+    }
+
+    .quotesListContainer {        
+        padding: 1rem;
+        width: 100%;
+        position: relative;
+    }
+    .jobDetailsContainer {
+        width: 100%;
+    }
+
+    .container {
+        height: 90vh;
+    }
+
+    .headInfoBar {
+        height: 5.5rem;
+        border-bottom: 1px solid #ccc;
+        display: inline-block;
+    }
+
+    .mobile-display {
+        display: none !important;
+    }
+}
+
+/*Change information layout for vertical navbar*/
+@media only screen and (min-width: 600px) {
+    .secondaryInfo {
+        padding: 1rem;
+        margin-left: 1rem;
+        width: 30%;
+        height: 100%;
+    }
+    
+    .infoImg {
+        padding: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        width: 26%;
+        height: 100%;
+    }
+
+    .quotesListContainer {
+        margin-right: 1rem;
+        margin-left: 1rem;
+        padding: 1rem;;
+        width: 30%;
+        height: 100%;
+        position: relative;
+    }
+
+    .jobDetailsContainer {
+        width: 100%;
+        display: inline-flex;
+    }
 }
