@@ -39,7 +39,7 @@
     display: flex;
 }
 
-.icons span{
+.icons span {
     white-space: pre;
     display: flex;
     align-items: center;
@@ -148,23 +148,25 @@ li:last-child {
 }
 
 /*Change job details bar for horizontal navbar*/
+
 @media only screen and (max-width: 600px) {
     .secondaryInfo {
         padding: 1rem;
         width: 100%;
     }
-    
+
     .infoImg {
         padding: 1rem;
         display: block;
         width: 90%;
     }
 
-    .quotesListContainer {        
+    .quotesListContainer {
         padding: 1rem;
         width: 100%;
         position: relative;
     }
+
     .jobDetailsContainer {
         width: 100%;
     }
@@ -174,8 +176,14 @@ li:last-child {
     }
 
     .headInfoBar {
-        height: 5.5rem;
+        height: 7rem;
         border-bottom: 1px solid #ccc;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+    }
+
+    .headInfoBar span {
         display: inline-block;
     }
 
@@ -192,7 +200,7 @@ li:last-child {
         width: 30%;
         height: 100%;
     }
-    
+
     .infoImg {
         padding: 1rem;
         margin-left: auto;
@@ -205,12 +213,13 @@ li:last-child {
     .quotesListContainer {
         margin-right: 1rem;
         margin-left: 1rem;
-        padding: 1rem;;
+        padding: 1rem;
+        ;
         width: 30%;
         height: 100%;
         position: relative;
     }
-
+    
     .jobDetailsContainer {
         width: 100%;
         display: inline-flex;

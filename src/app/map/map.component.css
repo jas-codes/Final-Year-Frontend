@@ -25,7 +25,9 @@
 }
 
 .icons {
-    display: ruby;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
 }
 
 .iconSVG {
@@ -71,8 +73,8 @@ svg {
 
     .new-job-component {
         position: fixed;
-        top: 50%;
-        left: 14.5rem;
+        top: 50rem;
+        left: 12.5rem;
         transform: translate(-50%, -50%);
     }
 }
@@ -85,8 +87,8 @@ svg {
     }
 
     .new-job-component {
-        right: 16%;
-        bottom: 7%;
+        right: 16rem;
+        bottom: -12rem;
     }
 
     .add-new-job {

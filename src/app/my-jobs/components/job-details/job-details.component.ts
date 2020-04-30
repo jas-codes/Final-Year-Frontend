@@ -135,21 +135,21 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   setStatusText() {
     switch (this.job.completionState) {
       case CompletionState.active:
-        this.statusText = 'Active -> The job is currently in progress'
+        this.statusText = 'The job is currently in progress'
         break;
       case CompletionState.avialable:
-        this.statusText = 'Available -> Still available for traders'
+        this.statusText = 'Still available for traders'
         break;
       case CompletionState.closed:
-        this.statusText = 'Closed -> The job has been completed'
+        this.statusText = 'The job has been completed'
         if(this.job.conclusionDate != undefined)
           this.statusText += ', Conclusion Date: ' + this.datePipe.transform(this.job.conclusionDate, 'MMM dd, yyyy');  
         break;
       case CompletionState.quoted:
-        this.statusText = 'Quoted -> The job has quotes for review'
+        this.statusText = 'The job has quotes for review'
         break;
       case CompletionState.traderAccepted:
-        this.statusText = 'Accepted -> A trader has accepted the job for the budget'
+        this.statusText = 'A trader has accepted the job for the budget'
         break;
     }
   }

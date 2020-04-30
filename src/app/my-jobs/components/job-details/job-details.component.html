@@ -4,10 +4,10 @@
     <app-company-details class="send-front component-card" *ngIf="companyInfo" [company]="company"
         (dismiss)="showCompanyInfo()"></app-company-details>
     <mat-toolbar color="primary">
-        <span>My Jobs > Job Details > {{job.title}}</span>
+        <span><span class="mobile-display">My Jobs ></span> Job Details > {{job.title}}</span>
     </mat-toolbar>
     <mat-toolbar class="statusBar">
-        <span><span class="mobile-display">Job Status: </span> {{statusText}}</span>
+        <span><span class="mobile-display">Job Status: {{job.completionState}} -></span> {{statusText}}</span>
     </mat-toolbar>
     <div class="mapContainer">
         <google-map height="20rem" width="100%" [zoom]="15" [center]="centre" [options]="mapOptions">
@@ -19,7 +19,10 @@
     <div class="headInfoBar">
         <h2>Job: {{job.title}}</h2>
         <h2>Location: {{job.postcode}}</h2>
-        <h5>User Review Score: {{job.reviewScore}}&#9733;</h5>
+        <span>
+            <h5>User Review Score: {{job.reviewScore}}&#9733;</h5>
+            <h5 *ngIf="trader">Amount Quoted: {{tradersQuote.amount}}</h5>
+        </span>
         <div class="buttonLinks">
             <ng-container *ngTemplateOutlet="icons"></ng-container>
         </div>
@@ -29,7 +32,7 @@
             <ng-container *ngTemplateOutlet="jobDetailInfoCard"></ng-container>
         </div>
         <div class="infoImg">
-            <div  [ngClass]="{'mobile-display': !job.picture}">
+            <div [ngClass]="{'mobile-display': !job.picture}">
                 <span>Job Image</span>
                 <div class="imageBackground">
                     <span *ngIf="!job.picture">No Image Provided</span>
@@ -99,8 +102,8 @@
             </svg>
             <b>Complete Job</b>
         </div>
-        <span *ngIf="!chosenQuote && !trader && !onGoing && !finishedJob">Choose a quote to enable<p class="mobile-display"> accept and chat</p> buttons</span>
-        <span *ngIf="trader">Amount Quoted: {{tradersQuote.amount}}</span>
+        <span *ngIf="!chosenQuote && !trader && !onGoing && !finishedJob">Choose a quote to enable<p
+                class="mobile-display"> accept and chat</p> buttons</span>
     </div>
 </ng-template>
 
@@ -120,7 +123,8 @@
     <span *ngIf="!onGoing">Select Quote</span>
     <span *ngIf="onGoing || finishedJob">Selected Quote</span>
     <button mat-button color="primary" [disabled]="!chosenQuote" (click)="showCompanyInfo()">Inspect Company</button>
-    <mat-radio-group [disabled]="finishedJob" class="radio-group" aria-label="Select an option" [(ngModel)]="chosenQuote">
+    <mat-radio-group [disabled]="finishedJob" class="radio-group" aria-label="Select an option"
+        [(ngModel)]="chosenQuote">
         <mat-radio-button class="radio-button" *ngFor="let quote of quotesList" [value]="quote">
             {{quote.companyName}} - £{{quote.amount}} <span *ngIf="false">Accepted</span></mat-radio-button>
     </mat-radio-group>
