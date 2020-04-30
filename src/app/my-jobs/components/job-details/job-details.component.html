@@ -99,7 +99,7 @@
             </svg>
             <b>Complete Job</b>
         </div>
-        <span *ngIf="!chosenQuote && !trader && !onGoing && !finishedJob">Choose a quote to enable<span class="mobile-display"> accept and chat</span> buttons</span>
+        <span *ngIf="!chosenQuote && !trader && !onGoing && !finishedJob">Choose a quote to enable<p class="mobile-display"> accept and chat</p> buttons</span>
         <span *ngIf="trader">Amount Quoted: {{tradersQuote.amount}}</span>
     </div>
 </ng-template>
