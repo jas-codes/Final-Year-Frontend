@@ -6,16 +6,13 @@
     z-index: 500;
     box-shadow: 0.4rem 0.4rem 0.2rem grey;
     position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .cardTitle{
     display: ruby;
-}
-
-.buttons {
-    position: relative;
-    bottom: 14rem;
-    padding: 2%;
 }
 
 .exit {
@@ -41,25 +38,9 @@
     height: 13rem;
     background-color: lightgray;
     border-radius: 5%;
-    left: 17.5rem;
-    position: relative;
-    bottom: 22rem;
+    margin-left: 1.5rem;
     cursor: pointer;
 
-}
-
-.image-heading {
-    padding-left: 6rem;
-}
-
-.sub-headings {
-    margin-left: 4%;
-    clear: both;
-    display: inline-flex;
-}
-
-.title {
-    margin-left: 2rem;
 }
 
 .submit {
@@ -71,7 +52,7 @@
 
 .error {
     margin-left: 1.5rem;
-    margin-top: 0rem;
+    margin-top: -0.3rem;
     color: red;
 }
 
@@ -97,8 +78,8 @@ svg {
     width: 2rem;
 }
 
-h2 {
-    margin-left: 4%;
+h2, h4 {
+    margin-left: 1.5rem;
 }
 
 mat-form-field {
@@ -122,4 +103,70 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+/*Change new-job for horizontal navbar*/
+@media only screen and (max-width: 600px) {
+    .card {
+        width: 20rem;
+        height: 40rem;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-radius: 3%;
+    }
+
+    .exit {
+        top: 0rem;
+        right: 0rem;
+    }
+
+    .buttons {
+        position: relative;
+        width: 93%;
+        padding: 2%;
+    }
+
+    .add-image {
+        margin-left: 2.8rem;
+    }
+
+    .error {
+        margin-top: 0.3rem;
+        margin-bottom: 0;
+    }
+
+    mat-form-field {
+        width: 17rem;
+    }
+
+    form {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+
+}
+/*Change new-job for vertical navbar*/
+@media only screen and (min-width: 600px) {
+    .buttons {
+        position: relative;
+        bottom: 18rem;
+        padding: 2%;
+    }
+
+    .title {
+        margin-left: 2rem;
+    }
+
+    .add-image {
+        left: 16rem;
+        position: relative;
+        bottom: 26rem;
+    }
+
+    .image-heading {
+        position: relative;
+        left: 16rem;
+        bottom: 26.5rem;
+    }
 }

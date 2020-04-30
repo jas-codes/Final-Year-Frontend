@@ -58,7 +58,14 @@ p b {
 
 /*Change job list item for horizontal navbar*/
 @media only screen and (max-width: 600px) {
+    p b {
+        margin-left: 0rem;
+    }
     .mobile-display {
         display: none;
+    }
+
+    mat-icon {
+        right: 1rem;
     }
 }
