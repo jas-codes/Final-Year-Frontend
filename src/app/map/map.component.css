@@ -9,16 +9,6 @@
     margin-left: 10%;
 }
 
-.add-new-job {
-    right: 4rem;
-    bottom: 4rem;
-}
-
-.new-job-component {
-    right: 16%;
-    bottom: 7%;
-}
-
 .wrapper {
     width: 100%;
     height: 100%;
@@ -72,10 +62,35 @@ svg {
     height: 1.5rem;
 }
 
-/*Change new message bar for horizontal navbar*/
+/*Change map for horizontal navbar*/
 @media only screen and (max-width: 600px) {
     .add-new-job {
         top: 1rem;
         right: 1rem;
+    }
+
+    .new-job-component {
+        position: fixed;
+        top: 50%;
+        left: 14.5rem;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/*Change map for vertical navbar*/
+@media only screen and (min-width: 600px) {
+    .add-new-job {
+        top: 60rem;
+        right: 1rem;
+    }
+
+    .new-job-component {
+        right: 16%;
+        bottom: 7%;
+    }
+
+    .add-new-job {
+        right: 4rem;
+        bottom: 4rem;
     }
 }

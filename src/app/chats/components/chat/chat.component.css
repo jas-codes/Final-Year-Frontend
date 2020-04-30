@@ -92,6 +92,10 @@ img {
     .traderText {
         max-width: 94.9%;
     }
+
+    .userText {
+        max-width: 94.9%;
+    }
 }
 
 /*Change new message bar for horizontal navbar*/
@@ -107,6 +111,10 @@ img {
     }
 
     .traderText {
+        max-width: 84%;
+    }
+
+    .userText {
         max-width: 84%;
     }
 }

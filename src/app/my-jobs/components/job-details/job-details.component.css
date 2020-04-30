@@ -146,12 +146,11 @@ li:last-child {
     border: none;
 }
 
-/*Change new message bar for horizontal navbar*/
+/*Change job details bar for horizontal navbar*/
 @media only screen and (max-width: 600px) {
     .secondaryInfo {
         padding: 1rem;
         width: 100%;
-        padding: red;
     }
     
     .infoImg {
@@ -177,17 +176,20 @@ li:last-child {
         height: 5.5rem;
         border-bottom: 1px solid #ccc;
         display: inline-block;
-    }    
+    }
+
+    .mobile-display {
+        display: none !important;
+    }
 }
 
-/*Change new message bar for horizontal navbar*/
+/*Change information layout for vertical navbar*/
 @media only screen and (min-width: 600px) {
     .secondaryInfo {
         padding: 1rem;
         margin-left: 1rem;
         width: 30%;
         height: 100%;
-        background-color: green;
     }
     
     .infoImg {
@@ -197,7 +199,6 @@ li:last-child {
         display: block;
         width: 26%;
         height: 100%;
-        background-color: red;
     }
 
     .quotesListContainer {
@@ -207,7 +208,6 @@ li:last-child {
         width: 30%;
         height: 100%;
         position: relative;
-        background-color: blueviolet;
     }
 
     .jobDetailsContainer {

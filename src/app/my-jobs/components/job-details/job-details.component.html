@@ -7,7 +7,7 @@
         <span>My Jobs > Job Details > {{job.title}}</span>
     </mat-toolbar>
     <mat-toolbar class="statusBar">
-        <span>Job Status: {{statusText}}</span>
+        <span><span class="mobile-display">Job Status: </span> {{statusText}}</span>
     </mat-toolbar>
     <div class="mapContainer">
         <google-map height="20rem" width="100%" [zoom]="15" [center]="centre" [options]="mapOptions">
@@ -29,7 +29,7 @@
             <ng-container *ngTemplateOutlet="jobDetailInfoCard"></ng-container>
         </div>
         <div class="infoImg">
-            <div class="backgroundGreyColour">
+            <div  [ngClass]="{'mobile-display': !job.picture}">
                 <span>Job Image</span>
                 <div class="imageBackground">
                     <span *ngIf="!job.picture">No Image Provided</span>
@@ -99,7 +99,7 @@
             </svg>
             <b>Complete Job</b>
         </div>
-        <span *ngIf="!chosenQuote && !trader && !onGoing && !finishedJob">Choose a quote to enable accept and chat</span>
+        <span *ngIf="!chosenQuote && !trader && !onGoing && !finishedJob">Choose a quote to enable<span class="mobile-display"> accept and chat</span> buttons</span>
         <span *ngIf="trader">Amount Quoted: {{tradersQuote.amount}}</span>
     </div>
 </ng-template>
@@ -120,8 +120,7 @@
     <span *ngIf="!onGoing">Select Quote</span>
     <span *ngIf="onGoing || finishedJob">Selected Quote</span>
     <button mat-button color="primary" [disabled]="!chosenQuote" (click)="showCompanyInfo()">Inspect Company</button>
-    {{finishedJob}}
-    <mat-radio-group class="radio-group" aria-label="Select an option" [(ngModel)]="chosenQuote">
+    <mat-radio-group [disabled]="finishedJob" class="radio-group" aria-label="Select an option" [(ngModel)]="chosenQuote">
         <mat-radio-button class="radio-button" *ngFor="let quote of quotesList" [value]="quote">
             {{quote.companyName}} - £{{quote.amount}} <span *ngIf="false">Accepted</span></mat-radio-button>
     </mat-radio-group>
