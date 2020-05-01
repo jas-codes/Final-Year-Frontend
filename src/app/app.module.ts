@@ -32,7 +32,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDatepickerModule } from '@angular/material/datepicker'; 
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FirebaseConfig } from 'src/environments/firebase-config';
@@ -47,6 +47,7 @@ import { JobSearchPipe } from './pipes/job-search.pipe';
 import { MatRadioModule } from '@angular/material/radio';
 import { CompanyDetailsComponent } from './company-details/company-details.component';
 import { DatePipe } from '@angular/common';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -63,7 +64,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatButtonToggleModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatRadioModule
+  MatRadioModule,
+  MatSlideToggleModule
 ]
 
 @NgModule({

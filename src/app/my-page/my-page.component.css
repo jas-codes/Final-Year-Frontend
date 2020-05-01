@@ -1,0 +1,72 @@
+.profilePic {
+    margin-left: 1.5rem;
+    margin-top: 1.5rem;
+    width: 20.5rem;
+    height: 20.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: grey;
+}
+
+.profilePic img {
+    max-width: 20rem;
+    height: auto;
+}
+
+.info-container {
+    margin: 1.5rem;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    height: auto;
+}
+
+.info-container mat-form-field {
+    margin-left: 1rem;
+}
+
+.company-info {
+    margin-left: 1rem;
+    width: 25rem;
+}
+
+.user-info {
+    width: 25rem;
+}
+
+.upload {
+    width: 23rem;
+    margin-left: 1rem;
+}
+
+.upload button {
+    width: 100%;
+}
+
+.account-info-heading {
+    position: relative;
+}
+
+.company-info-heading {
+    position: relative;
+}
+
+.edit-button {
+    position: absolute;
+    top: 0.2rem;
+    right: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.customErrorText {
+    color: red;
+    font-size: smaller;
+    position: absolute;
+}
+
+.UserInfoError {
+    margin-left: 13.5rem;
+    top: 41rem;
+}
