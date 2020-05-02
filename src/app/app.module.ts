@@ -48,6 +48,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CompanyDetailsComponent } from './company-details/company-details.component';
 import { DatePipe } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ReviewComponent } from './review/review.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -87,7 +88,8 @@ const ANGULAR_MATERIAL_MODULES = [
     ChatListPipe,
     JobDetailsComponent,
     JobSearchPipe,
-    CompanyDetailsComponent
+    CompanyDetailsComponent,
+    ReviewComponent
   ],
   imports: [
     BrowserModule,

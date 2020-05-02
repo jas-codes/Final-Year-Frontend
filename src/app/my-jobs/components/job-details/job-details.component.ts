@@ -16,6 +16,8 @@ import { Company } from 'src/app/models/company';
 import { CompletionState } from 'src/app/enums/completionState';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Location, DatePipe } from '@angular/common';
+import { ReviewService } from 'src/app/review/services/review.service';
+import { Review } from 'src/app/models/review';
 
 @Component({
   selector: 'app-job-details',
@@ -65,6 +67,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     private companyService: CompaniesService,
     private chatService: ChatService,
     private quoteService: QuotesService,
+    private reviewService: ReviewService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private location: Location,
@@ -279,5 +282,15 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       ],
         { relativeTo: this.activatedRoute.parent });
     }
+  }
+
+  postReview(){
+    if(this.user.accountType == UserTypes.user)
+      var review: Review = {comment: 'this is a user test', score: 5, uid: this.job.workCandidates[0] };
+    else 
+      var review: Review = { comment: 'this is a trader test', score: 5, uid: this.job.issueUid};
+
+    console.log('review', review);
+    this.reviewService.postReview(review);
   }
 }

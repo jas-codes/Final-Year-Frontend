@@ -1,4 +1,5 @@
 <body class="container">
+    <app-review  class="send-front component-card"></app-review>
     <app-quote class="send-front component-card" *ngIf="provideQuote" (dismiss)="showProvideQuote()"
         (quote)="createQuote($event)"></app-quote>
     <app-company-details class="send-front component-card" *ngIf="companyInfo" [company]="company"
@@ -26,6 +27,7 @@
                 class="mobile-display"> accept and chat</p> buttons</h5>
         </span>
         <div class="buttonLinks">
+            <button mat-raised-button (click)="postReview()">post review</button>
             <ng-container *ngTemplateOutlet="icons"></ng-container>
         </div>
     </div>
