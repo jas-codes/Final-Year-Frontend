@@ -24,6 +24,20 @@
     display: inline-block;
 }
 
+.headInfoBar span {
+    margin-bottom: 0.4rem;
+}
+
+.quoteWarning {
+    white-space: pre;
+    display: inline-flex;
+}
+
+.quoteWarning p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .buttonLinks {
     width: 45rem;
     height: 2rem;

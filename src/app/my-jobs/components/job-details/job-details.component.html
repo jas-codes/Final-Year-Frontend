@@ -22,6 +22,8 @@
         <span>
             <h5>User Review Score: {{job.reviewScore}}&#9733;</h5>
             <h5 *ngIf="trader">Amount Quoted: {{tradersQuote.amount}}</h5>
+            <h5 class="quoteWarning" *ngIf="!chosenQuote && !trader && !onGoing && !finishedJob">Choose a quote to enable<p
+                class="mobile-display"> accept and chat</p> buttons</h5>
         </span>
         <div class="buttonLinks">
             <ng-container *ngTemplateOutlet="icons"></ng-container>
@@ -102,8 +104,6 @@
             </svg>
             <b>Complete Job</b>
         </div>
-        <span *ngIf="!chosenQuote && !trader && !onGoing && !finishedJob">Choose a quote to enable<p
-                class="mobile-display"> accept and chat</p> buttons</span>
     </div>
 </ng-template>
 
