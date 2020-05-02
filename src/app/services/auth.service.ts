@@ -64,12 +64,12 @@ export class AuthService {
         let lng = ((res as any).result.longitude);
         data.lngLat = { lat, lng };
 
-        if (data.accountType == UserTypes.trader) {
+        if (data.accountType == UserTypes.trader) { //create company if trader, on first login
           this.companyService.createCompany(form, data);
         }
 
         userRef.set(data, { merge: true })
-        this.ngZone.run(() => this.router.navigate(['home/']));
+        this.ngZone.run(() => this.router.navigate(['home/'])); //navigate to home screen when done
       });
   }
 
@@ -85,10 +85,6 @@ export class AuthService {
         let lat = ((res as any).result.latitude);
         let lng = ((res as any).result.longitude);
         data.lngLat = { lat, lng };
-
-        if (data.accountType == UserTypes.trader) {
-          this.companyService.createCompany(form, data);
-        }
 
         userRef.set(data, { merge: true })
       });

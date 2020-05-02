@@ -2,7 +2,7 @@
     <app-quote class="send-front component-card" *ngIf="provideQuote" (dismiss)="showProvideQuote()"
         (quote)="createQuote($event)"></app-quote>
     <app-company-details class="send-front component-card" *ngIf="companyInfo" [company]="company"
-        (dismiss)="showCompanyInfo()"></app-company-details>
+        [showDetails]="true" (dismiss)="showCompanyInfo()"></app-company-details>
     <mat-toolbar color="primary">
         <span><span class="mobile-display">My Jobs ></span> Job Details > {{job.title}}</span>
     </mat-toolbar>

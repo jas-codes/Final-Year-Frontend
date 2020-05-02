@@ -1,11 +1,12 @@
 <div class="screen-dim">
     <mat-card>
         <mat-card-header>
-            <mat-card-title>Company Details:</mat-card-title>
+            <mat-card-title *ngIf="showDetails">Company Details:</mat-card-title>
+            <mat-card-title *ngIf="!showDetails">Company Gallery Images:</mat-card-title>
             <button class="exit" mat-button color="primary" (click)="dismissComponent()">cancel</button>
         </mat-card-header>
         <img *ngIf="currentImage != ''" mat-card-image [src]="currentImage">
-        <mat-card-content>
+        <mat-card-content *ngIf="showDetails">
             <ul>
                 <li>Name: <span>{{company.companyName}}</span></li>
                 <li>Review Score: <span>{{company.reviewScore}}</span></li>

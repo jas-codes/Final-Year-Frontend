@@ -8,6 +8,7 @@ import { Company } from '../models/company';
 })
 export class CompanyDetailsComponent implements OnInit {
   @Input() company: Company = new Company();
+  @Input() showDetails: boolean = false;
   @Output() dismiss = new EventEmitter<boolean>();
 
   positiveIncrement = 1;

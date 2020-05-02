@@ -19,13 +19,17 @@ import { Company } from '../models/company';
   styleUrls: ['./my-page.component.css']
 })
 export class MyPageComponent implements OnInit, OnDestroy {
-  @ViewChild("fileUpload", { static: false }) fileUpload: ElementRef;
+  @ViewChild("fileUploadUser", { static: false }) fileUploadUser: ElementRef;
+  @ViewChild("fileUploadCompany", { static: false }) fileUploadCompany: ElementRef;
   subscriptions: Subscription[] = [];
-  file: any;
+  fileUserInfo: any;
+  fileCompanyInfo: any;
   editUserDetails: boolean = false;
   editCompanyDetails: boolean = false;
   userFormChange: boolean = false;
+  companyFormChange: boolean = false;
   userFormSubscription: Subscription;
+  companyFormSubscription: Subscription;
   userSliderColour: string = ThemeConstants.accent;
   companySliderColour: string = ThemeConstants.accent;
   disabledUserForm: boolean = false;
@@ -34,6 +38,9 @@ export class MyPageComponent implements OnInit, OnDestroy {
   showCustomErrorUserInfo: boolean = false;
   trades = Object.values(TradeType);
   company: Company;
+  descriptionMaxLength: number = 300;
+  companyGallery: boolean = false;
+  numberOfGalleryImages: number = 0;
 
   //user variables
   userSub: Subscription;
@@ -55,6 +62,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
     tradeType: new FormControl('', Validators.required),
     companyName: new FormControl('', Validators.required),
     emailAddress: new FormControl('', [Validators.required, Validators.email]),
+    description: new FormControl('', Validators.maxLength(this.descriptionMaxLength))
   })
 
   constructor(private authService: AuthService,
@@ -71,8 +79,9 @@ export class MyPageComponent implements OnInit, OnDestroy {
           if (this.user.accountType == UserTypes.trader) {
             this.trader = true;
             this.subscriptions.push(this.companyService.getCompanyByUid(this.user.uid).valueChanges().subscribe((company) => {
-              console.log(company)
               this.company = company
+              this.numberOfGalleryImages = this.company.photos.length;
+              this.CompanyFormToggle();
               this.updateCompanyFormDefaults();
             }))
           }
@@ -87,15 +96,15 @@ export class MyPageComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  onClickUserInfo() {
+  onClickUserUpload() {
     var self = this;
-    const fileUpload = this.fileUpload.nativeElement;
+    const fileUpload = this.fileUploadUser.nativeElement;
 
     fileUpload.onchange = () => {
-      this.file = fileUpload.files;
+      this.fileUserInfo = fileUpload.files;
 
-      if (this.file) {
-        this.fileUploadService.uploadFile(this.file, BlobLocations.profilePicture, function (result) {
+      if (this.fileUserInfo) {
+        this.fileUploadService.uploadFile(this.fileUserInfo, BlobLocations.profilePicture, function (result) {
           //callback once the photo is uploaded containing image URL
           if (result === 'error') {
             console.log('there was an error with the upload');
@@ -103,9 +112,30 @@ export class MyPageComponent implements OnInit, OnDestroy {
             self.user.photoURL = result;
             self.authService.updateUserInfo(self.user, self.userInfoForm, result);
           }
-        })
+        });
       }
     };
+    fileUpload.click();
+  }
+
+  onClickCustomerUpload() {
+    var self = this;
+    const fileUpload = this.fileUploadCompany.nativeElement;
+
+    fileUpload.onchange = () => {
+      this.fileCompanyInfo = fileUpload.files;
+
+      if(this.fileCompanyInfo) {
+        this.fileUploadService.uploadFile(this.fileCompanyInfo, BlobLocations.companyImages, function(result) {
+          if(result === 'error') {
+            console.log('there was an error with the upload');
+          } else {
+            self.company.photos.push(result);
+            self.companyService.updateCompany(self.company);
+          }
+        });
+      }
+    }
     fileUpload.click();
   }
 
@@ -118,16 +148,16 @@ export class MyPageComponent implements OnInit, OnDestroy {
     this.userInfoForm.get('emailAddress').setValue(this.user.email);
     this.userInfoForm.get('dob').setValue(this.user.dob);
     this.userInfoForm.get('accountType').setValue(this.user.accountType);
-    // this.form.get('').setValue(this.user);
   }
 
   updateCompanyFormDefaults() {
     this.companyInfoForm.get('companyName').setValue(this.company.companyName);
     this.companyInfoForm.get('tradeType').setValue(this.company.tradeType);
     this.companyInfoForm.get('emailAddress').setValue(this.company.email);
+    this.companyInfoForm.get('description').setValue(this.company.description);
   }
 
-  onFormChanges() {
+  onUserFormEdit() {
     this.userFormSubscription = this.userInfoForm.valueChanges.subscribe((val) => {
       if (val)
         this.userFormChange = true;
@@ -136,10 +166,26 @@ export class MyPageComponent implements OnInit, OnDestroy {
         this.userSliderColour = ThemeConstants.warn;
         this.disabledUserForm = true;
       }
-      else {
+      else
         this.checkPostcodeValidity();
-      }
     });
+  }
+
+  onCompanyFormEdit() {
+    this.companyFormSubscription = this.companyInfoForm.valueChanges.subscribe((val) => {
+      if (val)
+        this.companyFormChange = true;
+
+      if (!this.companyInfoForm.valid) {
+        this.companySliderColour = ThemeConstants.warn;
+        this.disabledCompanyForm = true;
+      }
+      else {
+        this.companySliderColour = ThemeConstants.accent;
+        this.disabledCompanyForm = false;
+      }
+
+    })
   }
 
   userFormToggle() {
@@ -147,41 +193,61 @@ export class MyPageComponent implements OnInit, OnDestroy {
       if (this.userFormSubscription)
         this.userFormSubscription.unsubscribe();
       if (this.userFormChange) {
-        console.log('updating userinfo')
         this.authService.updateUserInfo(this.user, this.userInfoForm, this.user.photoURL);
       }
 
-      this.checkPostcodeValidity()
       this.userInfoForm.disable();
       this.userFormChange = false;
     }
     else {
       this.userInfoForm.enable();
-      this.onFormChanges();
+      this.onUserFormEdit();
     }
   }
 
   CompanyFormToggle() {
-
+    if (!this.editCompanyDetails) {
+      if (this.companyFormSubscription)
+        this.companyFormSubscription.unsubscribe()
+      if (this.companyFormChange)
+        this.makeChangesToCompany();
+      this.companyInfoForm.disable();
+      this.companyFormChange = false;
+    } else {
+      this.companyInfoForm.enable();
+      this.onCompanyFormEdit();
+    }
   }
 
   checkPostcodeValidity() {
-    this.postcodeService.convertPostcodeToLatLong(this.userInfoForm.get('postcode').value).subscribe(
+    var subscription = this.postcodeService.convertPostcodeToLatLong(this.userInfoForm.get('postcode').value).subscribe(
       (data) => {
         this.userSliderColour = ThemeConstants.accent;
         this.disabledUserForm = false;
         this.showCustomErrorUserInfo = false;
+        subscription.unsubscribe();
       },
       (error) => {
         if (this.editUserDetails) {
-          console.log('here we are')
           this.customErrorText = 'Invalid Postcode'
           this.showCustomErrorUserInfo = true;
           this.userSliderColour = ThemeConstants.warn;
           this.disabledUserForm = true;
+          subscription.unsubscribe();
         }
       }
     )
   }
 
+  makeChangesToCompany() {
+    this.company.email = this.companyInfoForm.get('emailAddress').value;
+    this.company.companyName = this.companyInfoForm.get('companyName').value;
+    this.company.tradeType = this.companyInfoForm.get('tradeType').value;
+    this.company.description = this.companyInfoForm.get('description').value;
+    this.companyService.updateCompany(this.company);
+  }
+
+  showCompanyGallery() {
+    this.companyGallery = !this.companyGallery;
+  }
 }
