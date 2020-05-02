@@ -19,8 +19,11 @@ import { Company } from '../models/company';
   styleUrls: ['./my-page.component.css']
 })
 export class MyPageComponent implements OnInit, OnDestroy {
+  //get from dom
   @ViewChild("fileUploadUser", { static: false }) fileUploadUser: ElementRef;
   @ViewChild("fileUploadCompany", { static: false }) fileUploadCompany: ElementRef;
+
+  //component logic variables
   subscriptions: Subscription[] = [];
   fileUserInfo: any;
   fileCompanyInfo: any;
@@ -47,6 +50,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
   user: IUser;
   trader: boolean = false;
 
+  //userInfoForm
   userInfoForm = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
@@ -58,6 +62,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
     emailAddress: new FormControl('', [Validators.required, Validators.email]),
   });
 
+  //companyInfoForm
   companyInfoForm = new FormGroup({
     tradeType: new FormControl('', Validators.required),
     companyName: new FormControl('', Validators.required),
@@ -71,21 +76,23 @@ export class MyPageComponent implements OnInit, OnDestroy {
     private postcodeService: PostcodeService) { }
 
   ngOnInit(): void {
+    //initialise toggle state
     this.userFormToggle();
+
     if (this.authService.user$) { //get the user
       this.userSub = this.authService.user$.subscribe((user) => {
         if (user != null) {
           this.user = user;
-          if (this.user.accountType == UserTypes.trader) {
+          if (this.user.accountType == UserTypes.trader) { //if trader, get data and initialise toggle states
             this.trader = true;
             this.subscriptions.push(this.companyService.getCompanyByUid(this.user.uid).valueChanges().subscribe((company) => {
               this.company = company
               this.numberOfGalleryImages = this.company.photos.length;
               this.CompanyFormToggle();
-              this.updateCompanyFormDefaults();
+              this.updateCompanyFormDefaults(); //put form data
             }))
           }
-          this.updateUserFormDefaults()
+          this.updateUserFormDefaults() //put form data
         }
       });
     }
@@ -96,6 +103,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  //onclick for image upload
   onClickUserUpload() {
     var self = this;
     const fileUpload = this.fileUploadUser.nativeElement;
@@ -118,6 +126,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
     fileUpload.click();
   }
 
+    //onclick for image upload
   onClickCustomerUpload() {
     var self = this;
     const fileUpload = this.fileUploadCompany.nativeElement;
@@ -139,6 +148,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
     fileUpload.click();
   }
 
+  //set user form values
   updateUserFormDefaults() {
     this.userInfoForm.get('firstName').setValue(this.user.firstName);
     this.userInfoForm.get('lastName').setValue(this.user.lastName);
@@ -150,6 +160,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
     this.userInfoForm.get('accountType').setValue(this.user.accountType);
   }
 
+  //set company form values
   updateCompanyFormDefaults() {
     this.companyInfoForm.get('companyName').setValue(this.company.companyName);
     this.companyInfoForm.get('tradeType').setValue(this.company.tradeType);
@@ -158,6 +169,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
   }
 
   onUserFormEdit() {
+    //subscribe to form changes to check if valid
     this.userFormSubscription = this.userInfoForm.valueChanges.subscribe((val) => {
       if (val)
         this.userFormChange = true;
@@ -172,6 +184,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
   }
 
   onCompanyFormEdit() {
+    //subscribe to company form changes to check if valid
     this.companyFormSubscription = this.companyInfoForm.valueChanges.subscribe((val) => {
       if (val)
         this.companyFormChange = true;
@@ -189,17 +202,17 @@ export class MyPageComponent implements OnInit, OnDestroy {
   }
 
   userFormToggle() {
-    if (!this.editUserDetails) {
-      if (this.userFormSubscription)
+    if (!this.editUserDetails) { //if toggled false
+      if (this.userFormSubscription) //and there is a subscription
         this.userFormSubscription.unsubscribe();
-      if (this.userFormChange) {
+      if (this.userFormChange) {  //if there was a change
         this.authService.updateUserInfo(this.user, this.userInfoForm, this.user.photoURL);
       }
 
       this.userInfoForm.disable();
       this.userFormChange = false;
     }
-    else {
+    else { //else enable form edit
       this.userInfoForm.enable();
       this.onUserFormEdit();
     }
@@ -211,6 +224,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
         this.companyFormSubscription.unsubscribe()
       if (this.companyFormChange)
         this.makeChangesToCompany();
+
       this.companyInfoForm.disable();
       this.companyFormChange = false;
     } else {
@@ -220,25 +234,29 @@ export class MyPageComponent implements OnInit, OnDestroy {
   }
 
   checkPostcodeValidity() {
+    //checks the user form postcode validity
     var subscription = this.postcodeService.convertPostcodeToLatLong(this.userInfoForm.get('postcode').value).subscribe(
       (data) => {
+        //if a response then it is valid
         this.userSliderColour = ThemeConstants.accent;
         this.disabledUserForm = false;
         this.showCustomErrorUserInfo = false;
         subscription.unsubscribe();
       },
       (error) => {
+        //no response then error
         if (this.editUserDetails) {
           this.customErrorText = 'Invalid Postcode'
           this.showCustomErrorUserInfo = true;
           this.userSliderColour = ThemeConstants.warn;
           this.disabledUserForm = true;
-          subscription.unsubscribe();
+          subscription.unsubscribe(); //tidy up
         }
       }
     )
   }
 
+  //assign company changes
   makeChangesToCompany() {
     this.company.email = this.companyInfoForm.get('emailAddress').value;
     this.company.companyName = this.companyInfoForm.get('companyName').value;

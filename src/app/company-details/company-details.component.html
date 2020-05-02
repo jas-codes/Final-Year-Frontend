@@ -1,11 +1,14 @@
+<!--screen dim overlay-->
 <div class="screen-dim">
     <mat-card>
+        <!--Different headers for gallery or full details-->
         <mat-card-header>
             <mat-card-title *ngIf="showDetails">Company Details:</mat-card-title>
             <mat-card-title *ngIf="!showDetails">Company Gallery Images:</mat-card-title>
             <button class="exit" mat-button color="primary" (click)="dismissComponent()">cancel</button>
         </mat-card-header>
         <img *ngIf="currentImage != ''" mat-card-image [src]="currentImage">
+        <!--Hide details if only gallery-->
         <mat-card-content *ngIf="showDetails">
             <ul>
                 <li>Name: <span>{{company.companyName}}</span></li>

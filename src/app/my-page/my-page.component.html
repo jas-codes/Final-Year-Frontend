@@ -3,14 +3,18 @@
         <span>My Page</span>
     </mat-toolbar>
 
+    <!--show company gallery-->
     <app-company-details *ngIf="companyGallery" class="send-front component-card" [company]="company"
         [showDetails]="false" (dismiss)="showCompanyGallery()"></app-company-details>
 
+    <!--Profile picture-->
     <div class="profilePic" *ngIf="user">
         <img [src]="user.photoURL">
     </div>
 
+    <!--information container-->
     <div class="info-container">
+        <!--User Info Form with heading and slider-->
         <div class="user-info">
             <div class="account-info-heading">
                 <h3>Account Information</h3>
@@ -60,6 +64,8 @@
                 </div>
             </form>
         </div>
+
+        <!--Company Info Form with heading and slider-->
         <div class="company-info" *ngIf="trader">
             <div class="company-info-heading">
                 <h3>Company Information</h3>
