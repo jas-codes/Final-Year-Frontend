@@ -1,8 +1,10 @@
 .screen-dim {
     background-color: rgba(0,0,0,0.4);
-    height: 100%;
+    height: 100vh;
     width: 100%;
     margin-left: -10%;
+    margin-top: -12%;
+    position: fixed;
 }
 
 .exit {

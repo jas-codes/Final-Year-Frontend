@@ -1,3 +1,125 @@
-<mat-toolbar color="primary">
-    <span>My Page</span>
-</mat-toolbar>
+<body class="container">
+    <mat-toolbar color="primary">
+        <span>My Page</span>
+    </mat-toolbar>
+
+    <!--show company gallery-->
+    <app-company-details *ngIf="companyGallery" class="send-front component-card" [company]="company"
+        [showDetails]="false" (dismiss)="showCompanyGallery()"></app-company-details>
+
+    <!--Profile picture-->
+    <div class="profilePic" *ngIf="user">
+        <img [src]="user.photoURL">
+    </div>
+
+    <!--information container-->
+    <div class="info-container">
+        <!--User Info Form with heading and slider-->
+        <div class="user-info">
+            <div class="account-info-heading">
+                <h3>Account Information</h3>
+                <div class="edit-button">
+                    <mat-slide-toggle disabled="{{disabledUserForm}}" (change)="userFormToggle()"
+                        [(ngModel)]="editUserDetails" [color]="userSliderColour">edit</mat-slide-toggle>
+                </div>
+            </div>
+            <form [formGroup]="userInfoForm">
+                <div class="names">
+                    <mat-form-field>
+                        <input #firstName matInput placeholder="First Name" formControlName="firstName" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input #LastName matInput placeholder="Last Name" formControlName="lastName" required>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input #emailAddress matInput type="email" placeholder="Enter Email"
+                            formControlName="emailAddress" required>
+                        <mat-error>Must be a valid email address</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input #nickName matInput placeholder="Nickname" formControlName="nickname" required>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input #phoneNumber type="tel" matInput placeholder="Phone Number" formControlName="phoneNumber"
+                            required>
+                        <mat-error>Must be of length 11</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input #postcode matInput placeholder="Postcode" formControlName="postcode" required>
+                        <mat-error>Min Length 6, Max Length 8</mat-error>
+                    </mat-form-field>
+                </div>
+                <span class="customErrorText UserInfoError" *ngIf="showCustomErrorUserInfo">*{{customErrorText}}</span>
+                <div class="uploadUserInfo">
+                    <button type="button" mat-button (click)="onClickUserUpload()">Upload New Profile Picture <mat-icon>
+                            file_upload
+                        </mat-icon>
+                    </button>
+                    <input type="file" #fileUploadUser id="fileUploadUser" name="fileUploadUser" accept=".png, .jpg"
+                        style="display:none;" />
+                </div>
+            </form>
+        </div>
+
+        <!--Company Info Form with heading and slider-->
+        <div class="company-info" *ngIf="trader">
+            <div class="company-info-heading">
+                <h3>Company Information</h3>
+                <div class="edit-button">
+                    <mat-slide-toggle disabled="{{disabledCompanyForm}}" (change)="CompanyFormToggle()"
+                        [(ngModel)]="editCompanyDetails" [color]="companySliderColour">edit</mat-slide-toggle>
+                </div>
+            </div>
+            <form [formGroup]="companyInfoForm">
+                <div>
+                    <mat-form-field>
+                        <input #emailAddress matInput type="email" placeholder="Enter Email"
+                            formControlName="emailAddress" required>
+                        <mat-error>Must be a valid email address</mat-error>
+                    </mat-form-field>
+                    <ng-container *ngIf="trader">
+                        <mat-form-field>
+                            <mat-label>Trade Required</mat-label>
+                            <mat-select formControlName="tradeType" [required]="trader">
+                                <mat-option *ngFor="let trade of trades" [value]="trade">
+                                    {{trade}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </ng-container>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <input #companyName matInput placeholder="Company Name" formControlName="companyName" required>
+                    </mat-form-field>
+                </div>
+                <div class="description">
+                    <mat-form-field>
+                        <mat-label>Describe the Company</mat-label>
+                        <textarea matInput placeholder="Ex. We are a family run business"
+                            formControlName="description"></textarea>
+                        <mat-error>Max Length of 300 Characters</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="uploadCompanyInfo">
+                    <div>
+                        <button type="button" mat-button (click)="onClickCustomerUpload()">Company Image<mat-icon>
+                                file_upload
+                            </mat-icon>
+                        </button>
+                        <input type="file" #fileUploadCompany id="fileUploadCompany" name="fileUploadCompany"
+                            accept=".png, .jpg" style="display:none;" />
+                    </div>
+                    <div>
+                        <button type="button" mat-button (click)="showCompanyGallery()">View Gallery of
+                            {{numberOfGalleryImages}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>

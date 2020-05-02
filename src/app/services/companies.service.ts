@@ -43,6 +43,11 @@ export class CompaniesService {
     return this.afirestore.doc<Company>(`companies/${uid}`);
   }
 
+  updateCompany(company: Company) {
+    this.afirestore.doc<Company>(`companies/${company.uid}`).update({...company})
+      .catch(error => this.errorHandler(error));
+  }
+
   errorHandler(error) {
     console.log(error);
   }

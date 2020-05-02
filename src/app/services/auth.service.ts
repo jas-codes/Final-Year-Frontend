@@ -51,9 +51,46 @@ export class AuthService {
   }
 
 
-  private updateUserInfo(user, form?: FormGroup, photoURL?: string) {
+  private updateUserInfoFromLogin(user, form?: FormGroup, photoURL?: string) {
     const userRef: AngularFirestoreDocument<IUser> = this.afirestore.doc(`users/${user.uid}`);
+    if (photoURL)
+      var data = this.updateData(user, form, photoURL);
+    else
+      var data = this.updateData(user, form, photoURL);
 
+    this.postcodeService.convertPostcodeToLatLong(data.postcode).toPromise()
+      .then((res) => {
+        let lat = ((res as any).result.latitude);
+        let lng = ((res as any).result.longitude);
+        data.lngLat = { lat, lng };
+
+        if (data.accountType == UserTypes.trader) { //create company if trader, on first login
+          this.companyService.createCompany(form, data);
+        }
+
+        userRef.set(data, { merge: true })
+        this.ngZone.run(() => this.router.navigate(['home/'])); //navigate to home screen when done
+      });
+  }
+
+  public updateUserInfo(user, form: FormGroup, photoURL?: string) {
+    const userRef: AngularFirestoreDocument<IUser> = this.afirestore.doc(`users/${user.uid}`);
+    if (photoURL)
+      var data = this.updateData(user, form, photoURL);
+    else
+      var data = this.updateData(user, form, photoURL);
+
+    this.postcodeService.convertPostcodeToLatLong(data.postcode).toPromise()
+      .then((res) => {
+        let lat = ((res as any).result.latitude);
+        let lng = ((res as any).result.longitude);
+        data.lngLat = { lat, lng };
+
+        userRef.set(data, { merge: true })
+      });
+  }
+
+  updateData(user, form: FormGroup, photoURL?: string) {
     const data = {
       uid: user.uid,
       email: user.email,
@@ -68,42 +105,31 @@ export class AuthService {
       lngLat: undefined
     };
 
-    if (form) {
-      data.firstName = form.get('firstName').value;
-      data.lastName = form.get('lastName').value;
-      data.phoneNumber = form.get('phoneNumber').value;
+    data.firstName = form.get('firstName').value;
+    data.lastName = form.get('lastName').value;
+    data.phoneNumber = form.get('phoneNumber').value;
+    data.postcode = form.get('postcode').value;
+
+    if (form.get('emailAddress'))
+      data.email = form.get('emailAddress').value;
+    if (form.get('dob'))
       data.dob = form.get('dob').value;
-      data.postcode = form.get('postcode').value;
+    if (form.get('accountType'))
       data.accountType = form.get('accountType').value;
-      if (photoURL) {
-        data.photoURL = photoURL;
-      }
-      if (form.get('nickname').value !== '') {
-        data.displayName = form.get('nickname').value;
-      }
-    }
+    if (photoURL)
+      data.photoURL = photoURL;
+    if (form.get('nickname').value !== '')
+      data.displayName = form.get('nickname').value;
 
-    this.postcodeService.convertPostcodeToLatLong(data.postcode).toPromise()
-      .then((res) => {
-        let lat = ((res as any).result.latitude);
-        let lng = ((res as any).result.longitude);
-        data.lngLat = { lat, lng };
-
-        if (data.accountType == UserTypes.trader) {
-          this.companyService.createCompany(form, data);
-        }
-        
-        userRef.set(data, { merge: true })
-        this.ngZone.run(() =>  this.router.navigate(['home/']));
-      });
+    return data;
   }
 
   uploadSignInDetails(form: FormGroup) {
     //successful login
     var user = this.afireAuth.auth.currentUser;
-      if(user) {
-        this.updateUserInfo(user, form)
-      }
+    if (user) {
+      this.updateUserInfoFromLogin(user, form)
+    }
   }
 
   async googleSignin() {
@@ -136,9 +162,9 @@ export class AuthService {
     this.afireAuth.auth.createUserWithEmailAndPassword(email, password).then(function (result) {
       //successful account creation
       if (photoURL)
-        self.updateUserInfo(result.user, form, photoURL);
+        self.updateUserInfoFromLogin(result.user, form, photoURL);
       else
-        self.updateUserInfo(result.user, form);
+        self.updateUserInfoFromLogin(result.user, form);
     }).catch(error => this.errorCatch(error));
   }
 
