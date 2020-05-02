@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Subscription, pipe } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { IUser } from '../services/user.model';
 import { UserTypes } from '../enums/user-types';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FileUploadService } from '../services/file-upload.service';
 import { CompaniesService } from '../services/companies.service';
-import { map, tap } from 'rxjs/operators';
 import { ThemeConstants } from '../enums/theme-constants';
 import { BlobLocations } from '../enums/blob-locations';
 import { PostcodeService } from '../services/postcode.service';
