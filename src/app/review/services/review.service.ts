@@ -6,8 +6,7 @@ import { Review } from 'src/app/models/review';
   providedIn: 'root'
 })
 export class ReviewService {
-  // companyCollection: AngularFirestoreCollection<Review>;
-
+  
   constructor(private afirestore: AngularFirestore) { }
 
   postReview(review: Review) {
