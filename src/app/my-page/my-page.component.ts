@@ -39,7 +39,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
   customErrorText: string = '';
   showCustomErrorUserInfo: boolean = false;
   trades = Object.values(TradeType);
-  company: Company;
+  company: Company = new Company();
   descriptionMaxLength: number = 300;
   companyGallery: boolean = false;
   numberOfGalleryImages: number = 0;
