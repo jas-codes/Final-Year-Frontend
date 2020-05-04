@@ -16,15 +16,23 @@ mat-card {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 28rem;
+    width: 25rem;
+}
+
+mat-card-header {
+    margin-bottom: 1.5rem;
 }
 
 mat-form-field {
-    width: 98%;
+    width: 22rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
 }
 
 mat-card-content button {
-    width: 98%;
+    width: 22rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
 }
 
 /* Chrome, Safari, Edge, Opera */

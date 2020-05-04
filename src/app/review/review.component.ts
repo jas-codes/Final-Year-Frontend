@@ -27,7 +27,7 @@ export class ReviewComponent implements OnInit {
   onSubmit() {
     let review = new Review();
     review.comment = this.reviewForm.get('comment').value;
-    review.score = this.reviewForm.get('score').value;
+    review.score = parseInt(this.reviewForm.get('score').value);
     this.review.emit(review);
   }
 

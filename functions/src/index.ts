@@ -20,32 +20,38 @@ export const testFunction = functions
 
         return docReviewRef.get().then(querySnapshotReview => {
             const reviewData = querySnapshotReview.data();
-            console.log('data from snapshot', reviewData);
             if (reviewData) {
                 const userCollectionRef = admin.firestore().collection('users').doc(reviewData.uid);
                 const reviewCollectionRef = admin.firestore().collection('reviews').where('uid', '==', reviewData.uid);
                 const companyCollectionRef = admin.firestore().collection('companies').doc(reviewData.uid);
+                const jobCollectionRef = admin.firestore().collection('jobs').where('issueUid', '==', reviewData.uid)
+
                 return reviewCollectionRef.get().then(querySnapshotAllReviews => {
                     let reviewsTotal = 0;
                     querySnapshotAllReviews.forEach(review => {
                         reviewsTotal += review.data().score
                     });
-                    console.log('sum of score', reviewsTotal);
-                    const averageReviewScore = reviewsTotal / querySnapshotAllReviews.size;
-                    console.log('average', averageReviewScore);
+                    let averageReviewScore = reviewsTotal / querySnapshotAllReviews.size;
+                    averageReviewScore = Math.round((averageReviewScore + Number.EPSILON)*100)/100;
                     companyCollectionRef.get().then(querySnapshotCompany => {
                         const companyData = querySnapshotCompany.data();
                         if (companyData) {
-                            companyData.reviewScore = Math.round((averageReviewScore + Number.EPSILON)*100)/100;
+                            companyData.reviewScore = averageReviewScore
                             companyCollectionRef.update(companyData)
                                 .catch(error => console.log(error));
                         }
                     }).catch(error => console.log(error));
+                    jobCollectionRef.get().then(querySnapshotJobs => {
+                        querySnapshotJobs.forEach((jobRef) => {
+                            const jobData = jobRef.data();
+                            jobData.reviewScore = averageReviewScore;
+                            jobRef.ref.update(jobData).catch(error => console.log(error));
+                        })
+                    }).catch(error => console.log(error))
                     return userCollectionRef.get().then(querySnapshotUser => {
                         const userData = querySnapshotUser.data();
                         if (userData) {
-                            console.log('user', userData)
-                            userData.reviewScore =  Math.round((averageReviewScore + Number.EPSILON)*100)/100;
+                            userData.reviewScore = averageReviewScore
                             return userCollectionRef.update(userData)
                                 .catch(error => console.log(error));
                         } else

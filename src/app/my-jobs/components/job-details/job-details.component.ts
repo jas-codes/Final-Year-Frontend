@@ -37,6 +37,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   companyInfo: boolean = false;
   onGoing: boolean = false;
   finishedJob: boolean = false;
+  review: Review = new Review();
+  provideReview: boolean = false;
+  userReviewScore: number = 0;
 
   userSub: Subscription;
   user: IUser;
@@ -84,6 +87,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
             this.setStatusText();
             this.job.completionState == CompletionState.active ? this.onGoing = true : this.onGoing = false
             this.job.completionState == CompletionState.closed ? this.finishedJob = true : this.finishedJob = false;
+            this.shouldDisplayReview();
           }));
         }
       }));
@@ -92,8 +96,12 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     if (this.authService.user$) {
       this.userSub = this.authService.user$.subscribe((user) => {
         this.user = user;
-        this.centre = this.calculateCentre(this.job.lngLat, this.user.lngLat);
-        this.drawMapMarkers();
+        if(this.user && this.job.lngLat) {
+          this.centre = this.calculateCentre(this.job.lngLat, this.user.lngLat);
+          this.drawMapMarkers();
+        }
+
+        this.userReviewScore = this.job.reviewScore;
 
         if (this.user.accountType == UserTypes.trader) { //if trader
           this.trader = true; //get the company
@@ -113,8 +121,22 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
             this.chosenQuote = quotes[0];
           }
           this.quotesList = quotes;
-        }));      
+        }));          
       });
+    }
+  }
+
+  shouldDisplayReview() {
+    console.log(this.job.reviewed);
+    console.log('here')
+    console.log('finished', this.job.completionState == CompletionState.closed)
+    if(this.job.completionState == CompletionState.closed){
+      console.log('user review', (!this.job.reviewed.user && !this.trader))
+      console.log('trader review', (!this.job.reviewed.trader && this.trader))
+      if(!this.job.reviewed.user && !this.trader)
+        this.provideReview = true;
+      else if (!this.job.reviewed.trader && this.trader)
+        this.provideReview = true;
     }
   }
 
@@ -159,6 +181,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   showProvideQuote() {
     this.provideQuote = !this.provideQuote;
+  }
+
+  showProvideReview() {
+    this.provideReview = !this.provideReview;
   }
 
   setAccepted() {
@@ -270,6 +296,19 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.jobsService.updateJob(this.job);
   }
 
+  postReview(reviewEvent: Review){
+    if(this.user.accountType == UserTypes.user) {
+      var review: Review = {comment: reviewEvent.comment, score: reviewEvent.score, uid: this.job.workCandidates[0] };
+      this.job.reviewed.user = true;
+    } else {
+      var review: Review = { comment: reviewEvent.comment, score: reviewEvent.score, uid: this.job.issueUid};
+      this.job.reviewed.trader = true;
+    }
+    this.jobsService.updateJob(this.job);
+    this.reviewService.postReview(review);
+    this.provideReview = false;
+  }
+
   navigationLinks(url, id?) {
     if (id) {
       this.router.navigate([
@@ -284,13 +323,5 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  postReview(){
-    if(this.user.accountType == UserTypes.user)
-      var review: Review = {comment: 'this is a user test', score: 5, uid: this.job.workCandidates[0] };
-    else 
-      var review: Review = { comment: 'this is a trader test', score: 5, uid: this.job.issueUid};
 
-    console.log('review', review);
-    this.reviewService.postReview(review);
-  }
 }

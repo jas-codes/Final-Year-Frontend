@@ -1,5 +1,5 @@
 <body class="container">
-    <app-review  class="send-front component-card"></app-review>
+    <app-review  class="send-front component-card" *ngIf="provideReview" (dismiss)="showProvideReview()" (review)="postReview($event)"></app-review>
     <app-quote class="send-front component-card" *ngIf="provideQuote" (dismiss)="showProvideQuote()"
         (quote)="createQuote($event)"></app-quote>
     <app-company-details class="send-front component-card" *ngIf="companyInfo" [company]="company"
@@ -21,13 +21,13 @@
         <h2>Job: {{job.title}}</h2>
         <h2>Location: {{job.postcode}}</h2>
         <span>
-            <h5>User Review Score: {{job.reviewScore}}&#9733;</h5>
+            <h5 *ngIf="trader">User Review Score: {{userReviewScore}}&#9733;</h5>
+            <h5 *ngIf="!trader">My Review Score: {{userReviewScore}}&#9733;</h5>
             <h5 *ngIf="trader">Amount Quoted: {{tradersQuote.amount}}</h5>
             <h5 class="quoteWarning" *ngIf="!chosenQuote && !trader && !onGoing && !finishedJob">Choose a quote to enable<p
                 class="mobile-display"> accept and chat</p> buttons</h5>
         </span>
         <div class="buttonLinks">
-            <button mat-raised-button (click)="postReview()">post review</button>
             <ng-container *ngTemplateOutlet="icons"></ng-container>
         </div>
     </div>

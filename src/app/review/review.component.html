@@ -17,7 +17,7 @@
                     <mat-error>Max Length of 300 Characters</mat-error>
                 </mat-form-field>
             </form>
-            <button mat-raised-button color="primary" disabled="!reviewForm.valid" (click)="onSubmit()">Submit
+            <button mat-raised-button color="primary" [disabled]="!reviewForm.valid" (click)="onSubmit()">Submit
                 Review</button>
         </mat-card-content>
     </mat-card>

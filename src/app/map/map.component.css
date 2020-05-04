@@ -81,11 +81,6 @@ svg {
 
 /*Change map for vertical navbar*/
 @media only screen and (min-width: 600px) {
-    .add-new-job {
-        top: 60rem;
-        right: 1rem;
-    }
-
     .new-job-component {
         right: 16rem;
         bottom: -12rem;
