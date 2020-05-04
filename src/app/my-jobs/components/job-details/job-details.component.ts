@@ -166,9 +166,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         this.statusText = 'Still available for traders'
         break;
       case CompletionState.closed:
-        this.statusText = 'The job has been completed'
+        this.statusText = 'The job was completed on: '
         if(this.job.conclusionDate != undefined)
-          this.statusText += ', Conclusion Date: ' + this.datePipe.transform(this.job.conclusionDate, 'MMM dd, yyyy');  
+          this.statusText += this.datePipe.transform(this.job.conclusionDate, 'MMM dd, yyyy');  
         break;
       case CompletionState.quoted:
         this.statusText = 'The job has quotes for review'
