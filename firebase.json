@@ -15,6 +15,7 @@
   },
   "functions": {
     "predeploy": [
+      "npm install",
       "npm --prefix functions run build"
     ]
   }
