@@ -127,12 +127,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   }
 
   shouldDisplayReview() {
-    console.log(this.job.reviewed);
-    console.log('here')
-    console.log('finished', this.job.completionState == CompletionState.closed)
     if(this.job.completionState == CompletionState.closed){
-      console.log('user review', (!this.job.reviewed.user && !this.trader))
-      console.log('trader review', (!this.job.reviewed.trader && this.trader))
       if(!this.job.reviewed.user && !this.trader)
         this.provideReview = true;
       else if (!this.job.reviewed.trader && this.trader)
