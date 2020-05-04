@@ -3,8 +3,6 @@ import { Quote } from '../models/quote';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CompletionState } from '../enums/completionState';
-import { Job } from '../models/job';
 
 @Injectable({
   providedIn: 'root'

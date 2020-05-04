@@ -1,9 +1,8 @@
 .screen-dim {
     background-color: rgba(0,0,0,0.4);
     height: 100vh;
-    width: 100%;
     margin-left: -10%;
-    margin-top: -12%;
+    width: 100%;
     position: fixed;
 }
 
@@ -43,4 +42,19 @@ li:last-child {
 
 mat-card-actions button {
     width: 45%
+}
+
+/*Change job details bar for horizontal navbar*/
+
+@media only screen and (max-width: 600px) {
+    .screen-dim {
+        margin-top: -12%;
+    }
+}
+
+/*Change information layout for vertical navbar*/
+@media only screen and (min-width: 600px) {
+    .screen-dim {
+        margin-left: -10%;
+    }
 }

@@ -16,7 +16,7 @@
             </div>
             <div class="text">
                 <h4>{{ chat.jobTitle }}</h4>
-                <h5>Last Communication: <span>{{chat.lastContact | date:'medium' }}</span></h5>
+                <h5>Last Message: <span>{{chat.lastContact | date:'H:mm d/M/y' }}</span></h5>
             </div>
             <mat-icon>arrow_forward_ios</mat-icon>
         </div>
@@ -32,7 +32,7 @@
             </div>
             <div class="text">
                 <h4>{{chat.companyName}}</h4>
-                <h5>Job: {{chat.jobTitle}} <span>Last Communication: {{chat.lastContact | date:'medium' }} </span></h5>
+                <h5>Job: {{chat.jobTitle}} <span>Last Message: {{chat.lastContact | date:'H:mm d/M/y'}} </span></h5>
             </div>
             <mat-icon>arrow_forward_ios</mat-icon>
         </div>

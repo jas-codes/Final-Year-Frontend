@@ -1,0 +1,24 @@
+<div class="screen-dim">
+    <mat-card>
+        <mat-card-header>
+            Please provide a review
+        </mat-card-header>
+        <button class="exit" mat-button color="primary" (click)="dismissComponent()">cancel</button>
+
+        <mat-card-content>
+            <form [formGroup]="reviewForm">
+                <mat-form-field>
+                    <input matInput #score placeholder="Score out of 5" formControlName="score" required>
+                    <mat-error>Must be out of 5</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Your chance to voice your thoughts</mat-label>
+                    <textarea matInput placeholder="Ex. They were excellent!" formControlName="comment"></textarea>
+                    <mat-error>Max Length of 300 Characters</mat-error>
+                </mat-form-field>
+            </form>
+            <button mat-raised-button color="primary" [disabled]="!reviewForm.valid" (click)="onSubmit()">Submit
+                Review</button>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -11,7 +11,6 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { FormGroup } from '@angular/forms';
 import { UserTypes } from '../enums/user-types';
 import { CompaniesService } from './companies.service';
-import { Company } from '../models/company';
 import { PostcodeService } from './postcode.service';
 
 @Injectable({

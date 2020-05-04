@@ -16,6 +16,8 @@ import { Company } from 'src/app/models/company';
 import { CompletionState } from 'src/app/enums/completionState';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Location, DatePipe } from '@angular/common';
+import { ReviewService } from 'src/app/review/services/review.service';
+import { Review } from 'src/app/models/review';
 
 @Component({
   selector: 'app-job-details',
@@ -35,6 +37,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   companyInfo: boolean = false;
   onGoing: boolean = false;
   finishedJob: boolean = false;
+  review: Review = new Review();
+  provideReview: boolean = false;
+  userReviewScore: number = 0;
 
   userSub: Subscription;
   user: IUser;
@@ -65,6 +70,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     private companyService: CompaniesService,
     private chatService: ChatService,
     private quoteService: QuotesService,
+    private reviewService: ReviewService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private location: Location,
@@ -81,6 +87,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
             this.setStatusText();
             this.job.completionState == CompletionState.active ? this.onGoing = true : this.onGoing = false
             this.job.completionState == CompletionState.closed ? this.finishedJob = true : this.finishedJob = false;
+            this.shouldDisplayReview();
           }));
         }
       }));
@@ -89,8 +96,12 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     if (this.authService.user$) {
       this.userSub = this.authService.user$.subscribe((user) => {
         this.user = user;
-        this.centre = this.calculateCentre(this.job.lngLat, this.user.lngLat);
-        this.drawMapMarkers();
+        if(this.user && this.job.lngLat) {
+          this.centre = this.calculateCentre(this.job.lngLat, this.user.lngLat);
+          this.drawMapMarkers();
+        }
+
+        this.userReviewScore = this.job.reviewScore;
 
         if (this.user.accountType == UserTypes.trader) { //if trader
           this.trader = true; //get the company
@@ -110,8 +121,17 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
             this.chosenQuote = quotes[0];
           }
           this.quotesList = quotes;
-        }));      
+        }));          
       });
+    }
+  }
+
+  shouldDisplayReview() {
+    if(this.job.completionState == CompletionState.closed){
+      if(!this.job.reviewed.user && !this.trader)
+        this.provideReview = true;
+      else if (!this.job.reviewed.trader && this.trader)
+        this.provideReview = true;
     }
   }
 
@@ -141,9 +161,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         this.statusText = 'Still available for traders'
         break;
       case CompletionState.closed:
-        this.statusText = 'The job has been completed'
+        this.statusText = 'The job was completed on: '
         if(this.job.conclusionDate != undefined)
-          this.statusText += ', Conclusion Date: ' + this.datePipe.transform(this.job.conclusionDate, 'MMM dd, yyyy');  
+          this.statusText += this.datePipe.transform(this.job.conclusionDate, 'MMM dd, yyyy');  
         break;
       case CompletionState.quoted:
         this.statusText = 'The job has quotes for review'
@@ -156,6 +176,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   showProvideQuote() {
     this.provideQuote = !this.provideQuote;
+  }
+
+  showProvideReview() {
+    this.provideReview = !this.provideReview;
   }
 
   setAccepted() {
@@ -267,6 +291,19 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.jobsService.updateJob(this.job);
   }
 
+  postReview(reviewEvent: Review){
+    if(this.user.accountType == UserTypes.user) {
+      var review: Review = {comment: reviewEvent.comment, score: reviewEvent.score, uid: this.job.workCandidates[0] };
+      this.job.reviewed.user = true;
+    } else {
+      var review: Review = { comment: reviewEvent.comment, score: reviewEvent.score, uid: this.job.issueUid};
+      this.job.reviewed.trader = true;
+    }
+    this.jobsService.updateJob(this.job);
+    this.reviewService.postReview(review);
+    this.provideReview = false;
+  }
+
   navigationLinks(url, id?) {
     if (id) {
       this.router.navigate([
@@ -280,4 +317,6 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         { relativeTo: this.activatedRoute.parent });
     }
   }
+
+
 }

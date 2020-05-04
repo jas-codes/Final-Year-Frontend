@@ -39,10 +39,11 @@ export class MyPageComponent implements OnInit, OnDestroy {
   customErrorText: string = '';
   showCustomErrorUserInfo: boolean = false;
   trades = Object.values(TradeType);
-  company: Company;
+  company: Company = new Company();
   descriptionMaxLength: number = 300;
   companyGallery: boolean = false;
   numberOfGalleryImages: number = 0;
+  userReviewScore: number = 0;
 
   //user variables
   userSub: Subscription;
@@ -82,6 +83,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
       this.userSub = this.authService.user$.subscribe((user) => {
         if (user != null) {
           this.user = user;
+          this.userReviewScore = user.reviewScore;
           if (this.user.accountType == UserTypes.trader) { //if trader, get data and initialise toggle states
             this.trader = true;
             this.subscriptions.push(this.companyService.getCompanyByUid(this.user.uid).valueChanges().subscribe((company) => {

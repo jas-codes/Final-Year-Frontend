@@ -20,4 +20,8 @@ export class Job {
     issueUid: string;
     userReviewScore: string;
     reviewScore: number;
+    reviewed: {
+        user: boolean;
+        trader: boolean;
+    } = { user: false, trader: false};
 }
