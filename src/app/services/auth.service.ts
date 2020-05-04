@@ -3,7 +3,7 @@ import { IUser } from './user.model';
 import { Router } from '@angular/router';
 
 import { Observable, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -11,7 +11,6 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { FormGroup } from '@angular/forms';
 import { UserTypes } from '../enums/user-types';
 import { CompaniesService } from './companies.service';
-import { Company } from '../models/company';
 import { PostcodeService } from './postcode.service';
 
 @Injectable({
