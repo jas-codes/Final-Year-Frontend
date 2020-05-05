@@ -45,6 +45,7 @@ jobs:
       - image: circleci/node:10-browsers
 
     steps:
+      - checkout
       - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI
       - store_test_results:
           path: test-results
@@ -60,6 +61,7 @@ jobs:
     - image: circleci/node:10-browsers
 
     steps:
+      - checkout 
       - run:
           name: 'Build Project'
           command: 'npm run build'
