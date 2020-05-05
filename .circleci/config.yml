@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  build-app:
     
     working_directory: ~/Final-Year-Frontend
     docker:
@@ -18,6 +18,21 @@ jobs:
       #save the node modules for use in both
       - save_cache:
           key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
+          paths:
+            - "node_modules"
+
+  build-functions:
+    working_directory: ~/Final-Year-Frontend/functions
+    docker:
+    #create docker image
+      - image: circleci/node:10-browsers
+    steps:
+      -restore_cache:
+        key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+      
+      - run: npm install
+      - save_cache:
+        key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
           paths:
             - "node_modules"
 
@@ -55,14 +70,18 @@ workflows:
   version: 2
   build-test-deploy:
     jobs:
-      - build:
+      - build-app:
           filters:
             branches:
               only: master 
           context: final-year
+      - build-functions:
+          requires:
+            - build-app
+            context: final-year
       - test:
           requires:
-            - build
+            - build-app
           context: final-year
       - deploy:
           requires:
