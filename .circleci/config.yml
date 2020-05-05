@@ -87,10 +87,10 @@ jobs:
     
     steps:
       - checkout 
-      - restore_cache:
-          key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
-      - restore_cache:
-          key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+      - run:
+          command: npm install
+      -run:
+          command: npm build
 
       - run:
           name: 'Deploy Firebase Functions'
