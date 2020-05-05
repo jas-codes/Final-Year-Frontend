@@ -78,7 +78,7 @@ workflows:
       - build-functions:
           requires:
             - build-app
-            context: final-year
+          context: final-year
       - test:
           requires:
             - build-app
