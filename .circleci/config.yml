@@ -78,23 +78,23 @@ jobs:
           name: 'Deploy to Firebase Hosting'
           command: './node_modules/.bin/firebase deploy --only hosting --token=$FIREBASE_TOKEN'
 
-    deploy-functions:
-      
-      working_directory: ~/Final-Year-Frontend
-      docker:
-      #create docker image
-      - image: circleci/node:10-browsers
-      
-      steps:
-        - checkout 
-        - restore_cache:
-            key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
-        - restore_cache:
-            key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+  deploy-functions:
+    
+    working_directory: ~/Final-Year-Frontend
+    docker:
+    #create docker image
+    - image: circleci/node:10-browsers
+    
+    steps:
+      - checkout 
+      - restore_cache:
+          key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
+      - restore_cache:
+          key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
 
-        - run:
-            name: 'Deploy Firebase Functions'
-            command: './node_modules/.bin/firebase deploy --only functions --token=$FIREBASE_TOKEN'
+      - run:
+          name: 'Deploy Firebase Functions'
+          command: './node_modules/.bin/firebase deploy --only functions --token=$FIREBASE_TOKEN'
 
 workflows:
   version: 2
