@@ -89,7 +89,7 @@ jobs:
       - checkout 
       - run:
           command: npm install
-      -run:
+      - run:
           command: npm build
 
       - run:
