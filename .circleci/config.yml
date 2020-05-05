@@ -89,10 +89,6 @@ jobs:
       - checkout 
       - restore_cache:
           key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
-      
-      - run:
-          name: install firebase
-          command: npm install firebase
 
       - run:
           name: build function
@@ -100,7 +96,7 @@ jobs:
         
       - run:
           name: 'Deploy Firebase Functions'
-          command: 'firebase deploy --only functions --token=$FIREBASE_TOKEN'
+          command: './node_modules/.bin/firebase deploy --only functions --token=$FIREBASE_TOKEN'
 
 workflows:
   version: 2
