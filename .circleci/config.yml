@@ -67,8 +67,9 @@ jobs:
     steps:
       - checkout 
       - restore_cache:
-          key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
-          key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+          keys:
+            - Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
+            - Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
 
       - run:
           name: 'Build Project'
@@ -88,8 +89,9 @@ jobs:
       - checkout:
           path: ~/Final-Year-Frontend
       - restore_cache:
-          key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
-          key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
+          keys: 
+            - Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+            - Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
         
       - run:
           name: 'Deploy Firebase Functions'
