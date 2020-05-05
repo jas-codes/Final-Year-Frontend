@@ -112,10 +112,6 @@ workflows:
             - build-app
           context: final-year
       - deploy-hosting:
-          requires:
-            - test
           context: final-year
       - deploy-functions:
-          requires:
-            - test
           context: final-year
