@@ -106,16 +106,17 @@ workflows:
               only: master 
           context: final-year
       - build-functions:
+          context: final-year
+      - tests:
           requires:
             - build-app
+            - build-functions
           context: final-year
       - deploy-hosting:
           requires:
-            - build-app
-            - build-functions
+            - tests
           context: final-year
       - deploy-functions:
           requires:
-            - build-app
-            - build-functions
+            - tests
           context: final-year
