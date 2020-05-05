@@ -96,7 +96,7 @@ jobs:
         
       - run:
           name: 'Deploy Firebase Functions'
-          command: 'npm run deploy-ci --key=$FIREBASE_TOKEN'
+          command: 'npm run-script deploy-ci --key=$FIREBASE_TOKEN'
 
 workflows:
   version: 2
