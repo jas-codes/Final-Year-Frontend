@@ -37,7 +37,7 @@ jobs:
           paths:
             - "node_modules"
 
-  test:
+  tests:
       
     working_directory: ~/Final-Year-Frontend
     docker:
