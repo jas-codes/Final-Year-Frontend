@@ -20,6 +20,8 @@ jobs:
           key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
           paths:
             - "node_modules"
+
+  test:
       - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI
       - store_test_results:
           path: test-results
@@ -27,6 +29,7 @@ jobs:
 
       - run: npm run e2e -- --protractor-config=./e2e/protractor-ci.conf.js
 
+  deploy:
       - run:
           name: 'Build Project'
           command: 'npm run build'
@@ -42,3 +45,5 @@ workflows:
           filters:
             branches:
               only: master 
+      - test
+      - deploy

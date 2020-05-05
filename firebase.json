@@ -15,7 +15,7 @@
   },
   "functions": {
     "predeploy": [
-      "npm install",
+      "npm --prefix functions run lint",
       "npm --prefix functions run build"
     ]
   }
