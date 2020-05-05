@@ -92,7 +92,7 @@ jobs:
       
       - run:
           name: build function
-          command: './node_modules/.bin/firebase build'
+          command: 'npm run-script build'
         
       - run:
           name: 'Deploy Firebase Functions'
