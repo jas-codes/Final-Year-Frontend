@@ -1,6 +1,7 @@
 {
   "name": "functions",
   "scripts": {
+    "install": "install",
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
     "serve": "npm run build && firebase emulators:start --only functions",
