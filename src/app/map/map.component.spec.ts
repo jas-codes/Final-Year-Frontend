@@ -33,6 +33,7 @@ describe('MapComponent', () => {
   }));
 
   beforeEach(() => {
+    fixture.detectChanges();
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
