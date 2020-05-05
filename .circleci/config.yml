@@ -59,12 +59,12 @@ workflows:
           filters:
             branches:
               only: master 
-          context: global
+          context: final-year
       - test:
           requires:
             - build
-          context: global
+          context: final-year
       - deploy:
           requires:
             - test
-          context: global
+          context: final-year
