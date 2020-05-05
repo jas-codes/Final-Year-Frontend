@@ -111,11 +111,6 @@ workflows:
           requires:
             - build-app
           context: final-year
-      - test:
-          requires:
-            - build-app
-            - build-functions
-          context: final-year
       - deploy-hosting:
           requires:
             - test
