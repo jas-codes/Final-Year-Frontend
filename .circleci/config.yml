@@ -91,6 +91,10 @@ jobs:
           key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
       
       - run:
+          name: install firebase
+          command: npm install firebase
+
+      - run:
           name: build function
           command: 'npm run-script build'
         
