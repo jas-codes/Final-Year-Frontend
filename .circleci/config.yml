@@ -27,6 +27,7 @@ jobs:
     #create docker image
       - image: circleci/node:10-browsers
     steps:
+      - checkout
       - restore_cache:
         key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
       
