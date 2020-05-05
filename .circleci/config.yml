@@ -59,9 +59,12 @@ workflows:
           filters:
             branches:
               only: master 
+          context: global
       - test:
           requires:
             - build
+          context: global
       - deploy:
           requires:
             - test
+          context: global
