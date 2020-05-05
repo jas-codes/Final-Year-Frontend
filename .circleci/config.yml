@@ -57,7 +57,7 @@ jobs:
 
       - run: npm run e2e -- --protractor-config=./e2e/protractor-ci.conf.js
 
-  deploy:
+  deploy-hosting:
       
     working_directory: ~/Final-Year-Frontend
     docker:
@@ -70,13 +70,31 @@ jobs:
           key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
       - restore_cache:
           key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
-          
+
       - run:
           name: 'Build Project'
           command: 'npm run build'
       - run:
           name: 'Deploy to Firebase Hosting'
-          command: './node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN'
+          command: './node_modules/.bin/firebase deploy --only hosting --token=$FIREBASE_TOKEN'
+
+    deploy-functions:
+      
+      working_directory: ~/Final-Year-Frontend
+      docker:
+      #create docker image
+      - image: circleci/node:10-browsers
+      
+      steps:
+        - checkout 
+        - restore_cache:
+            key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
+        - restore_cache:
+            key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+
+        - run:
+            name: 'Deploy Firebase Functions'
+            command: './node_modules/.bin/firebase deploy --only functions --token=$FIREBASE_TOKEN'
 
 workflows:
   version: 2
@@ -96,7 +114,11 @@ workflows:
             - build-app
             - build-functions
           context: final-year
-      - deploy:
+      - deploy-hosting:
+          requires:
+            - test
+          context: final-year
+      - deploy-functions:
           requires:
             - test
           context: final-year
