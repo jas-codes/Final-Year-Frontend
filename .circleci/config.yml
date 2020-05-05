@@ -46,6 +46,10 @@ jobs:
 
     steps:
       - checkout
+      
+      - restore_cache:
+          key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
+
       - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI
       - store_test_results:
           path: test-results
