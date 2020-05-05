@@ -82,6 +82,7 @@ workflows:
       - test:
           requires:
             - build-app
+            - build-functions
           context: final-year
       - deploy:
           requires:
