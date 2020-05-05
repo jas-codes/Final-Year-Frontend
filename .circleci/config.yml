@@ -93,6 +93,9 @@ jobs:
           key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
 
       - run:
+          command: './node_modules/.bin/firebase install'
+        
+      - run:
           name: 'Deploy Firebase Functions'
           command: './node_modules/.bin/firebase deploy --only functions --token=$FIREBASE_TOKEN'
 
