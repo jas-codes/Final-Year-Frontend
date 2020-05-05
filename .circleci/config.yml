@@ -80,7 +80,7 @@ jobs:
 
   deploy-functions:
     
-    working_directory: ~/Final-Year-Frontend
+    working_directory: ~/Final-Year-Frontend/functions
     docker:
     #create docker image
     - image: circleci/node:10-browsers
@@ -88,12 +88,7 @@ jobs:
     steps:
       - checkout 
       - restore_cache:
-          key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
-      - restore_cache:
           key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
-
-      - run:
-          command: './node_modules/.bin/firebase install'
         
       - run:
           name: 'Deploy Firebase Functions'
