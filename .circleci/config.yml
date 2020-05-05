@@ -89,6 +89,10 @@ jobs:
       - checkout 
       - restore_cache:
           key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+      
+      - run:
+          name: build function
+          command: './node_modules/.bin/firebase build'
         
       - run:
           name: 'Deploy Firebase Functions'
