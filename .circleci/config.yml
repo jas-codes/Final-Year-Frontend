@@ -80,14 +80,13 @@ jobs:
 
   deploy-functions:
     
-    working_directory: ~/Final-Year-Frontend/functions
+    working_directory: ~/Final-Year-Frontend
     docker:
     #create docker image
     - image: circleci/node:10-browsers
     
     steps:
-      - checkout:
-          path: ~/Final-Year-Frontend
+      - checkout
       - restore_cache:
           keys: 
             - Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
