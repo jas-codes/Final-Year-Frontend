@@ -7,7 +7,7 @@
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "deploy-ci:key": "firebase deploy --only functions --token=$key",
+    "deploy-ci": "firebase deploy --only functions --token=$key",
     "logs": "firebase functions:log"
   },
   "engines": {
