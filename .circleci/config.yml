@@ -96,7 +96,7 @@ jobs:
         
       - run:
           name: 'Deploy Firebase Functions'
-          command: 'npm run-script deploy'
+          command: 'npm run deploy'
 
 workflows:
   version: 2
