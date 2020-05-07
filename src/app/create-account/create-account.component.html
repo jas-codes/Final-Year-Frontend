@@ -12,10 +12,10 @@
             </div>
             <div class="names" *ngIf="!signedInAlready;">
                 <mat-form-field>
-                    <input #password matInput placeholder="Password" (keyup)="comparePasswords()" formControlName="password" required>
+                    <input #password type="password" matInput placeholder="Password" (keyup)="comparePasswords()" formControlName="password" required>
                 </mat-form-field>
                 <mat-form-field>
-                    <input #repassword matInput placeholder="Repeat Password" (keyup)="comparePasswords()" formControlName="rePassword" required>
+                    <input #repassword type="password" matInput placeholder="Repeat Password" (keyup)="comparePasswords()" formControlName="rePassword" required>
                 </mat-form-field>
             </div>
             <div *ngIf="!signedInAlready;">
