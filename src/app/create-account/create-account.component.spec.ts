@@ -15,6 +15,7 @@ import { AngularFirestoreMock } from '../testing/angular-firestore-mock';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../services/auth.service';
 import { AuthServiceMock } from '../testing/auth-service-mock';
+import { UserTypes } from '../enums/user-types';
 
 describe('CreateAccountComponent', () => {
   let component: CreateAccountComponent;
@@ -49,4 +50,32 @@ describe('CreateAccountComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  const testCasesPasswordMatch = [
+    {password1: 'test1', password2: 'test1', expected: true},
+    {password1: 'test1', password2: 'test2', expected: false},
+    {password1: 'test2', password2: 'test1', expected: false},
+    {password1: '', password2: '', expected: true}
+  ]
+  testCasesPasswordMatch.forEach((testCase, index) => {
+    it(`Should compare two password strings (str1: ${testCase.password1}, str2: ${testCase.password2}) and give the boolean result, ${testCase.expected}. (testCase: ${index})`, () => {
+      component.form.get('password').setValue(testCase.password1);
+      component.form.get('rePassword').setValue(testCase.password2);
+      component.comparePasswords();
+      expect(component.passwordMatch).toBe(testCase.expected);
+    })
+  });
+
+  const testCasesTradeCheck = [
+    {userType: UserTypes.trader, expected: true},
+    {userType: UserTypes.user, expected: false},
+    {userType: '', expected: false},
+    {userType: undefined, expected: false}
+  ]
+  testCasesTradeCheck.forEach((testCase, index) => {
+    it(`Should evaluate the usertype selected (type: ${testCase.userType}) as trader or not, result: ${testCase.expected}. (testCase: ${index})`, () => {
+      component.traderSelected(testCase.userType);
+      expect(component.trader).toBe(testCase.expected);
+    })
+  })
 });

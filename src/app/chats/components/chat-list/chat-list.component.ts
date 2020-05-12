@@ -15,6 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ChatListComponent implements OnInit, OnDestroy {
   chatCollection: AngularFirestoreCollection<Chat>;
+  chatSubscription: Subscription;
   chatList: Chat[] = [];
   searchTerm: string = "";
   showTraderTable: boolean = false;
@@ -46,12 +47,13 @@ export class ChatListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
+    this.chatSubscription.unsubscribe();
   }
 
   //get the chats for that user
   getChatPageInformation() { 
     this.chatCollection = this.chatService.getChatsForUser(this.user.uid, this.user.accountType);
-    this.chatCollection.valueChanges().subscribe((chats) => {
+    this.chatSubscription = this.chatCollection.valueChanges().subscribe((chats) => {
       this.chatList = chats;
     });
   }

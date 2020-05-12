@@ -15,6 +15,7 @@ import { BlobLocations } from '../enums/blob-locations';
   styleUrls: ['./create-account.component.css']
 })
 export class CreateAccountComponent implements OnInit {
+  //create account component variables
   @ViewChild("fileUpload", { static: false }) fileUpload: ElementRef;
   trades = Object.values(TradeType);
   file: any;
@@ -25,6 +26,7 @@ export class CreateAccountComponent implements OnInit {
   signInDetails: Observable<string>;
   signedInAlready: boolean;
 
+  //form group for create account validation
   form = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
@@ -54,7 +56,7 @@ export class CreateAccountComponent implements OnInit {
       .queryParamMap
       .pipe(map(params => params.get('signedIn') || 'false'));
 
-    this.signInDetails.subscribe((res) => {
+    this.signInDetails.subscribe((res) => { //if they have chosen to sign in with thirdparty just get essential details, remove unnecessary
       if (res === 'true') {
         this.removeValidators('password');
         this.removeValidators('rePassword');
@@ -65,6 +67,7 @@ export class CreateAccountComponent implements OnInit {
     });
   }
 
+  //youngest a person can be
   calcMaxDate(): number {
     return (this.maxDate.getDate() - (365 * 18));
   }
@@ -74,6 +77,7 @@ export class CreateAccountComponent implements OnInit {
       this.passwordMatch = (this.form.get('password').value === this.form.get('rePassword').value);
   }
 
+  //add the traders data to the form group based on selection
   traderSelected(value) {
     if (value === UserTypes.trader) {
       this.trader = true;
@@ -101,7 +105,7 @@ export class CreateAccountComponent implements OnInit {
     var self = this;
     if (!this.signedInAlready) {
       if (this.file) {
-        this.fileUploadService.uploadFile(this.file, BlobLocations.profilePicture, function (result) {
+        this.fileUploadService.uploadFile(this.file, BlobLocations.profilePicture, function (result) { //upload image
           if(result === 'error')
             console.log('there was an error with the upload');
           else {
@@ -125,6 +129,7 @@ export class CreateAccountComponent implements OnInit {
     this.authService.signOut();
   }
 
+  //opens the browser for image input
   onClick() {
     const fileUpload = this.fileUpload.nativeElement;
     fileUpload.onchange = () => {
