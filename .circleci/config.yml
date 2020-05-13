@@ -99,20 +99,29 @@ jobs:
 workflows:
   version: 2
   build-test-deploy:
-    filters:
-      branches:
-        only: master 
     jobs:
       - build-app:
+          filters:
+            branches:
+              only: master 
           context: final-year
       - build-functions:
+          filters:
+            branches:
+              only: master 
           context: final-year
       - tests:
+          filters:
+            branches:
+              only: master 
           requires:
             - build-app
             - build-functions
           context: final-year
       - deploy-hosting:
+          filters:
+            branches:
+              only: master 
           requires:
             - tests
           context: final-year
