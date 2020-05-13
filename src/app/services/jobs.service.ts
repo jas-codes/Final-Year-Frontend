@@ -32,8 +32,7 @@ export class JobsService {
     return this.afirestore.collection('jobs');
   }
 
-
-  getMapJobs() {
+  getMapJobs() { //get jobs to only display on map
     return this.afirestore.collection<Job>('jobs', ref => {
       return ref
         .where('completionState', "in",
@@ -57,7 +56,7 @@ export class JobsService {
       });
   }
 
-  //get the jobs for a trader based on their qutoes and completionstates
+  //get the jobs for a trader based on their quotes and completionstates
   //Using maps to be able to return nested observables
   getJobsQuotedByTrader(traderUid: string) {
     return this.quoteService.getQuotesForTrader(traderUid).pipe( //get the quotes for the trader
@@ -97,12 +96,13 @@ export class JobsService {
       .catch(error => this.errorHandler(error)));
   }
 
+  //remove a trader from a jobs work candidates
   removeWorkCandidates(uid: string, workCandidates: string[]): any[] {
     var index = workCandidates.findIndex((candidateUid) => {
       return candidateUid == uid
     });
 
-    if(index >= 0) {
+    if(index >= 0) { // convert to set for easier logic and faster
       var wcSet = new Set(workCandidates);
       wcSet.delete(workCandidates[index]);
       return Array.from(wcSet);

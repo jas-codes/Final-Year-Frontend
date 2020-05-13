@@ -66,15 +66,16 @@ export class QuotesService {
   }
 
   removeQuoteFromJob(quotesList: Quote[], jobQuotes: string[], uid:string): string[] {
-    var quoteId = quotesList.find((quote) => {
+    var quote = quotesList.find((quote) => { //find the users quote in the quoteList
       return quote.traderUid == uid
-    }).id;
+    })
 
-    if (quoteId) {
-      var quoteSet = new Set(jobQuotes);
-      quoteSet.delete(quoteId);
+    if (quote) {
+      let quoteId = quote.id;
+      var quoteSet = new Set(jobQuotes); //create set as easier to work with
+      quoteSet.delete(quoteId); //delete from set
 
-      this.deleteQuote(quoteId);
+      this.deleteQuote(quoteId); //delete quote from server
       return Array.from(quoteSet);
     }
     return jobQuotes;

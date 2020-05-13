@@ -10,7 +10,7 @@ export class PostcodeService {
     private http: HttpClient
   ) { }
 
-  convertPostcodeToLatLong(postcode) {
+  convertPostcodeToLatLong(postcode) { //send to api to get result
     return this.http.get(`https://api.postcodes.io/postcodes/${postcode}`);
   }
 }
