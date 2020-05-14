@@ -8,9 +8,11 @@ import { Review } from '../models/review';
   styleUrls: ['./review.component.css']
 })
 export class ReviewComponent implements OnInit {
+  //event emitters from component
   @Output() dismiss = new EventEmitter<boolean>();
   @Output() review = new EventEmitter<Review>();
 
+  //component form variables
   reviewRange = { max: 5, min: 1 };
   commentMaxLength: number = 300;
 
@@ -24,7 +26,7 @@ export class ReviewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit() {
+  onSubmit() { //emit review event
     let review = new Review();
     review.comment = this.reviewForm.get('comment').value;
     review.score = parseInt(this.reviewForm.get('score').value);

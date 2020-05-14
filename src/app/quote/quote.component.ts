@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./quote.component.css']
 })
 export class QuoteComponent {
+  //event emitters from component
   @Output() quote = new EventEmitter<number>();
   @Output() dismiss = new EventEmitter<boolean>();
 
@@ -18,8 +19,11 @@ export class QuoteComponent {
 
   constructor() { }
 
-  registerQuote() {
-    this.quote.emit(this.form.get('quote').value);
+  registerQuote() { //emit quote event
+    if(this.form.get('quote').value != '')
+      this.quote.emit(this.form.get('quote').value);
+    else 
+      this.quote.emit(this.minimumQuote);
     this.dismissComponent()
   }
 
