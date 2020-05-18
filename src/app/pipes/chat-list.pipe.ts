@@ -6,7 +6,7 @@ import { Chat } from '../models/chat';
 })
 export class ChatListPipe implements PipeTransform {
 
-  transform(chats: Chat[], jobTitleFilter: string): any {
+  transform(chats: Chat[], jobTitleFilter: string): Chat[] {
     if(!chats || !jobTitleFilter )
       return chats;
     
