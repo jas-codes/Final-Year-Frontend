@@ -13,8 +13,8 @@ export class CompanyDetailsComponent implements OnInit {
   @Output() dismiss = new EventEmitter<boolean>();
 
   //image selection increments
-  positiveIncrement = 1;
-  negativeIncrement = -1;
+  positiveIncrement: number = 1;
+  negativeIncrement: number = -1;
   imageArrayIndex: number = 0;
   currentImage: string = '';
 

@@ -17,8 +17,8 @@ export class JobHistoryComponent implements OnInit {
   }
 
   setJob(job){
-    console.log(job);
-    this.selectedJob = job;
+    if(job)
+      this.selectedJob = job;
   }
 
 }

@@ -72,7 +72,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService,
     private fileUploadService: FileUploadService,
-    private companyService: CompaniesService,
+    public companyService: CompaniesService,
     private postcodeService: PostcodeService) { }
 
   ngOnInit(): void {
@@ -89,7 +89,7 @@ export class MyPageComponent implements OnInit, OnDestroy {
             this.subscriptions.push(this.companyService.getCompanyByUid(this.user.uid).valueChanges().subscribe((company) => {
               this.company = company
               this.numberOfGalleryImages = this.company.photos.length;
-              this.CompanyFormToggle();
+              this.companyFormToggle();
               this.updateCompanyFormDefaults(); //put form data
             }))
           }
@@ -219,7 +219,8 @@ export class MyPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  CompanyFormToggle() {
+  //see above
+  companyFormToggle() {
     if (!this.editCompanyDetails) {
       if (this.companyFormSubscription)
         this.companyFormSubscription.unsubscribe()

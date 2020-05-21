@@ -68,7 +68,7 @@ export class AuthService {
         }
 
         userRef.set(data, { merge: true })
-        this.ngZone.run(() => this.router.navigate(['home/'])); //navigate to home screen when done
+        this.ngZone.run(() => this.router.navigate(['home'])); //navigate to home screen when done
       });
   }
 

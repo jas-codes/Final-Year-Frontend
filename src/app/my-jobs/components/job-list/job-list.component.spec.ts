@@ -13,6 +13,8 @@ import { AuthServiceMock } from 'src/app/testing/auth-service-mock';
 import { JobSearchPipe } from 'src/app/pipes/job-search.pipe';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFireStorageMock } from 'src/app/testing/angular-fire-storage-mock';
+import { JobTestData } from 'src/app/testing/job-testing-data';
+import { CompletionState } from 'src/app/enums/completionState';
 
 describe('JobListComponent', () => {
   let component: JobListComponent;
@@ -38,9 +40,29 @@ describe('JobListComponent', () => {
     fixture = TestBed.createComponent(JobListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+      
+    let jobsData = new JobTestData();
+    component.jobs = jobsData.jobs;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  const listTypesTestCases = [
+    { type: CompletionState.closed, expect: 1 },
+    { type: CompletionState.active, expect: 2 }
+  ]
+  listTypesTestCases.forEach((testCase, index) => {
+    it(`should filter jobs based on the completion state, completion state: ${testCase.type}, should be length: ${index}`, () => {
+      component.listTypes = [];
+      component.listTypes.push(testCase.type);
+      component.filterJobs();
+      expect(component.jobs.length).toEqual(testCase.expect);
+      component.jobs.forEach((job) => {
+        expect(job.completionState).toEqual(testCase.type);
+      });
+    });
+  })
+
 });

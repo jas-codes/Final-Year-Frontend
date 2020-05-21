@@ -6,7 +6,7 @@ import { Job } from '../models/job';
 })
 export class JobSearchPipe implements PipeTransform {
 
-  transform(jobs: Job[], jobTitleFilter: string): any {
+  transform(jobs: Job[], jobTitleFilter: string): Job[] {
     if(!jobs || !jobTitleFilter )
       return jobs;
     

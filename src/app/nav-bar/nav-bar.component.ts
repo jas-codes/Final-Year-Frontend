@@ -11,12 +11,9 @@ export class NavBarComponent implements OnInit {
   title = 'Final-Year-Frontend';
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
     public authService: AuthService
   ) {}
 
-  ngOnInit(){
-    this.router.navigate([{outlets: {'navLinks':['map']}}], {relativeTo: this.route});
-  }
+  ngOnInit(){ }
+  
 }

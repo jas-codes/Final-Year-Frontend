@@ -25,4 +25,14 @@ describe('FileUploadService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should create a filename with a hyphen and 4 digit number at then end', () => {
+    service.createFileName('test');
+    let hyphen = service.fileName[4];
+    let firstDigit = parseInt(service.fileName[6]);
+    let length = service.fileName.length;
+    expect(hyphen).toBe('-');
+    expect(firstDigit).toBeInstanceOf(Number);
+    expect(length).toBeGreaterThanOrEqual(5);
+  })
 });
