@@ -11,7 +11,24 @@
     transform: translate(-50%, -50%);
 }
 
-.cardTitle{
+.sub-heading {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.spinner {
+    z-index: 500;
+    position: absolute;
+    background-color: rgba(0,0,0,0.4);
+    width: 100%;
+}
+
+.add-image-sub {
+    margin-left: 5rem;
+}
+
+.card-title {
     display: ruby;
 }
 
@@ -135,6 +152,11 @@ input[type=number] {
         margin-bottom: 0;
     }
 
+    .spinner {
+        height: 58rem;
+        border-radius: 2%;
+    }
+
     mat-form-field {
         width: 17rem;
     }
@@ -145,12 +167,18 @@ input[type=number] {
         flex-direction: column;
     }
 
+    mat-spinner {
+        z-index: 1000;
+        position: absolute;
+        left: 7rem;
+        top: 32rem;
+    }
 }
 /*Change new-job for vertical navbar*/
 @media only screen and (min-width: 600px) {
     .buttons {
         position: relative;
-        bottom: 18rem;
+        bottom: 15rem;
         padding: 2%;
     }
 
@@ -161,12 +189,25 @@ input[type=number] {
     .add-image {
         left: 16rem;
         position: relative;
-        bottom: 26rem;
+        bottom: 23rem;
     }
 
     .image-heading {
         position: relative;
         left: 16rem;
         bottom: 26.5rem;
+    }
+
+    .spinner {
+        height: 100%;
+        border-radius: 5%;
+    }
+
+    
+    mat-spinner {
+        z-index: 1000;
+        position: absolute;
+        left: 14rem;
+        top: 15rem;
     }
 }
