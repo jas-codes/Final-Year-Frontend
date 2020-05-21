@@ -47,6 +47,7 @@ export class JobListComponent implements OnInit, OnDestroy {
     }
   }
 
+  //get the jobs a user owns
   getJobsForUser() {
     this.jobCollection = this.jobsService.getJobsForUser(this.user.uid);
     if (this.jobCollection) {
@@ -79,6 +80,7 @@ export class JobListComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  //filter the components jobs by the handed in type
   filterJobs() {
     this.jobs = this.jobs.filter((job) => {
       if (this.listTypes.indexOf(job.completionState) >= 0)
@@ -88,6 +90,7 @@ export class JobListComponent implements OnInit, OnDestroy {
     })
   }
 
+  //load a job
   loadJobDetails(id: number, index: number) {
     this.router.navigate([
       { outlets: { navLinks: ['my-jobs', id] } }
