@@ -49,7 +49,7 @@ import { CompanyDetailsComponent } from './company-details/company-details.compo
 import { DatePipe } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ReviewComponent } from './review/review.component';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule,
@@ -66,7 +66,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatRadioModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatProgressSpinnerModule
 ]
 
 @NgModule({

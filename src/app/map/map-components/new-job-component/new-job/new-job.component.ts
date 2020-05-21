@@ -24,6 +24,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
   trades = Object.values(TradeType);
   newJob: Job = new Job();
   timeframeDuration: string = 'Days';
+  showSpinner: Boolean = false;
 
   //validation variables
   minimunPrice = 50;
@@ -82,24 +83,9 @@ export class NewJobComponent implements OnInit, OnDestroy {
         let lng = ((data as any).result.longitude);
         this.newJob.lngLat = { lat, lng }
         this.newJob.completionState = CompletionState.avialable;
-
-        if (this.file) { //if a photo, upload it to blob, else post job
-          this.fileUploadService.uploadFile(this.file, BlobLocations.jobPostingImages, function (result) {
-            //callback once the photo is uploaded containing image URL
-            if (result === 'error') {
-              console.log('there was an error with the upload');
-              self.customErrorText = "Problem with Image Upload";
-              self.uploadError = true;
-            }
-            else { //post job
-              self.newJob.picture = result;
-              self.jobsService.uploadNewJob(self.newJob).toPromise().then(() => self.dismissComponent());
-            }
-          });
-        } else { 
-          this.jobsService.uploadNewJob(this.newJob).toPromise().then(() => self.dismissComponent());
-        }
-      },
+        this.showSpinner = true;
+        this.jobsService.uploadNewJob(this.newJob).toPromise().then(() => this.dismissComponent());
+      },  
       (error) => this.errorHandler(error)
     );
   }
@@ -123,10 +109,27 @@ export class NewJobComponent implements OnInit, OnDestroy {
 
   //onclick to open file explorer
   onClick() {
+    var self = this;
+
     this.uploadError = false;
     const fileUpload = this.fileUpload.nativeElement;
+
     fileUpload.onchange = () => {
       this.file = fileUpload.files;
+
+      if (this.file) { //if a photo, upload it to blob, else post job
+        this.fileUploadService.uploadFile(this.file, BlobLocations.jobPostingImages, function (result) {
+          //callback once the photo is uploaded containing image URL
+          if (result === 'error') {
+            console.log('there was an error with the upload');
+            self.customErrorText = "Problem with Image Upload";
+            self.uploadError = true;
+          }
+          else { //post job
+            self.newJob.picture = result;
+          }
+        });
+      }
     };
     fileUpload.click();
   }

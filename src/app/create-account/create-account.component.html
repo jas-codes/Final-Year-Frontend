@@ -5,31 +5,38 @@
             <div class="names">
                 <mat-form-field>
                     <input #firstName matInput placeholder="First Name" formControlName="firstName" required>
+                    <mat-error>First name is required</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <input #LastName matInput placeholder="Last Name" formControlName="lastName" required>
+                    <mat-error>Surname is required</mat-error>
                 </mat-form-field>
             </div>
             <div class="names" *ngIf="!signedInAlready;">
                 <mat-form-field>
                     <input #password type="password" matInput placeholder="Password" (keyup)="comparePasswords()" formControlName="password" required>
+                    <mat-error>Minimum Length of 6</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <input #repassword type="password" matInput placeholder="Repeat Password" (keyup)="comparePasswords()" formControlName="rePassword" required>
+                    <mat-error>Minimum Length of 6</mat-error>
                 </mat-form-field>
             </div>
             <div *ngIf="!signedInAlready;">
                 <mat-form-field>
                     <input #emailAddress matInput type="email" placeholder="Enter email" formControlName="emailAddress"
                         required>
+                    <mat-error>Must be a valid email</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <input #nickName matInput placeholder="Nickname" formControlName="nickname" required>
+                    <mat-error>Nickname is required</mat-error>
                 </mat-form-field>
             </div>
             <div>
                 <mat-form-field>
                     <input #phoneNumber type="tel" matInput placeholder="Phone number" formControlName="phoneNumber" required>
+                    <mat-error>Must be of 11 digits</mat-error>
                 </mat-form-field>       
                 <mat-form-field class="date-picker">
                     <input matInput [max]="maxDate" [matDatepicker]="picker" placeholder="Date of Birth" formControlName="dob"
@@ -41,6 +48,7 @@
             <div>
                 <mat-form-field>
                     <input #postcode matInput placeholder="postcode" formControlName="postcode" required>
+                    <mat-error>Must be 6 - 8 characters</mat-error>
                 </mat-form-field>
                 <div class="upload" *ngIf="!signedInAlready;">
                     <button type="button" mat-button (click)="onClick()">Profile Picture <mat-icon>file_upload</mat-icon></button>
@@ -94,9 +102,11 @@
                             {{trade}}
                         </mat-option>
                     </mat-select>
+                    <mat-error>Required</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <input #companyName matInput placeholder="companyName" formControlName="companyName" [required]="trader">
+                    <mat-error>Required</mat-error>
                 </mat-form-field>
             </ng-container>
         </form>

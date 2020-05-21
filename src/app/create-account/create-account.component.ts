@@ -35,7 +35,7 @@ export class CreateAccountComponent implements OnInit {
     phoneNumber: new FormControl('', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]),
     companyName: new FormControl(''),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    rePassword: new FormControl('', Validators.required),
+    rePassword: new FormControl('', [Validators.required, Validators.minLength(6)]),
     tradeType: new FormControl(''),
     accountType: new FormControl('', Validators.required),
     dob: new FormControl('', Validators.required),

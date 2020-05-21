@@ -100,7 +100,7 @@
     margin-right: auto;
     padding-top: 0.5rem;
     max-width: 95%;
-    max-height: 18rem;
+    max-height: 17rem;
 }
 
 .quotesListContainer button {
@@ -217,6 +217,7 @@ li:last-child {
 
     .infoImg {
         padding: 1rem;
+        padding-bottom: 0rem;
         margin-left: auto;
         margin-right: auto;
         display: block;

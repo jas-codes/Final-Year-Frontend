@@ -17,7 +17,9 @@
 
 .imageContainer {
     width: 100%;
+    height:auto;
     max-height: 10rem;
+    overflow: hidden;
 }
 
 .description p {
@@ -82,12 +84,12 @@ svg {
 /*Change map for vertical navbar*/
 @media only screen and (min-width: 600px) {
     .new-job-component {
-        right: 16rem;
-        bottom: -12rem;
+        right: 6.5rem;
+        bottom: -16rem;
     }
 
     .add-new-job {
-        right: 4rem;
-        bottom: 4rem;
+        right: 2rem;
+        bottom: 2rem;
     }
 }
