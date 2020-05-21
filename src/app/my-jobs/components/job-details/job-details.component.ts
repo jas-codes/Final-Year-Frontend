@@ -25,6 +25,7 @@ import { Review } from 'src/app/models/review';
   styleUrls: ['./job-details.component.css']
 })
 export class JobDetailsComponent implements OnInit, OnDestroy {
+  //component variables
   private subscriptions: Subscription[] = [];
   job: Job = new Job();
   trader: boolean = false;
@@ -41,10 +42,12 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   provideReview: boolean = false;
   userReviewScore: number = 0;
 
+  //user variables
   userSub: Subscription;
   user: IUser;
   company: Company = new Company();
 
+  //google maps varaibles
   centre: google.maps.LatLngLiteral;
   markers: any[] = [];
   mapOptions: google.maps.MapOptions = {
@@ -79,6 +82,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if(history.state) {
+      //get job data
       this.subscriptions.push(of(history.state.data).subscribe((data) => {
         if(data) {
           this.job = data;
@@ -93,6 +97,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       }));
     }
 
+    //get user specific data
     if (this.authService.user$) {
       this.userSub = this.authService.user$.subscribe((user) => {
         this.user = user;
@@ -126,6 +131,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  //toggle if the review component should show
   shouldDisplayReview() {
     if(this.job.completionState == CompletionState.closed){
       if(!this.job.reviewed.user && !this.trader)
@@ -136,22 +142,26 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    //tidy up when leaving
     this.userSub.unsubscribe();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  //draw each marker
   drawMapMarkers() {
     this.markers.push(this.mapService.addMarker(this.job.lngLat, this.job.title, this.job.trade));
     if (!this.mapService.CompareLngLatPoints(this.user.lngLat, this.job.lngLat))
       this.markers.push(this.mapService.addPersonalMarker(this.user.lngLat));
   }
 
+  //calculate the google maps centre
   calculateCentre(jobLngLat: google.maps.LatLngLiteral, userLngLat: google.maps.LatLngLiteral) {
     let lat = (jobLngLat.lat + userLngLat.lat) / 2;
     let lng = (jobLngLat.lng + userLngLat.lng) / 2;
     return { lat: lat, lng: lng }
   }
 
+  //determine the status text to display
   setStatusText() {
     switch (this.job.completionState) {
       case CompletionState.active:
@@ -174,26 +184,32 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  //toggle component
   showProvideQuote() {
     this.provideQuote = !this.provideQuote;
   }
 
+  //toggle component
   showProvideReview() {
     this.provideReview = !this.provideReview;
   }
 
+  //if a user or trader accepts the job
   setAccepted() {
-    if (this.user.accountType == UserTypes.user) {
+    //who is accepting
+    if (this.user.accountType == UserTypes.user) { //user
       if (this.job.completionState == CompletionState.traderAccepted) {
-        let findTraderInJobWC = this.job.workCandidates.find((wcUid) => {
+        let findTraderInJobWC = this.job.workCandidates.find((wcUid) => { //find the trader in the list
           return this.chosenQuote.traderUid == wcUid;
         });
         if (findTraderInJobWC) {
+          //remove quotes that don't belong to this trader
           this.job.quotes.forEach((quoteId) => {
             if (quoteId != this.chosenQuote.id)
               this.quoteService.deleteQuote(quoteId);
           });
 
+          //update job
           this.job.quotes = [];
           this.job.quotes.push(this.chosenQuote.id);
           this.job.workCandidates = [];
@@ -202,7 +218,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           this.jobsService.updateJob(this.job);
         }
       }
-    } else if (this.user.accountType == UserTypes.trader) {
+    } else if (this.user.accountType == UserTypes.trader) { //trader
+      //add to accepted if not already in there
       let findTraderInJobWC = this.job.workCandidates.find((wcUid) => {
         return wcUid == this.user.uid
       });
@@ -213,7 +230,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  //if a trader rejects a job
   setRejected() {
+    //remove all connecting data
     this.job.quotes = this.quoteService.removeQuoteFromJob(this.quotesList, this.job.quotes, this.user.uid);
     this.job.workCandidates = this.jobsService.removeWorkCandidates(this.user.uid, this.job.workCandidates);
     if(this.job.quotes.length <= 0)
@@ -228,12 +247,14 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  //create a quote for a job
   createQuote(event: number) {
     var quote = new Quote();
     quote.amount = event;
     quote.traderUid = this.user.uid;
     quote.jobId = this.job.id;
     quote.companyName = this.company.companyName; 
+    //check the database for an existing quote, if so update it
     this.subscriptions.push(this.quoteService.createOrUpdateQuote(quote).subscribe((update) => {
       if (!update) {
         this.quoteService.createQuote(quote).toPromise().then(() => {
@@ -244,16 +265,19 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     }));
   }
 
+  // create a chat
   createChat() {
     let traderUid;
+    //determine who has loaded the site
     if (this.user.accountType == UserTypes.user)
       traderUid = this.chosenQuote.traderUid;
     else
       traderUid = this.user.uid;
 
+    //if there is an existing chat, open it, else create a chat
     this.subscriptions.push(this.companyService.getCompanyByUid(traderUid).valueChanges().subscribe((company) => {
       this.subscriptions.push(this.chatService.openExistingChat(this.job.id, this.job.issueUid, company.uid).valueChanges().subscribe((chats) => {
-        if (chats[0])
+        if (chats[0]) //if chats exist navigate to it
           this.navigationLinks('chats', chats[0].id);
         else {
           var chat = new Chat();
@@ -277,6 +301,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     }));
   }
 
+  //get and show a companies info in the component
   showCompanyInfo() {
     var companySubscription = this.companyService.getCompanyByUid(this.chosenQuote.traderUid).valueChanges().subscribe((company) => {
       this.company = company;
@@ -291,7 +316,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.jobsService.updateJob(this.job);
   }
 
+  //upload a review
   postReview(reviewEvent: Review){
+    //determine who is reviewing
     if(this.user.accountType == UserTypes.user) {
       var review: Review = {comment: reviewEvent.comment, score: reviewEvent.score, uid: this.job.workCandidates[0] };
       this.job.reviewed.user = true;
@@ -304,6 +331,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.provideReview = false;
   }
 
+  //multi purpose navigation
   navigationLinks(url, id?) {
     if (id) {
       this.router.navigate([
