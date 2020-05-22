@@ -3,10 +3,11 @@
     <input #search [(ngModel)]="searchTerm" matInput placeholder="Example: Greenbank">
 </mat-form-field>
 
-<mat-list>
-        <ng-container *ngIf="showTraderTable; then traderTemplate; else userTemplate"></ng-container>
-</mat-list>
-
+<div class="container">
+    <mat-list>
+            <ng-container *ngIf="showTraderTable; then traderTemplate; else userTemplate"></ng-container>
+    </mat-list>
+</div>
 <!--Show the trader chats and their details-->
 <ng-template #traderTemplate>
     <mat-list-item *ngFor="let chat of chatList | chatListSearch: searchTerm; index as i" (click)="loadChat(chat.id)">
