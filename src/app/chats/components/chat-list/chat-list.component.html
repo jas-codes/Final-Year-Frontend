@@ -1,12 +1,15 @@
-<mat-form-field appearance="fill">
-    <mat-label>Search</mat-label>
-    <input #search [(ngModel)]="searchTerm" matInput placeholder="Example: Greenbank">
-</mat-form-field>
-
 <div class="container">
-    <mat-list>
+    <div class="search">
+        <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input #search [(ngModel)]="searchTerm" matInput placeholder="Example: Greenbank">
+        </mat-form-field>
+    </div>
+    <div class="chatsContainer">
+        <mat-list>
             <ng-container *ngIf="showTraderTable; then traderTemplate; else userTemplate"></ng-container>
-    </mat-list>
+        </mat-list>
+    </div>
 </div>
 <!--Show the trader chats and their details-->
 <ng-template #traderTemplate>
