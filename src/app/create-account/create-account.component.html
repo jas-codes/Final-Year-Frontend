@@ -1,3 +1,6 @@
+<div *ngIf="showSpinner" class="spinner" [ngClass]="{'trader-spinner': trader, 'user-spinner': !trader}">
+    <mat-spinner></mat-spinner>
+</div>
 <mat-card>
     <ng-container *ngIf="!signedInAlready; then createAccountForm; else detailsForm"></ng-container>
     <mat-card-content>
@@ -110,7 +113,10 @@
                 </mat-form-field>
             </ng-container>
         </form>
-        <h5 *ngIf="!passwordMatch" class="error">*Passwords do not match</h5> 
+        <div class="error-messages">
+            <h5 *ngIf="!passwordMatch" class="error">*Passwords do not match</h5> 
+            <h5 *ngIf="invalidPostcode" class="error">*Invalid postcode</h5>
+        </div>
     </mat-card-content>
     <mat-card-actions>
         <button color="primary" (click)="onSubmit()" class="submit" mat-raised-button type="submit" [disabled]="!form.valid || !passwordMatch">Submit</button>

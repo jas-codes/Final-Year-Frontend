@@ -40,3 +40,7 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
+mat-spinner {
+    margin: 6rem;
+}

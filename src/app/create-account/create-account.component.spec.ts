@@ -16,6 +16,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../services/auth.service';
 import { AuthServiceMock } from '../testing/auth-service-mock';
 import { UserTypes } from '../enums/user-types';
+import { HttpHandler, HttpClient } from '@angular/common/http';
 
 describe('CreateAccountComponent', () => {
   let component: CreateAccountComponent;
@@ -34,7 +35,9 @@ describe('CreateAccountComponent', () => {
         { provide: AngularFireAuth, useValue: AngularFireAuthMock},
         {provide: AngularFirestore, useValue: AngularFirestoreMock},
         {provide: AngularFireStorage, useValue: AngularFireStorageMock},
-        {provide: AuthService, userValue: AuthServiceMock}
+        {provide: AuthService, userValue: AuthServiceMock},
+        HttpClient,
+        HttpHandler
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })

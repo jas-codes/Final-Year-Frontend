@@ -35,6 +35,12 @@ button {
     margin-top: 0.7rem;
     margin-left: 0.8rem;
 }
+
+.error-messages {
+    height: 1.5rem;
+    display: flex;
+    flex-direction: row;
+}
 mat-button-toggle-group {
     margin-left: 0.7rem;
 }
@@ -46,6 +52,25 @@ span {
 
 p {
     margin: 0;
+}
+
+.spinner {
+    width: 20.5rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.4);
+    position: absolute;
+    border-radius: 1%;
+    z-index: 500;
+}
+
+.user-spinner {
+    height: 34.5rem;
+}
+
+.trader-spinner {
+    height: 38rem;
 }
 
 .mat-card mat-divider {
@@ -77,9 +102,18 @@ h3 {
 }
 
 .error {
+    margin-bottom: 0;
     color: red;
+    padding-left: 0.4rem;
 }
 
 .upload {
     display: inline-block;
+}
+
+mat-spinner {
+    z-index: 1000;
+    position: absolute;
+    left: 7rem;
+    top: 14rem;
 }
