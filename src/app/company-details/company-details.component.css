@@ -14,15 +14,15 @@
 
 mat-card {
     position: fixed;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 28rem;
+    width: 20rem;
 }
 
 ul {
-    padding-left: 2rem;
-    padding-right: 4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     list-style-type: none;
 }
 
