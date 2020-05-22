@@ -141,11 +141,6 @@ export class AuthService {
     await this.afireAuth.auth.signInWithRedirect(provider);
   }
 
-  async githubSignin() {
-    const provider = new auth.GithubAuthProvider();
-    await this.afireAuth.auth.signInWithRedirect(provider);
-  }
-
   async microsoftSignin() {
     const provider = new auth.OAuthProvider('microsoft.com');
     await this.afireAuth.auth.signInWithRedirect(provider);
