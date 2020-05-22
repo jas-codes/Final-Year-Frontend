@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BlobLocations } from '../enums/blob-locations';
+import { PostcodeService } from '../services/postcode.service';
 
 @Component({
   selector: 'app-create-account',
@@ -22,6 +23,8 @@ export class CreateAccountComponent implements OnInit {
   maxDate = new Date();
   trader: boolean = false;
   passwordMatch: boolean = true;
+  invalidPostcode: boolean = false;
+  showSpinner: boolean = false;
   photoURL: string;
   signInDetails: Observable<string>;
   signedInAlready: boolean;
@@ -43,11 +46,13 @@ export class CreateAccountComponent implements OnInit {
   });
 
 
+
   constructor(
     private router: Router,
     private fileUploadService: FileUploadService,
     private authService: AuthService,
     private route: ActivatedRoute,
+    private postcodeService: PostcodeService
   ) { }
 
   ngOnInit(): void {
@@ -104,18 +109,25 @@ export class CreateAccountComponent implements OnInit {
   onSubmit() {
     var self = this;
     if (!this.signedInAlready) {
-      if (this.file) {
-        this.fileUploadService.uploadFile(this.file, BlobLocations.profilePicture, function (result) { //upload image
-          if(result === 'error')
-            console.log('there was an error with the upload');
-          else {
-            self.photoURL = result;
-            self.authService.createAccount(self.form.get('emailAddress').value, self.form.get('password').value, self.form, self.photoURL);
+      this.postcodeService.convertPostcodeToLatLong(this.form.get('postcode').value).subscribe(
+        (data) => {
+          if (this.file) {
+            this.showSpinner = true;
+            this.fileUploadService.uploadFile(this.file, BlobLocations.profilePicture, function (result) { //upload image
+              if (result === 'error')
+                console.log('there was an error with the upload');
+              else {
+                self.photoURL = result;
+                self.authService.createAccount(self.form.get('emailAddress').value, self.form.get('password').value, self.form, self.photoURL);
+              }
+            });
+          } else {
+            this.showSpinner = true;
+            self.authService.createAccount(self.form.get('emailAddress').value, self.form.get('password').value, self.form);
           }
-        });
-      } else {
-        self.authService.createAccount(self.form.get('emailAddress').value, self.form.get('password').value, self.form);
-      }
+        },
+        (error) => this.invalidPostcode = true
+      );
     } else {
       this.authService.uploadSignInDetails(this.form);
     }
