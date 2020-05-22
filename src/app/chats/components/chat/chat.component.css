@@ -86,7 +86,7 @@ img {
     }
 
     .chatContainer {
-        height: 83vh;
+        height: 78vh;
     }
 
     .traderText {
@@ -107,7 +107,8 @@ img {
     }
 
     .chatContainer {
-        height: 73vh;
+        height: 70vh;
+        overflow-y: scroll;
     }
 
     .traderText {
