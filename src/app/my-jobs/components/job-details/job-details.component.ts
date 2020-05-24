@@ -81,10 +81,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    if(history.state) {
+    if (history.state) {
       //get job data
       this.subscriptions.push(of(history.state.data).subscribe((data) => {
-        if(data) {
+        if (data) {
           this.job = data;
           this.subscriptions.push(this.jobsService.getJob(this.job.id).valueChanges().subscribe((job) => {
             this.job = job;
@@ -101,7 +101,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     if (this.authService.user$) {
       this.userSub = this.authService.user$.subscribe((user) => {
         this.user = user;
-        if(this.user && this.job.lngLat) {
+        if (this.user && this.job.lngLat) {
           this.centre = this.calculateCentre(this.job.lngLat, this.user.lngLat);
           this.drawMapMarkers();
         }
@@ -122,19 +122,19 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
         this.quotesCollection = this.quoteService.getQuotesForJob(this.job.id)
         this.subscriptions.push(this.quotesCollection.valueChanges().subscribe((quotes) => {
-          if(this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed){
+          if (this.job.completionState == CompletionState.active || this.job.completionState == CompletionState.closed) {
             this.chosenQuote = quotes[0];
           }
           this.quotesList = quotes;
-        }));          
+        }));
       });
     }
   }
 
   //toggle if the review component should show
   shouldDisplayReview() {
-    if(this.job.completionState == CompletionState.closed){
-      if(!this.job.reviewed.user && !this.trader)
+    if (this.job.completionState == CompletionState.closed) {
+      if (!this.job.reviewed.user && !this.trader)
         this.provideReview = true;
       else if (!this.job.reviewed.trader && this.trader)
         this.provideReview = true;
@@ -172,8 +172,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         break;
       case CompletionState.closed:
         this.statusText = 'The job was completed on: '
-        if(this.job.conclusionDate != undefined)
-          this.statusText += this.datePipe.transform(this.job.conclusionDate, 'MMM dd, yyyy');  
+        if (this.job.conclusionDate != undefined)
+          this.statusText += this.datePipe.transform(this.job.conclusionDate, 'MMM dd, yyyy');
         break;
       case CompletionState.quoted:
         this.statusText = 'The job has quotes for review'
@@ -235,7 +235,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     //remove all connecting data
     this.job.quotes = this.quoteService.removeQuoteFromJob(this.quotesList, this.job.quotes, this.user.uid);
     this.job.workCandidates = this.jobsService.removeWorkCandidates(this.user.uid, this.job.workCandidates);
-    if(this.job.quotes.length <= 0)
+    if (this.job.quotes.length <= 0)
       this.job.completionState = CompletionState.avialable;
     this.jobsService.updateJob(this.job);
     this.location.back();
@@ -253,7 +253,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     quote.amount = event;
     quote.traderUid = this.user.uid;
     quote.jobId = this.job.id;
-    quote.companyName = this.company.companyName; 
+    quote.companyName = this.company.companyName;
     //check the database for an existing quote, if so update it
     this.subscriptions.push(this.quoteService.createOrUpdateQuote(quote).subscribe((update) => {
       if (!update) {
@@ -317,13 +317,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   }
 
   //upload a review
-  postReview(reviewEvent: Review){
+  postReview(reviewEvent: Review) {
     //determine who is reviewing
-    if(this.user.accountType == UserTypes.user) {
-      var review: Review = {comment: reviewEvent.comment, score: reviewEvent.score, uid: this.job.workCandidates[0] };
+    if (this.user.accountType == UserTypes.user) {
+      var review: Review = { comment: reviewEvent.comment, score: reviewEvent.score, uid: this.job.workCandidates[0] };
       this.job.reviewed.user = true;
     } else {
-      var review: Review = { comment: reviewEvent.comment, score: reviewEvent.score, uid: this.job.issueUid};
+      var review: Review = { comment: reviewEvent.comment, score: reviewEvent.score, uid: this.job.issueUid };
       this.job.reviewed.trader = true;
     }
     this.jobsService.updateJob(this.job);

@@ -11,7 +11,7 @@
         <span><span class="mobile-display">Job Status: {{job.completionState}} -></span> {{statusText}}</span>
     </mat-toolbar>
     <div class="mapContainer">
-        <google-map height="20rem" width="100%" [zoom]="15" [center]="centre" [options]="mapOptions">
+        <google-map height="20rem" width="100%" [zoom]="7" [center]="centre" [options]="mapOptions">
             <map-marker #element *ngFor="let marker of markers; index as i" [position]="marker.position"
                 [options]="marker.options">
             </map-marker>
