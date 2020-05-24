@@ -125,6 +125,7 @@ input[type=number] {
 /*Change new-job for horizontal navbar*/
 @media only screen and (max-width: 600px) {
     .card {
+        margin-bottom: 10rem;
         width: 20rem;
         height: 40rem;
         overflow-y: auto;
@@ -145,6 +146,10 @@ input[type=number] {
 
     .add-image {
         margin-left: 2.8rem;
+    }
+
+    .add-image-sub {
+        display: none;
     }
 
     .error {
@@ -189,7 +194,7 @@ input[type=number] {
     .add-image {
         left: 16rem;
         position: relative;
-        bottom: 23rem;
+        bottom: 22rem;
     }
 
     .image-heading {
@@ -202,7 +207,6 @@ input[type=number] {
         height: 100%;
         border-radius: 5%;
     }
-
     
     mat-spinner {
         z-index: 1000;
