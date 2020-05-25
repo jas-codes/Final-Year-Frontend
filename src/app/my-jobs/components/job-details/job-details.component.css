@@ -29,6 +29,7 @@
 }
 
 .quoteWarning {
+    color: red;
     white-space: pre;
     display: inline-flex;
 }

@@ -36,6 +36,7 @@ export class MapComponent implements OnInit, OnDestroy {
   abilityToPostJobs: boolean = false;
   provideQuote: boolean = false;
   acceptedJob: boolean = false;
+  traderUid: string = '';
 
   //user variables
   user: IUser;
@@ -81,11 +82,13 @@ export class MapComponent implements OnInit, OnDestroy {
       this.userSub = this.authService.user$.subscribe((user) => {
         if (user != null) {
           this.user = user;
+          this.calculateCentre(this.user.lngLat)
           if (user.accountType == UserTypes.user) { //what type of user
             this.drawCompanyMarkers();
             this.abilityToPostJobs = true;
           }
           else {
+            this.traderUid = user.uid;
             this.drawJobMarkers(); //draw job markers and get company of user
             this.subscriptions.push(this.companiesService.getCompanyByUid(user.uid).valueChanges()
               .subscribe((company) => this.company = company));
@@ -93,22 +96,32 @@ export class MapComponent implements OnInit, OnDestroy {
         }
       });
     }
-
-    navigator.geolocation.getCurrentPosition(function (position) {
-      self.centre = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      }
-    },
-      this.errorCallbackAccuracy,
-      this.getLocationOptions
-    );
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
+
+  //if a user has entered a postcode use that as the center
+  calculateCentre(lngLat?: google.maps.LatLngLiteral) {
+    var self = this;
+
+    if(lngLat)
+      this.centre = lngLat
+    else {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        self.centre = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        }
+      },
+        this.errorCallbackAccuracy,
+        this.getLocationOptions
+      );
+    }
+  }
+  
 
   //draw the available job markers on map
   private drawJobMarkers() {
@@ -166,6 +179,7 @@ export class MapComponent implements OnInit, OnDestroy {
     quote.traderUid = this.user.uid;
     quote.jobId = this.selected.id;
     quote.companyName = this.company.companyName;
+    //updates the quote if it is available, else create a new quote.
     this.subscriptions.push(this.quoteService.createOrUpdateQuote(quote).subscribe((update) => {
       if(!update) {
         this.quoteService.createQuote(quote).toPromise().then(() => {

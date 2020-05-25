@@ -1,5 +1,5 @@
 <body class="wrapper">
-    <app-quote class="send-front quote-card" *ngIf="provideQuote" (dismiss)="showProvideQuote()" (quote)="createQuote($event)"></app-quote>
+    <app-quote class="send-front quote-card" *ngIf="provideQuote" (dismiss)="showProvideQuote()" (quote)="createQuote($event)" [traderUid]='traderUid'></app-quote>
     <!--Instantiate google maps and add markers as well as info window-->
     <google-map height="{{mapHeight}}" width="100%" [zoom]="16" [center]="centre" [options]="mapOptions">
         <map-marker #element *ngFor="let marker of markers; index as i" [position]="marker.position"

@@ -1,7 +1,7 @@
 <body class="container">
     <app-review  class="send-front component-card" *ngIf="provideReview" (dismiss)="showProvideReview()" (review)="postReview($event)"></app-review>
     <app-quote class="send-front component-card" *ngIf="provideQuote" (dismiss)="showProvideQuote()"
-        (quote)="createQuote($event)"></app-quote>
+        (quote)="createQuote($event)" [traderUid]="traderUid"></app-quote>
     <app-company-details class="send-front component-card" *ngIf="companyInfo" [company]="company"
         [showDetails]="true" (dismiss)="showCompanyInfo()"></app-company-details>
     <mat-toolbar color="primary">
@@ -11,7 +11,7 @@
         <span><span class="mobile-display">Job Status: {{job.completionState}} -></span> {{statusText}}</span>
     </mat-toolbar>
     <div class="mapContainer">
-        <google-map height="20rem" width="100%" [zoom]="15" [center]="centre" [options]="mapOptions">
+        <google-map height="20rem" width="100%" [zoom]="7" [center]="centre" [options]="mapOptions">
             <map-marker #element *ngFor="let marker of markers; index as i" [position]="marker.position"
                 [options]="marker.options">
             </map-marker>

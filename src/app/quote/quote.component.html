@@ -6,14 +6,15 @@
             <button class="exit" mat-button color="primary" (click)="dismissComponent()">cancel</button>
         </mat-card-header>
         <mat-card-content>
-            <form [formGroup]="form" (ngSubmit)="registerQuote()">
+            <form [formGroup]="form">
                 <mat-form-field>
                     <span matPrefix>£ &nbsp;</span>
                     <input type="number" matInput placeholder="00.00" formControlName="quote" required>
                     <mat-error>Must Provide a Quote</mat-error>
-                </mat-form-field>
-                <button mat-raised-button color="primary" >Provide Quote</button>
+                </mat-form-field> 
             </form>
+            <button [disabled]="showQuoteLimit || !form.valid" (click)="registerQuote()" mat-raised-button color="primary" >Provide Quote</button>
         </mat-card-content>
+        <p class="error" *ngIf="showQuoteLimit">*You cannot have more than 10 quotes active at one time</p>
     </mat-card>
 </div>

@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { auth } from 'firebase';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,12 +21,14 @@ export class UserProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    //check if the user is signed in
     if (this.afireAuth.auth) {
       this.afireAuth.auth.getRedirectResult().then((result) => {
+        //subscribe to result
         this.authService.user$.subscribe(user => {
-          if (user)
+          if (user) //accounts for possible difference with 3rd party auth
             this.checkUserDetailsComplete(user);
-          else if (result.user)
+          else if (result.user) //accounts for possible difference with 3rd party auth
             this.checkUserDetailsComplete(result.user);
         });
       }).catch(error => this.errorCatch)
@@ -37,7 +40,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   checkUserDetailsComplete(user) {
-    if (user.accountType)
+    if (user.accountType) //if they have this property then its been done
       this.ngZone.run(() => this.router.navigate(['home/']));
     else
       this.ngZone.run(() => this.router.navigate(['create-account'], { queryParams: { signedIn: true } }));
@@ -50,8 +53,8 @@ export class UserProfileComponent implements OnInit {
     var email = "";
     var credential = "";
 
-    if (errorCode === 'auth/wrong-password') {
-      alert('Wrong password.');
+    if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found' || errorCode === 'auth/invalid-email') {
+      console.log(errorCode);
     }
 
     if (error.email)

@@ -1,7 +1,5 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { IUser } from './user.model';
-import { Router } from '@angular/router';
-
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -19,12 +17,11 @@ import { PostcodeService } from './postcode.service';
 export class AuthService {
   user$: Observable<IUser>;
   user: IUser;
+  showError: boolean = false;
 
   constructor(
     private afireAuth: AngularFireAuth,
     private afirestore: AngularFirestore,
-    private router: Router,
-    private ngZone: NgZone,
     private companyService: CompaniesService,
     private postcodeService: PostcodeService
   ) {
@@ -50,6 +47,7 @@ export class AuthService {
   }
 
 
+  //update user info with company creation also
   private updateUserInfoFromLogin(user, form?: FormGroup, photoURL?: string) {
     const userRef: AngularFirestoreDocument<IUser> = this.afirestore.doc(`users/${user.uid}`);
     if (photoURL)
@@ -68,10 +66,10 @@ export class AuthService {
         }
 
         userRef.set(data, { merge: true })
-        this.ngZone.run(() => this.router.navigate(['home'])); //navigate to home screen when done
       });
   }
 
+  //update user info from anywhere
   public updateUserInfo(user, form: FormGroup, photoURL?: string) {
     const userRef: AngularFirestoreDocument<IUser> = this.afirestore.doc(`users/${user.uid}`);
     if (photoURL)
@@ -89,6 +87,7 @@ export class AuthService {
       });
   }
 
+  //update the data for a user
   updateData(user, form: FormGroup, photoURL?: string) {
     const data = {
       uid: user.uid,
@@ -109,6 +108,7 @@ export class AuthService {
     data.phoneNumber = form.get('phoneNumber').value;
     data.postcode = form.get('postcode').value;
 
+    //if this data is in the form
     if (form.get('emailAddress'))
       data.email = form.get('emailAddress').value;
     if (form.get('dob'))
@@ -175,8 +175,9 @@ export class AuthService {
     var email = "";
     var credential = "";
 
-    if (errorCode === 'auth/wrong-password') {
-      alert('Wrong password.');
+    if (errorCode === 'auth/wrong-password'|| errorCode === 'auth/user-not-found' || errorCode === 'auth/invalid-email') {
+      console.log('hello')
+      this.showError = true;
     }
 
     if (error.email)

@@ -11,6 +11,10 @@
     position: fixed;
 }
 
+.error {
+    color: red;
+}
+
 mat-card {
     position: fixed;
     top: 50%;
