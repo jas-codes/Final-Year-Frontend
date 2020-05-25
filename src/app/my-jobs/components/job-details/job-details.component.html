@@ -1,7 +1,7 @@
 <body class="container">
     <app-review  class="send-front component-card" *ngIf="provideReview" (dismiss)="showProvideReview()" (review)="postReview($event)"></app-review>
     <app-quote class="send-front component-card" *ngIf="provideQuote" (dismiss)="showProvideQuote()"
-        (quote)="createQuote($event)"></app-quote>
+        (quote)="createQuote($event)" [traderUid]="traderUid"></app-quote>
     <app-company-details class="send-front component-card" *ngIf="companyInfo" [company]="company"
         [showDetails]="true" (dismiss)="showCompanyInfo()"></app-company-details>
     <mat-toolbar color="primary">

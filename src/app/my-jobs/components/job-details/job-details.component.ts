@@ -41,6 +41,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   review: Review = new Review();
   provideReview: boolean = false;
   userReviewScore: number = 0;
+  traderUid: string = '';
 
   //user variables
   userSub: Subscription;
@@ -110,6 +111,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
         if (this.user.accountType == UserTypes.trader) { //if trader
           this.trader = true; //get the company
+          this.traderUid = user.uid;
           this.subscriptions.push(this.companyService.getCompanyByUid(user.uid).valueChanges().subscribe((company) => {
             this.company = company;
           }));

@@ -76,8 +76,8 @@ export class NewJobComponent implements OnInit, OnDestroy {
     var self = this;
     this.newJob.issueDate = Date.now();
     this.newJob.timeframe += ' ' + this.timeframeDuration;
-    //check postcode validity and converto to LatLng for google maps
-    this.postcodeService.convertPostcodeToLatLong(this.form.get('postcode').value).subscribe(
+    //check postcode validity and conver to to LatLng for google maps
+    var convertPostcodeSub = this.postcodeService.convertPostcodeToLatLong(this.form.get('postcode').value).subscribe(
       (data) => {
         let lat = ((data as any).result.latitude);
         let lng = ((data as any).result.longitude);
@@ -85,8 +85,12 @@ export class NewJobComponent implements OnInit, OnDestroy {
         this.newJob.completionState = CompletionState.avialable;
         this.showSpinner = true;
         this.jobsService.uploadNewJob(this.newJob).toPromise().then(() => this.dismissComponent());
+        convertPostcodeSub.unsubscribe();
       },  
-      (error) => this.errorHandler(error)
+      (error) => {
+        convertPostcodeSub.unsubscribe();
+        this.errorHandler(error)
+      }
     );
   }
 

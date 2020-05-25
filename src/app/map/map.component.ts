@@ -36,6 +36,7 @@ export class MapComponent implements OnInit, OnDestroy {
   abilityToPostJobs: boolean = false;
   provideQuote: boolean = false;
   acceptedJob: boolean = false;
+  traderUid: string = '';
 
   //user variables
   user: IUser;
@@ -87,6 +88,7 @@ export class MapComponent implements OnInit, OnDestroy {
             this.abilityToPostJobs = true;
           }
           else {
+            this.traderUid = user.uid;
             this.drawJobMarkers(); //draw job markers and get company of user
             this.subscriptions.push(this.companiesService.getCompanyByUid(user.uid).valueChanges()
               .subscribe((company) => this.company = company));
