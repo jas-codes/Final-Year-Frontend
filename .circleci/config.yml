@@ -22,16 +22,12 @@ jobs:
             - "node_modules"
 
   build-functions:
-    working_directory: ~/Final-Year-Frontend/functions
-    docker:
-    #create docker image
-      - image: circleci/node:10-browsers
     steps:
       - checkout
       - restore_cache:
           key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
       
-      - run: npm install
+      - run: cd functions && npm install
       - save_cache:
           key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
           paths:
