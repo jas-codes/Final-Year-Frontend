@@ -20,18 +20,23 @@ jobs:
           key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
           paths:
             - "node_modules"
-
-  build-functions:
-    steps:
-      - checkout
-      - restore_cache:
-          key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
-      
       - run: cd functions && npm install
       - save_cache:
-          key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+          key: Final-Year-Frontend-Functions{{ .Branch }}-{{checksum "package-lock.json"}}
           paths:
-            - "node_modules"
+            - "node_modules-Functions"
+
+  # build-functions:
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+      
+  #     - run: cd functions && npm install
+  #     - save_cache:
+  #         key: Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+  #         paths:
+  #           - "node_modules"
 
 #  tests:
 #      
@@ -101,17 +106,17 @@ workflows:
             branches:
               only: master 
           context: final-year
-      - build-functions:
-          filters:
-            branches:
-              only: master
-          context: final-year
+      # - build-functions:
+      #     filters:
+      #       branches:
+      #         only: master
+      #     context: final-year
       - deploy-functions:
           filters:
             branches:
               only: master
           requires:
-              - build-functions 
+              - build-app 
           context: final-year
 #      - tests:
 #          filters:
