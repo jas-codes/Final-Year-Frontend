@@ -110,7 +110,7 @@ workflows:
             branches:
               only: master
           requires:
-            - build-functions 
+            - build-functions
           context: final-year
       - deploy-functions:
           filters:
