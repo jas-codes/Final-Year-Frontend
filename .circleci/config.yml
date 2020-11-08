@@ -37,46 +37,46 @@ jobs:
           paths:
             - "node_modules"
 
-  tests:
-      
-    working_directory: ~/Final-Year-Frontend
-    docker:
-      #create docker image
-      - image: circleci/node:10-browsers
+#  tests:
+#      
+#    working_directory: ~/Final-Year-Frontend
+#    docker:
+#      #create docker image
+#      - image: circleci/node:10-browsers
+#
+#    steps:
+#      - checkout
+#
+#      - restore_cache:
+#          key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
+#
+#      - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI
+#      - store_test_results:
+#          path: test-results
+#
+#
+#      - run: npm run e2e -- --protractor-config=./e2e/protractor-ci.conf.js
 
-    steps:
-      - checkout
-
-      - restore_cache:
-          key: Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
-
-      - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI
-      - store_test_results:
-          path: test-results
-
-
-      - run: npm run e2e -- --protractor-config=./e2e/protractor-ci.conf.js
-
-  deploy-hosting:
-      
-    working_directory: ~/Final-Year-Frontend
-    docker:
-    #create docker image
-    - image: circleci/node:10-browsers
-
-    steps:
-      - checkout 
-      - restore_cache:
-          keys:
-            - Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
-            - Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
-
-      - run:
-          name: 'Build Project'
-          command: 'npm run build'
-      - run:
-          name: 'Deploy to Firebase Hosting'
-          command: './node_modules/.bin/firebase deploy --only hosting --token=$FIREBASE_TOKEN'
+#  deploy-hosting:
+#      
+#    working_directory: ~/Final-Year-Frontend
+#    docker:
+#    #create docker image
+#    - image: circleci/node:10-browsers
+#
+#    steps:
+#      - checkout 
+#      - restore_cache:
+#          keys:
+#            - Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
+#            - Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+#
+#      - run:
+#          name: 'Build Project'
+#          command: 'npm run build'
+#      - run:
+#          name: 'Deploy to Firebase Hosting'
+#          command: './node_modules/.bin/firebase deploy --only hosting --token=$FIREBASE_TOKEN'
 
   deploy-functions:
     
