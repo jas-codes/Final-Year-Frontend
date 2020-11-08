@@ -108,7 +108,9 @@ workflows:
       - build-functions:
           filters:
             branches:
-              only: master 
+              only: master
+          requires:
+            - build-functions 
           context: final-year
       - deploy-functions:
           filters:
