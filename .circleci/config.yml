@@ -110,7 +110,7 @@ workflows:
             branches:
               only: master 
           context: final-year
-      -deploy-functions:
+      - deploy-functions:
         context: final-year
 #      - tests:
 #          filters:
