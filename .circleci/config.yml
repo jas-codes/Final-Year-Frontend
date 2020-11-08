@@ -111,7 +111,10 @@ workflows:
               only: master 
           context: final-year
       - deploy-functions:
-        context: final-year
+          filters:
+            branches:
+              only: master 
+          context: final-year
 #      - tests:
 #          filters:
 #            branches:
