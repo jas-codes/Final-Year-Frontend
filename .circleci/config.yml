@@ -87,10 +87,10 @@ jobs:
     - image: circleci/node:10-browsers
     
     steps:
-      # - checkout
-      # - restore_cache:
-      #     keys: 
-      #       # - Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
+      - checkout
+      - restore_cache:
+          keys: 
+            - Final-Year-Frontend-Functions-{{ .Branch }}-{{checksum "package-lock.json"}}
       #       - Final-Year-Frontend-{{ .Branch }}-{{checksum "package-lock.json"}}
         
       - run:
