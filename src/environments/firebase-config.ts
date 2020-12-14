@@ -1,5 +1,5 @@
 export const FirebaseConfig = {
-    apiKey: "AIzaSyDU0JQdGmW2MY0G1DHPNO4a7fHm6IuMh-Y",
+    apiKey: "",
     authDomain: "tradesman-application.firebaseapp.com",
     databaseURL: "https://tradesman-application.firebaseio.com",
     projectId: "tradesman-application",
