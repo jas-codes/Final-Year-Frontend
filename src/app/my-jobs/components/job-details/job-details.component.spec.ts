@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { JobDetailsComponent } from './job-details.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AngularFireAuthMock } from 'src/app/testing/angular-fire-auth-mock';
@@ -17,7 +17,7 @@ describe('JobDetailsComponent', () => {
   let component: JobDetailsComponent;
   let fixture: ComponentFixture<JobDetailsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ JobDetailsComponent ],
       providers: [
