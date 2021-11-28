@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Quote } from '../models/quote';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 

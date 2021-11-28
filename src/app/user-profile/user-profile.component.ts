@@ -1,8 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-user-profile',
@@ -23,7 +22,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit(): void {
     //check if the user is signed in
     if (this.afireAuth.auth) {
-      this.afireAuth.auth.getRedirectResult().then((result) => {
+      this.afireAuth.getRedirectResult().then((result) => {
         //subscribe to result
         this.authService.user$.subscribe(user => {
           if (user) //accounts for possible difference with 3rd party auth
