@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Company } from '../models/company';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { of } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 
