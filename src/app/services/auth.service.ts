@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { IUser } from './user.model';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { auth } from 'firebase/app';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+
 import { FormGroup } from '@angular/forms';
 import { UserTypes } from '../enums/user-types';
 import { CompaniesService } from './companies.service';
@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   getSignedInUser() {
-    return this.afireAuth.auth.currentUser;
+    return this.afireAuth.currentUser;
   }
 
 
@@ -125,7 +125,7 @@ export class AuthService {
 
   uploadSignInDetails(form: FormGroup) {
     //successful login
-    var user = this.afireAuth.auth.currentUser;
+    var user = this.afireAuth.currentUser;
     if (user) {
       this.updateUserInfoFromLogin(user, form)
     }
@@ -133,27 +133,27 @@ export class AuthService {
 
   async googleSignin() {
     const provider = new auth.GoogleAuthProvider();
-    await this.afireAuth.auth.signInWithRedirect(provider);
+    await this.afireAuth.signInWithRedirect(provider);
   }
 
   async facebookSignin() {
     const provider = new auth.FacebookAuthProvider();
-    await this.afireAuth.auth.signInWithRedirect(provider);
+    await this.afireAuth.signInWithRedirect(provider);
   }
 
   async microsoftSignin() {
     const provider = new auth.OAuthProvider('microsoft.com');
-    await this.afireAuth.auth.signInWithRedirect(provider);
+    await this.afireAuth.signInWithRedirect(provider);
   }
 
   async emailAndPasswordSignin(email, password) {
-    this.afireAuth.auth.signInWithEmailAndPassword(email, password)
+    this.afireAuth.signInWithEmailAndPassword(email, password)
       .catch(error => this.errorCatch(error));
   }
 
   async createAccount(email, password, form: FormGroup, photoURL?) {
     var self = this;
-    this.afireAuth.auth.createUserWithEmailAndPassword(email, password).then(function (result) {
+    this.afireAuth.createUserWithEmailAndPassword(email, password).then(function (result) {
       //successful account creation
       if (photoURL)
         self.updateUserInfoFromLogin(result.user, form, photoURL);
@@ -163,7 +163,7 @@ export class AuthService {
   }
 
   async signOut() {
-    await this.afireAuth.auth.signOut().then(function () {
+    await this.afireAuth.signOut().then(function () {
       window.location.href = '/';
     }).catch(error => this.errorCatch(error));
   }
