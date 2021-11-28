@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Job } from '../models/job';
 import { of } from 'rxjs/internal/observable/of';
 import { CompletionState } from '../enums/completionState';
@@ -62,7 +62,7 @@ export class JobsService {
     return this.quoteService.getQuotesForTrader(traderUid).pipe( //get the quotes for the trader
       map(quotesCollection => { //map that collection to get data
         return quotesCollection.valueChanges().pipe(
-          map(quotes => {
+          map((quotes: any[]) => {
             let jobIds = quotes.map(quote => quote.jobId);
             if(jobIds.length > 0)  //get the job ids from that
               return this.getJobsByIds(jobIds); //get the jobs 
