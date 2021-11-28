@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MapComponent } from './map/map.component';
-import { AgmCoreModule } from '@agm/core';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { MyJobsComponent } from './my-jobs/my-jobs.component';
 import { JobHistoryComponent } from './job-history/job-history.component';
@@ -25,9 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { JobListComponent } from './my-jobs/components/job-list/job-list.component';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
@@ -36,7 +34,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FirebaseConfig } from 'src/environments/firebase-config';
-import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { HttpClientModule } from '@angular/common/http';
 import { QuoteComponent } from './quote/quote.component';
 import { ChatListComponent } from './chats/components/chat-list/chat-list.component';
@@ -50,6 +48,7 @@ import { DatePipe } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ReviewComponent } from './review/review.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AngularFireModule } from '@angular/fire/compat';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatButtonModule,
@@ -96,9 +95,6 @@ const ANGULAR_MATERIAL_MODULES = [
     BrowserModule,
     AppRoutingModule,
     GoogleMapsModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBJYGKxKZsN2GiNHLVHwmz3rLy8baUceU4'
-    }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
     ANGULAR_MATERIAL_MODULES,

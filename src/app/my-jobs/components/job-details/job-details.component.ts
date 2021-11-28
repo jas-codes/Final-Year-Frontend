@@ -14,7 +14,7 @@ import { QuotesService } from 'src/app/services/quotes.service';
 import { ChatService } from 'src/app/chats/services/chat.service';
 import { Company } from 'src/app/models/company';
 import { CompletionState } from 'src/app/enums/completionState';
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Location, DatePipe } from '@angular/common';
 import { ReviewService } from 'src/app/review/services/review.service';
 import { Review } from 'src/app/models/review';

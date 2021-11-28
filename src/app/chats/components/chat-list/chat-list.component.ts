@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Chat } from 'src/app/models/chat';
 import { ChatService } from '../../services/chat.service';
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { IUser } from 'src/app/services/user.model';
 import { Subscription } from 'rxjs';

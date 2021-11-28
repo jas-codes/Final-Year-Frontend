@@ -9,7 +9,7 @@ import { Job } from '../models/job';
 import { UserTypes } from '../enums/user-types';
 import { CompaniesService } from '../services/companies.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { CompletionState } from '../enums/completionState';
 import { Quote } from '../models/quote';
 import { Company } from '../models/company';
