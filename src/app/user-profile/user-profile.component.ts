@@ -21,7 +21,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     //check if the user is signed in
-    if (this.afireAuth.auth) {
+    if (this.afireAuth) {
       this.afireAuth.getRedirectResult().then((result) => {
         //subscribe to result
         this.authService.user$.subscribe(user => {

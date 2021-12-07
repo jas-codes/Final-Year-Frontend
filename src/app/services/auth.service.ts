@@ -4,8 +4,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { auth } from 'firebase/app';
-
+import * as auth from 'firebase/auth';
 import { FormGroup } from '@angular/forms';
 import { UserTypes } from '../enums/user-types';
 import { CompaniesService } from './companies.service';
